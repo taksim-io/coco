@@ -3,6 +3,7 @@ var jscs = require('gulp-jscs');
 var jsmin = require('gulp-uglify');
 var jshint = require('gulp-jshint');
 var mocha = require('gulp-mocha');
+var rename = require('gulp-rename');
 var preprocess = require('gulp-preprocess');
 var pkg = require('./package');
 
@@ -50,16 +51,18 @@ gulp.task('test', ['validate', 'build'], function() {
 });
 
 gulp.task('copy', function() {
-  return gulp.src('build/*.js')
-      .pipe(gulp.dest('dist/' + pkg.name + '.js'));
+  return gulp.src('build/index.js')
+      .pipe(rename(pkg.name + '.js'))
+      .pipe(gulp.dest('dist'));
 });
 
 gulp.task('minify', function() {
-  return gulp.src('build/*.js')
+  return gulp.src('build/index.js')
       .pipe(jsmin({
         preserveComments: 'some'
       }))
-      .pipe(gulp.dest('dist/' + pkg.name + '.min.js'));
+      .pipe(rename(pkg.name + '.min.js'))
+      .pipe(gulp.dest('dist'));
 });
 
 gulp.task('watch', function() {
