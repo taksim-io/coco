@@ -50,14 +50,10 @@ gulp.task('test', ['validate', 'build'], function() {
       }));
 });
 
-gulp.task('copy', function() {
+gulp.task('dist', ['test'], function() {
   return gulp.src('build/index.js')
       .pipe(rename(pkg.name + '.js'))
-      .pipe(gulp.dest('dist'));
-});
-
-gulp.task('minify', function() {
-  return gulp.src('build/index.js')
+      .pipe(gulp.dest('dist'))
       .pipe(jsmin({
         preserveComments: 'some'
       }))
@@ -72,5 +68,4 @@ gulp.task('watch', function() {
   ], ['test']);
 });
 
-gulp.task('dist', ['test', 'copy', 'minify']);
 gulp.task('default', ['test', 'watch']);
