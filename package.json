@@ -1,7 +1,7 @@
 {
   "name": "taksim-coco",
   "description": "A fast and lightweight color conversion library for client and server.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/taksim-coco.js",
   "homepage": "https://github.com/taksim-io/coco",
   "keywords": [
