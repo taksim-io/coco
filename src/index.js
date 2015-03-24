@@ -512,8 +512,8 @@
     supportCss4: supportCss4,
     unsupportCss4: unsupportCss4,
     // 2hex
-    hex6hex3: hex2Short,
-    hex3hex6: hex2Long,
+    hex2Short: hex2Short,
+    hex2Long: hex2Long,
     rgb2hex: rgb2hex,
     hsl2hex: hsl2hex,
     hsv2hex: hsv2hex,
