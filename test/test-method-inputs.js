@@ -63,6 +63,24 @@ describe('test-method-inputs.js >>', function() {
     });
   });
 
+  describe('coco() invalid color', function() {
+    it('should return hsl(0, 0%, 0%) for 0f0', function() {
+      expect(coco('0f0', 'hsl')).to.equal('hsl(0, 0%, 0%)');
+    });
+    it('should return #000 for (255, 0, 0)', function() {
+      expect(coco('(255, 0, 0)', 'hex')).to.equal('#000');
+    });
+  });
+
+  describe('coco() invalid format', function() {
+    it('should return rgb(255, 0, 0) for rgba', function() {
+      expect(coco('rgb(255, 0, 0)', 'rgba')).to.equal('rgb(255, 0, 0)');
+    });
+    it('should return red for cmyk', function() {
+      expect(coco('red', 'cmyk')).to.equal('red');
+    });
+  });
+
   describe('unexpected input format', function() {
 
     // Expected formats are
