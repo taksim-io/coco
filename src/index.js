@@ -360,11 +360,11 @@
   function toArray(str) {
     if (typeof str === 'string') {
       var arr = str.split(',');
-      var i = arr.length;
+      var i = 3;
       while (i--) {
-        arr[i] = parseFloat(arr[i].replace(rNonDigit, '')) || 0;
+        arr[i] = arr[i] ? parseFloat(arr[i].replace(rNonDigit, '')) : 0;
       }
-      arr[3] = !isNaN(parseFloat(arr[3])) ? _clip(arr[3], 0, 1) : 1;
+      arr[3] = arr[3] ? _clip(parseFloat(arr[3].replace(rNonDigit, '')), 0, 1) : 1;
       return arr;
     }
     else if (str instanceof Array) {
@@ -466,7 +466,7 @@
   }
 
   function _hexIn(hex) {
-    return (hex || '').replace('#', '');
+    return String(hex).replace('#', '');
   }
 
   function _hexOut(hex) {
