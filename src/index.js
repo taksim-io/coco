@@ -92,33 +92,34 @@
   }
 
   function coco(clr, format2) {
-    var format1 = 'hex';
-    var result = '#000000';
-    if (isHexShort(clr)) {
-      clr = hex2Long(clr);
+    var format1 = format(clr);
+    if (format1) {
+      if (isHexShort(clr)) {
+        clr = hex2Long(clr);
+      }
     }
     else {
-      format1 = format(clr);
+      format1 = 'hex';
+      clr = '#000';
     }
     if (format2 === 'hex3' || format2 === 'hex4') {
-      result = hex2Short(coco(clr, 'hex'));
+      clr = hex2Short(coco(clr, 'hex'));
     }
     else if (format2 === 'hex6' || format2 === 'hex8') {
-      result = hex2Long(coco(clr, 'hex'));
+      clr = hex2Long(coco(clr, 'hex'));
     }
     else if (format1 === format2) {
-      result = clr;
       if (format1 === 'hex') {
-        result = hex2Short(clr);
+        clr = hex2Short(clr);
       }
     }
     else {
       var method = exportsMap[format1 + '2' + format2];
       if (method) {
-        result = toString(method(clr), format2);
+        clr = toString(method(clr), format2);
       }
     }
-    return result;
+    return clr;
   }
 
   // 2HEX
