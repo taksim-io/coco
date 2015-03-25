@@ -427,7 +427,7 @@
         isRgb(clr) && 'rgb' ||
         isHsl(clr) && 'hsl' ||
         isHsv(clr) && 'hsv' ||
-        isName(clr) && 'name' || null;
+        isName(clr) && 'name' || undefined;
   }
 
   function removeAlpha(clr) {
