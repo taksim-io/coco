@@ -252,8 +252,8 @@ describe('test-equality.js >>', function() {
     it('should return name for black', function() {
       expect(coco.format('black')).to.equal('name');
     });
-    it('should return null for bblack', function() {
-      expect(coco.format('bblack')).to.be.null;
+    it('should return undefined for bblack', function() {
+      expect(coco.format('bblack')).to.be.undefined;
     });
   });
 
