@@ -6,13 +6,13 @@
 */
 
 ;(function(root, factory) {
+  var coco = factory(root);
   if (typeof define === 'function' && define.amd) {
-    define(factory);
+    define(coco);
   } else if (typeof exports === 'object') {
-    module.exports = factory(root);
+    module.exports = coco;
   } else {
-    root.taksim || (root.taksim = {});
-    root.taksim.coco = factory(root);
+    root.coco = coco;
   }
 })(this, function() {
 
