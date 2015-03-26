@@ -351,7 +351,7 @@
           '(' +
               _round(arr[0]) + c +
               _round(arr[1]) + p + c +
-              _round(arr[2]) + p + (hasAlpha ? c + a.toFixed(2) : '') +
+              _round(arr[2]) + p + (hasAlpha ? c + (+a.toFixed(2)) : '') +
           ')';
     }
     else if (typeof arr === 'string') {

@@ -251,7 +251,7 @@ describe('test-equality.js >>', function() {
 
     var strOut = ['.selector {',
       'box-shadow: 0px 10px 14px -7px rgb(39, 104, 115);',
-      'background:linear-gradient(to bottom, rgb(89, 155, 179) 5%, rgba(2, 0, 128, 0.40) 100%);',
+      'background:linear-gradient(to bottom, rgb(89, 155, 179) 5%, rgba(2, 0, 128, 0.4) 100%);',
       'filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=\'rgb(89, 155, 179)\', endColorstr=\'rgb(64, 140, 153)\',GradientType=0);',
       'background-color: rgb(255, 0, 0);',
       'border-bottom: 20px solid rgba(0, 0, 0, 0.35);',
