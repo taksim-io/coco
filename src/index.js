@@ -439,21 +439,6 @@
         isName(clr) && 'name' || undefined;
   }
 
-  function removeAlpha(clr) {
-    if (isAlpha(clr)) {
-      if (isHex(clr)) {
-        clr = _hexIn(clr);
-        clr = _hexOut(clr.slice(0, -1 * clr.length / 4));
-      }
-      else {
-        var arr = toArray(clr);
-        arr[3] = 1;
-        clr = toString(arr, format(clr));
-      }
-    }
-    return clr;
-  }
-
   function getAlpha(clr) {
     var alpha = 1;
     if (isAlpha(clr)) {
@@ -469,6 +454,21 @@
       }
     }
     return alpha;
+  }
+
+  function removeAlpha(clr) {
+    if (isAlpha(clr)) {
+      if (isHex(clr)) {
+        clr = _hexIn(clr);
+        clr = _hexOut(clr.slice(0, -1 * clr.length / 4));
+      }
+      else {
+        var arr = toArray(clr);
+        arr[3] = 1;
+        clr = toString(arr, format(clr));
+      }
+    }
+    return clr;
   }
 
   function replace(str, replacer) {
@@ -583,9 +583,9 @@
     isAlpha: isAlpha,
     isEqual: isEqual,
     format: format,
-    removeAlpha: removeAlpha,
-    getAlpha: getAlpha,
     replace: replace,
+    getAlpha: getAlpha,
+    removeAlpha: removeAlpha,
     x11: x11,
     //https://github.com/mrmrs/colors
     aqua: '7fdbff',
