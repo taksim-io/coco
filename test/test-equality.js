@@ -27,36 +27,6 @@ describe('test-equality.js >>', function() {
     });
   });
 
-  describe('css4 supported', function() {
-    before(function() {
-      coco.supportCss4();
-    });
-    after(function() {
-      coco.unsupportCss4();
-    });
-    describe('isHexShort()', function() {
-      isHexShort();
-      it('should return true for #1234', function() {
-        expect(coco.isHexShort('#1234')).to.be.true;
-      });
-    });
-    describe('isHexLong()', function() {
-      isHexLong();
-      it('should return true for #12345678', function() {
-        expect(coco.isHexLong('#12345678')).to.be.true;
-      });
-    });
-    describe('isHex()', function() {
-      isHex();
-      it('should return true for #1234', function() {
-        expect(coco.isHex('#1234')).to.be.true;
-      });
-      it('should return true for #12345678', function() {
-        expect(coco.isHex('#12345678')).to.be.true;
-      });
-    });
-  });
-
   describe('isRgb()', function() {
 
     // RGB
@@ -221,6 +191,13 @@ describe('test-equality.js >>', function() {
     });
   });
 
+  describe('isAlpha()', function() {
+    isAlpha();
+    it('should return false for #12345678', function() {
+      expect(coco.isAlpha('#12345678')).to.be.false;
+    });
+  });
+
   describe('isEqual()', function() {
     it('should return true for #ffa500 === hsl(39, 100%, 50%)', function() {
       expect(coco.isEqual('#ffa500', 'hsl(39, 100%, 50%)')).to.be.true;
@@ -290,6 +267,45 @@ describe('test-equality.js >>', function() {
       expect(coco.replace(strIn, function(match) {
         return coco(match, 'rgb');
       })).to.equal(strOut);
+    });
+  });
+
+  describe('css4 supported', function() {
+    before(function() {
+      coco.supportCss4();
+    });
+    after(function() {
+      coco.unsupportCss4();
+    });
+    describe('isHexShort()', function() {
+      isHexShort();
+      it('should return true for #1234', function() {
+        expect(coco.isHexShort('#1234')).to.be.true;
+      });
+    });
+    describe('isHexLong()', function() {
+      isHexLong();
+      it('should return true for #12345678', function() {
+        expect(coco.isHexLong('#12345678')).to.be.true;
+      });
+    });
+    describe('isHex()', function() {
+      isHex();
+      it('should return true for #1234', function() {
+        expect(coco.isHex('#1234')).to.be.true;
+      });
+      it('should return true for #12345678', function() {
+        expect(coco.isHex('#12345678')).to.be.true;
+      });
+    });
+    describe('isAlpha()', function() {
+      isAlpha();
+      it('should return true for #1234', function() {
+        expect(coco.isAlpha('#1234')).to.be.true;
+      });
+      it('should return true for #12345678', function() {
+        expect(coco.isAlpha('#12345678')).to.be.true;
+      });
     });
   });
 });
@@ -395,5 +411,26 @@ function isHex() {
   });
   it('should return false for #g12345', function() {
     expect(coco.isHex('#g12345')).to.be.false;
+  });
+}
+
+function isAlpha() {
+  it('should return true for rgba(0, 0, 0, 1)', function() {
+    expect(coco.isAlpha('rgba(0, 0, 0, 1)')).to.be.true;
+  });
+  it('should return true for hsla(0, 0%, 0%, 0.5)', function() {
+    expect(coco.isAlpha('hsla(0, 0%, 0%, 0.5)')).to.be.true;
+  });
+  it('should return true for hsva(0, 0%, 0%, .5)', function() {
+    expect(coco.isAlpha('hsva(0, 0%, 0%, .5)')).to.be.true;
+  });
+  it('should return false for rgb(0, 0, 0, 1)', function() {
+    expect(coco.isAlpha('rgb(0, 0, 0, 1)')).to.be.false;
+  });
+  it('should return false for rgba(0, 0, 0)', function() {
+    expect(coco.isAlpha('rgba(0, 0, 0)')).to.be.false;
+  });
+  it('should return false for #123456', function() {
+    expect(coco.isAlpha('#123456')).to.be.false;
   });
 }
