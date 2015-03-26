@@ -30,7 +30,7 @@ or just [download](https://raw.githubusercontent.com/taksim-io/coco/master/dist/
 
 ## Usage
 
-### <a name="coco"></a>coco(color:string, format:string)
+### coco(color:string, format:string)
 
 * color should have a valid syntax. 
   * `#f00` or `#ff0000`
@@ -39,7 +39,7 @@ or just [download](https://raw.githubusercontent.com/taksim-io/coco/master/dist/
   * `hsv(0, 100%, 100%)`
 * format should be one of the supported types; `name, hex, hex3, hex6, hex4, hex8, rgb, hsl, hsv`
   * `name` refers to the [x11 colors](http://www.w3.org/TR/css3-color/#svg-color).
-  * `hex4, hex8` is only available if you call [coco.supportHex8()](#supportHex8) explicitly. 
+  * `hex4, hex8` is only available if you call [coco.supportHex8()](#css4-hex8-notation-support) explicitly. 
 
 ```js
 coco('#f00', 'name')
@@ -88,7 +88,7 @@ coco('red', 'cmyk')
 ```
 ### Conversion Methods
 
-There are plenty of specific conversion methods attached to [coco()](#coco) function and they don't require a valid syntax unlike [coco()](#coco). The naming of these methods follows a simple convention: inputFormat2outputFormat, e.g. `coco.rgb2hsl` or `coco.name2hex`. So, we can commonize some of the rules;
+There are plenty of specific conversion methods attached to [coco()](#cococolorstring-formatstring) function and they don't require a valid syntax unlike [coco()](#cococolorstring-formatstring). The naming of these methods follows a simple convention: inputFormat2outputFormat, e.g. `coco.rgb2hsl` or `coco.name2hex`. So, we can commonize some of the rules;
 
 * All 2rgb (except [percentage2rgb()](#percentage2rgb)), 2hsl and 2hsv methods return a color array like `[255, 0, 0, 1]`
 ```js
@@ -263,7 +263,7 @@ coco.isAlpha('rgba(255, 0, 0, 0.5)')
 => true
 ```
 
-#### <a name="isequal"></a>coco.isEqual(color:string, color:string)
+#### coco.isEqual(color:string, color:string)
 
 Compares two color strings.
 
@@ -272,7 +272,7 @@ coco.isEqual('red', 'rgb(255, 0, 0)')
 => true
 ```
 
-#### <a name="format"></a>coco.format(color:string)
+#### coco.format(color:string)
 
 Returns format of the input string.
 
@@ -301,7 +301,7 @@ coco.format('(0, 0, 100%)')
 => undefined
 ```
 
-#### <a name="replace"></a>coco.replace(text:string, callback:function)
+#### coco.replace(text:string, callback:function)
 
 Finds all color strings in a given text and passes them to the replacer callback function. This method is useful to unify different color syntaxes.
 
@@ -315,14 +315,14 @@ coco.replace(cssText, function(color) {
 
 ### Alpha Manipulation
 
-#### <a name="getalpha"></a>coco.getAlpha(color:string)
+#### coco.getAlpha(color:string)
 
 ```js
 coco.getAlpha('rgba(255, 0, 0, 0.5)');
 => 0.5
 ```
 
-#### <a name="setalpha"></a>coco.setAlpha(color:string, alpha:number)
+#### coco.setAlpha(color:string, alpha:number)
 
 ```js
 coco.setAlpha('red', 0.5);
@@ -335,7 +335,7 @@ coco.setAlpha('rgba(255, 0, 0, .5)', 0.8);
 => 'rgba(255, 0, 0, 0.8)'
 ```
 
-#### <a name="removealpha"></a>coco.removeAlpha(color:string)
+#### coco.removeAlpha(color:string)
 
 Removes alpha from a color string if there is one.
 
@@ -344,7 +344,7 @@ coco.removeAlpha('rgba(255, 0, 0, 0.5)');
 => 'rgb(255, 0, 0)'
 ```
 
-### <a name="supporthex8"></a>CSS4 Hex8 Notation Support
+### CSS4 Hex8 Notation Support
 
 The latest W3C color module [draft](http://dev.w3.org/csswg/css-color-4/#hex-notation) describes that a hexadecimal notation can have 4 or 8 digits. The first 6 digits (or 3 digits in shorter version) of this notation are interpreted as regular red, green and blue channels, but the last pair specifies alpha channel, where `00` represents a transparent color and `ff` represent a opaque color. To support this type of notation, there is `coco.supportHex8()` method but using this feature in production is not recommended because the W3C draft is in early stage. For those, who want to experiment hex8 notation, here are some examples;
 
