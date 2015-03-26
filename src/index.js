@@ -454,6 +454,32 @@
     return alpha;
   }
 
+  function setAlpha(clr, alpha) {
+    alpha = _clip(parseFloat(alpha), 0, 1);
+    isNaN(alpha) && (alpha = 1);
+    clr = removeAlpha(clr);
+    if (isHex(clr)) {
+      if (isCss4Supported) {
+        clr = hex2Short(hex2Long(clr) + _alpha2hex(alpha));
+      }
+      else {
+        clr = setAlpha(rgbStr(hex2rgb(clr)), alpha);
+      }
+    }
+    else if (isName(clr)) {
+      clr = setAlpha(name2hex(clr), alpha);
+    }
+    else {
+      var type = format(clr);
+      if (type) {
+        var arr = toArray(clr);
+        arr[3] = alpha;
+        clr = toString(arr, type);
+      }
+    }
+    return clr;
+  }
+
   function removeAlpha(clr) {
     if (isAlpha(clr)) {
       if (isHex(clr)) {
@@ -589,6 +615,7 @@
     format: format,
     replace: replace,
     getAlpha: getAlpha,
+    setAlpha: setAlpha,
     removeAlpha: removeAlpha,
     x11: x11,
     //https://github.com/mrmrs/colors
