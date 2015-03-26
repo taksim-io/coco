@@ -30,7 +30,6 @@
   var name2hexMap = {};
   var hex2nameMap = {};
   var exportsMap = {};
-  var x11 = [];
   var rColor;
 
   function r(format) {
@@ -51,16 +50,9 @@
     for (var name in name2hexMap) {
       if (name2hexMap.hasOwnProperty(name)) {
         var base = _hexOut(name2hexMap[name]);
-        var alt = _hexOut(exportsMap[name]);
-        alt && (exportsMap[name] = alt);
         hex2nameMap[base] = name;
         name2hexMap[name] = base;
         colorNames.push(name);
-        x11.push({
-          name: name,
-          base: base,
-          alt: alt
-        });
       }
     }
     rColor = new RegExp([rHex, rRgb, rHsl, rHsv,
@@ -616,31 +608,7 @@
     replace: replace,
     getAlpha: getAlpha,
     setAlpha: setAlpha,
-    removeAlpha: removeAlpha,
-    x11: x11,
-    //https://github.com/mrmrs/colors
-    aqua: '7fdbff',
-    black: '111',
-    blue: '0074d9',
-    fuchsia: 'f012be',
-    gray: 'aaa',
-    green: '2ecc40',
-    lime: '01ff70',
-    maroon: '85144b',
-    navy: '001f3f',
-    olive: '3d9970',
-    orange: 'ff851b',
-    purple: 'b10dc9',
-    red: 'ff4136',
-    silver: 'ddd',
-    teal: '39cccc',
-    white: 'fff',
-    yellow: 'ffdc00',
-    //http://www.google.com/design/spec/style/color.html,
-    pink: 'e91e63',
-    brown: '795548',
-    lightgreen:  '8bc34a',
-    lightblue: '03a9f4'
+    removeAlpha: removeAlpha
   };
 
   // @include x11.js
