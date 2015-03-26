@@ -133,7 +133,7 @@
     rgb = _rgbIn(rgb);
     var rrggbb = ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2])
         .toString(16).slice(1);
-    var aa = isCss4Supported ? ((1 << 8) + ((_round(rgb[3] * 255)) << 0))
+    var aa = isCss4Supported ? ((1 << 8) + _round(rgb[3] * 255))
         .toString(16).slice(1) :  '';
     return hex2Short(rrggbb + aa);
   }
@@ -440,23 +440,35 @@
   }
 
   function removeAlpha(clr) {
-    var type = format(clr);
-    if (type && type !== 'name') {
-      if (type === 'hex') {
-        if (isCss4Supported) {
-          clr = _hexIn(clr);
-          var len = clr.length;
-          clr = _hexOut(
-              len === 4 || len === 8 ? clr.slice(0, -1 * len / 4) : clr);
-        }
+    if (isAlpha(clr)) {
+      if (isHex(clr)) {
+        clr = _hexIn(clr);
+        clr = _hexOut(clr.slice(0, -1 * clr.length / 4));
       }
       else {
         var arr = toArray(clr);
         arr[3] = 1;
-        clr = toString(arr, type);
+        clr = toString(arr, format(clr));
       }
     }
     return clr;
+  }
+
+  function getAlpha(clr) {
+    var alpha = 1;
+    if (isAlpha(clr)) {
+      if (isHex(clr)) {
+        clr = _hexIn(clr);
+        var len = clr.length;
+        var hex2 = clr.slice(len - len / 4);
+        len === 8 || (hex2 += hex2);
+        alpha = +(parseInt(hex2, 16) / 255).toFixed(2);
+      }
+      else {
+        alpha = toArray(clr)[3];
+      }
+    }
+    return alpha;
   }
 
   function replace(str, replacer) {
@@ -572,6 +584,7 @@
     isEqual: isEqual,
     format: format,
     removeAlpha: removeAlpha,
+    getAlpha: getAlpha,
     replace: replace,
     x11: x11,
     //https://github.com/mrmrs/colors
