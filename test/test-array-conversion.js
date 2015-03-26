@@ -48,26 +48,28 @@ describe('test-array-conversion.js >>', function() {
     after(function() {
       coco.unsupportCss4();
     });
+
     describe('hex to hsl', function() {
-    it('sample1', function() {
-      expect(fix2(coco.hex2hsl('#cc4f4d00'))).to.deep.equal([0.94, 55.46, 55.1, 0]);
+      it('sample1', function() {
+        expect(fix2(coco.hex2hsl('#cc4f4d00'))).to.deep.equal([0.94, 55.46, 55.1, 0]);
+      });
+      it('sample2', function() {
+        expect(fix2(coco.hex2hsl('#cc4f4d59'))).to.deep.equal([0.94, 55.46, 55.1, 0.35]);
+      });
+      it('sample3', function() {
+        expect(fix2(coco.hex2hsl('#b2ffca80'))).to.deep.equal([138.70, 100, 84.90, 0.5]);
+      });
+      it('sample4', function() {
+        expect(fix2(coco.hex2hsl('#f7b08caa'))).to.deep.equal([20.19, 86.99, 75.88, 0.67]);
+      });
+      it('sample5', function() {
+        expect(fix2(coco.hex2hsl('#f35f'))).to.deep.equal([350, 100, 60, 1]);
+      });
+      it('sample6', function() {
+        expect(fix2(coco.hex2hsl('#f7b08c'))).to.deep.equal([20.19, 86.99, 75.88, 1]);
+      });
     });
-    it('sample2', function() {
-      expect(fix2(coco.hex2hsl('#cc4f4d59'))).to.deep.equal([0.94, 55.46, 55.1, 0.35]);
-    });
-    it('sample3', function() {
-      expect(fix2(coco.hex2hsl('#b2ffca80'))).to.deep.equal([138.70, 100, 84.90, 0.5]);
-    });
-    it('sample4', function() {
-      expect(fix2(coco.hex2hsl('#f7b08caa'))).to.deep.equal([20.19, 86.99, 75.88, 0.67]);
-    });
-    it('sample5', function() {
-      expect(fix2(coco.hex2hsl('#f35f'))).to.deep.equal([350, 100, 60, 1]);
-    });
-    it('sample6', function() {
-      expect(fix2(coco.hex2hsl('#f7b08c'))).to.deep.equal([20.19, 86.99, 75.88, 1]);
-    });
-  });
+
     describe('hsl to hex', function() {
       it('sample1', function() {
         expect(fix2(coco.hsl2hex([1, 55, 55, 0]))).to.equal('#cb4f4d00');
