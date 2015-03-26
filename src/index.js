@@ -19,6 +19,7 @@
   'use strict';
 
   var rHex = '#(:?[0-9a-fA-F]{3}){1,2}\\b';
+  var rAlpha = [];
   var rRgb = r('rgb');
   var rHsl = r('hsl');
   var rHsv = r('hsv');
@@ -41,6 +42,7 @@
     xyza[3] = '\\s*(\\d+|(\\d+)?\\.\\d+)\\s*';
     xyz = format + '\\(' + xyz.join(',') + '\\)';
     xyza = format + 'a\\(' + xyza.join(',') + '\\)';
+    rAlpha.push(xyza);
     return xyz + '|' + xyza;
   }
 
@@ -67,6 +69,7 @@
     rHsl = new RegExp(rHsl);
     rHsv = new RegExp(rHsv);
     rRgb = new RegExp(rRgb);
+    rAlpha = new RegExp(rAlpha.join('|'));
 
     for (var key in exportsMap) {
       if (exportsMap.hasOwnProperty(key)) {
@@ -76,6 +79,7 @@
   }
 
   function supportCss4() {
+    rAlpha = new RegExp(rAlpha.source + '|' + rHex.source.replace('3', '4'));
     rHex = new RegExp(rHex.source.replace('3', '3,4'));
     rColor = new RegExp(rColor.source.replace('3', '3,4'), 'gi');
     hexShort[4] = true;
@@ -84,6 +88,7 @@
   }
 
   function unsupportCss4() {
+    rAlpha = new RegExp(rAlpha.source.replace('|' + rHex.source.replace('3,4', '4'), ''));
     rHex = new RegExp(rHex.source.replace('3,4', '3'));
     rColor = new RegExp(rColor.source.replace('3,4', '3'), 'gi');
     hexShort[4] = false;
@@ -409,6 +414,10 @@
     return isHex(clr) || isRgb(clr) || isHsl(clr) || isHsv(clr) || isName(clr);
   }
 
+  function isAlpha(clr) {
+    return rAlpha.test(clr);
+  }
+
   function isEqual(clr1, clr2) {
     var format1 = format(clr1);
     var format2 = format(clr2);
@@ -559,6 +568,7 @@
     isHsv: isHsv,
     isName: isName,
     isColor: isColor,
+    isAlpha: isAlpha,
     isEqual: isEqual,
     format: format,
     removeAlpha: removeAlpha,
