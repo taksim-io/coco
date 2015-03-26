@@ -1,35 +1,35 @@
 /**
  * @license MIT
- * taksim.io/coco v0.1.1
+ * taksim.io/coco v0.1.2
  * https://github.com/taksim-io/coco
  * Copyright (c) 2015 taksim.io
 */
 
 ;(function(root, factory) {
+  var coco = factory(root);
   if (typeof define === 'function' && define.amd) {
-    define(factory);
+    define(coco);
   } else if (typeof exports === 'object') {
-    module.exports = factory(root);
+    module.exports = coco;
   } else {
-    root.taksim || (root.taksim = {});
-    root.taksim.coco = factory(root);
+    root.coco = coco;
   }
 })(this, function() {
 
   'use strict';
 
   var rHex = '#(:?[0-9a-fA-F]{3}){1,2}\\b';
+  var rAlpha = [];
   var rRgb = r('rgb');
   var rHsl = r('hsl');
   var rHsv = r('hsv');
   var rNonDigit = /[^\d\.\-\,]/g;
   var hexShort = {3: true};
   var hexLong = {6: true};
-  var isCss4Supported = false;
+  var isHex8Supported = false;
   var name2hexMap = {};
   var hex2nameMap = {};
   var exportsMap = {};
-  var x11 = [];
   var rColor;
 
   function r(format) {
@@ -41,6 +41,7 @@
     xyza[3] = '\\s*(\\d+|(\\d+)?\\.\\d+)\\s*';
     xyz = format + '\\(' + xyz.join(',') + '\\)';
     xyza = format + 'a\\(' + xyza.join(',') + '\\)';
+    rAlpha.push(xyza);
     return xyz + '|' + xyza;
   }
 
@@ -49,16 +50,9 @@
     for (var name in name2hexMap) {
       if (name2hexMap.hasOwnProperty(name)) {
         var base = _hexOut(name2hexMap[name]);
-        var alt = _hexOut(exportsMap[name]);
-        alt && (exportsMap[name] = alt);
         hex2nameMap[base] = name;
         name2hexMap[name] = base;
         colorNames.push(name);
-        x11.push({
-          name: name,
-          base: base,
-          alt: alt
-        });
       }
     }
     rColor = new RegExp([rHex, rRgb, rHsl, rHsv,
@@ -67,6 +61,7 @@
     rHsl = new RegExp(rHsl);
     rHsv = new RegExp(rHsv);
     rRgb = new RegExp(rRgb);
+    rAlpha = new RegExp(rAlpha.join('|'));
 
     for (var key in exportsMap) {
       if (exportsMap.hasOwnProperty(key)) {
@@ -75,50 +70,53 @@
     }
   }
 
-  function supportCss4() {
+  function supportHex8() {
+    rAlpha = new RegExp(rAlpha.source + '|' + rHex.source.replace('3', '4'));
     rHex = new RegExp(rHex.source.replace('3', '3,4'));
     rColor = new RegExp(rColor.source.replace('3', '3,4'), 'gi');
     hexShort[4] = true;
     hexLong[8] = true;
-    isCss4Supported = true;
+    isHex8Supported = true;
   }
 
-  function unsupportCss4() {
+  function unsupportHex8() {
+    rAlpha = new RegExp(rAlpha.source.replace('|' + rHex.source.replace('3,4', '4'), ''));
     rHex = new RegExp(rHex.source.replace('3,4', '3'));
     rColor = new RegExp(rColor.source.replace('3,4', '3'), 'gi');
     hexShort[4] = false;
     hexLong[8] = false;
-    isCss4Supported = false;
+    isHex8Supported = false;
   }
 
   function coco(clr, format2) {
-    var format1 = 'hex';
-    var result = '#000000';
-    if (isHexShort(clr)) {
-      clr = hex2Long(clr);
+    var format1 = format(clr);
+    if (format1) {
+      if (isHexShort(clr)) {
+        clr = hex2Long(clr);
+      }
     }
     else {
-      format1 = format(clr);
+      format1 = 'hex';
+      clr = '#000';
     }
     if (format2 === 'hex3' || format2 === 'hex4') {
-      result = hex2Short(coco(clr, 'hex'));
+      clr = hex2Short(coco(clr, 'hex'));
     }
     else if (format2 === 'hex6' || format2 === 'hex8') {
-      result = hex2Long(coco(clr, 'hex'));
+      clr = hex2Long(coco(clr, 'hex'));
     }
     else if (format1 === format2) {
-      result = clr;
       if (format1 === 'hex') {
-        result = hex2Short(clr);
+        clr = hex2Short(clr);
       }
     }
     else {
       var method = exportsMap[format1 + '2' + format2];
       if (method) {
-        result = toString(method(clr), format2);
+        clr = toString(method(clr), format2);
       }
     }
-    return result;
+    return clr;
   }
 
   // 2HEX
@@ -127,9 +125,7 @@
     rgb = _rgbIn(rgb);
     var rrggbb = ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2])
         .toString(16).slice(1);
-    var aa = isCss4Supported ? ((1 << 8) + ((_round(rgb[3] * 255)) << 0))
-        .toString(16).slice(1) :  '';
-    return hex2Short(rrggbb + aa);
+    return hex2Short(rrggbb + _alpha2hex(rgb[3]));
   }
 
   function hsl2hex(hsl) {
@@ -171,7 +167,7 @@
   //http://stackoverflow.com/a/11508164/1219553
   function hex2rgb(hex) {
     hex = _hexIn(hex2Long(hex));
-    var shift = isCss4Supported && hex.length === 8 ? 24 : 16;
+    var shift = isHex8Supported && hex.length === 8 ? 24 : 16;
     var bi = parseInt(hex, 16);
     var r = (bi >> shift) & 255;
     var g = (bi >> shift - 8) & 255;
@@ -345,7 +341,7 @@
           '(' +
               _round(arr[0]) + c +
               _round(arr[1]) + p + c +
-              _round(arr[2]) + p + (hasAlpha ? c + a.toFixed(2) : '') +
+              _round(arr[2]) + p + (hasAlpha ? c + (+a.toFixed(2)) : '') +
           ')';
     }
     else if (typeof arr === 'string') {
@@ -359,11 +355,11 @@
   function toArray(str) {
     if (typeof str === 'string') {
       var arr = str.split(',');
-      var i = arr.length;
+      var i = 3;
       while (i--) {
-        arr[i] = parseFloat(arr[i].replace(rNonDigit, '')) || 0;
+        arr[i] = arr[i] ? parseFloat(arr[i].replace(rNonDigit, '')) : 0;
       }
-      arr[3] = !isNaN(parseFloat(arr[3])) ? _clip(arr[3], 0, 1) : 1;
+      arr[3] = arr[3] ? _clip(parseFloat(arr[3].replace(rNonDigit, '')), 0, 1) : 1;
       return arr;
     }
     else if (str instanceof Array) {
@@ -408,6 +404,10 @@
     return isHex(clr) || isRgb(clr) || isHsl(clr) || isHsv(clr) || isName(clr);
   }
 
+  function isAlpha(clr) {
+    return rAlpha.test(clr);
+  }
+
   function isEqual(clr1, clr2) {
     var format1 = format(clr1);
     var format2 = format(clr2);
@@ -426,24 +426,62 @@
         isRgb(clr) && 'rgb' ||
         isHsl(clr) && 'hsl' ||
         isHsv(clr) && 'hsv' ||
-        isName(clr) && 'name' || null;
+        isName(clr) && 'name' || undefined;
+  }
+
+  function getAlpha(clr) {
+    var alpha = 1;
+    if (isAlpha(clr)) {
+      if (isHex(clr)) {
+        clr = _hexIn(clr);
+        var len = clr.length;
+        var hex2 = clr.slice(len - len / 4);
+        len === 8 || (hex2 += hex2);
+        alpha = +(parseInt(hex2, 16) / 255).toFixed(2);
+      }
+      else {
+        alpha = toArray(clr)[3];
+      }
+    }
+    return alpha;
+  }
+
+  function setAlpha(clr, alpha) {
+    alpha = _clip(parseFloat(alpha), 0, 1);
+    isNaN(alpha) && (alpha = 1);
+    clr = removeAlpha(clr);
+    if (isHex(clr)) {
+      if (isHex8Supported) {
+        clr = hex2Short(hex2Long(clr) + _alpha2hex(alpha));
+      }
+      else {
+        clr = setAlpha(rgbStr(hex2rgb(clr)), alpha);
+      }
+    }
+    else if (isName(clr)) {
+      clr = setAlpha(name2hex(clr), alpha);
+    }
+    else {
+      var type = format(clr);
+      if (type) {
+        var arr = toArray(clr);
+        arr[3] = alpha;
+        clr = toString(arr, type);
+      }
+    }
+    return clr;
   }
 
   function removeAlpha(clr) {
-    var type = format(clr);
-    if (type && type !== 'name') {
-      if (type === 'hex') {
-        if (isCss4Supported) {
-          clr = _hexIn(clr);
-          var len = clr.length;
-          clr = _hexOut(
-              len === 4 || len === 8 ? clr.slice(0, -1 * len / 4) : clr);
-        }
+    if (isAlpha(clr)) {
+      if (isHex(clr)) {
+        clr = _hexIn(clr);
+        clr = _hexOut(clr.slice(0, -1 * clr.length / 4));
       }
       else {
         var arr = toArray(clr);
         arr[3] = 1;
-        clr = toString(arr, type);
+        clr = toString(arr, format(clr));
       }
     }
     return clr;
@@ -465,7 +503,7 @@
   }
 
   function _hexIn(hex) {
-    return (hex || '').replace('#', '');
+    return String(hex).replace('#', '');
   }
 
   function _hexOut(hex) {
@@ -507,12 +545,18 @@
     arr[i] = _clip(arr[i] * fixer, 0, fixer) || 0;
   }
 
+  function _alpha2hex(alpha) {
+    alpha = isHex8Supported ? ((1 << 8) + _round(parseFloat(alpha) * 255))
+        .toString(16).slice(1) :  '';
+    return alpha === 'ff' ? '' : alpha;
+  }
+
   exportsMap = {
-    supportCss4: supportCss4,
-    unsupportCss4: unsupportCss4,
+    supportHex8: supportHex8,
+    unsupportHex8: unsupportHex8,
     // 2hex
-    hex6hex3: hex2Short,
-    hex3hex6: hex2Long,
+    hex2Short: hex2Short,
+    hex2Long: hex2Long,
     rgb2hex: rgb2hex,
     hsl2hex: hsl2hex,
     hsv2hex: hsv2hex,
@@ -558,34 +602,13 @@
     isHsv: isHsv,
     isName: isName,
     isColor: isColor,
+    isAlpha: isAlpha,
     isEqual: isEqual,
     format: format,
-    removeAlpha: removeAlpha,
     replace: replace,
-    x11: x11,
-    //https://github.com/mrmrs/colors
-    aqua: '7fdbff',
-    black: '111',
-    blue: '0074d9',
-    fuchsia: 'f012be',
-    gray: 'aaa',
-    green: '2ecc40',
-    lime: '01ff70',
-    maroon: '85144b',
-    navy: '001f3f',
-    olive: '3d9970',
-    orange: 'ff851b',
-    purple: 'b10dc9',
-    red: 'ff4136',
-    silver: 'ddd',
-    teal: '39cccc',
-    white: 'fff',
-    yellow: 'ffdc00',
-    //http://www.google.com/design/spec/style/color.html,
-    pink: 'e91e63',
-    brown: '795548',
-    lightgreen:  '8bc34a',
-    lightblue: '03a9f4'
+    getAlpha: getAlpha,
+    setAlpha: setAlpha,
+    removeAlpha: removeAlpha
   };
 
   /* jshint undef: false */
