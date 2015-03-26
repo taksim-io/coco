@@ -277,18 +277,21 @@ describe('test-equality.js >>', function() {
     after(function() {
       coco.unsupportCss4();
     });
+
     describe('isHexShort()', function() {
       isHexShort();
       it('should return true for #1234', function() {
         expect(coco.isHexShort('#1234')).to.be.true;
       });
     });
+
     describe('isHexLong()', function() {
       isHexLong();
       it('should return true for #12345678', function() {
         expect(coco.isHexLong('#12345678')).to.be.true;
       });
     });
+
     describe('isHex()', function() {
       isHex();
       it('should return true for #1234', function() {
@@ -298,6 +301,7 @@ describe('test-equality.js >>', function() {
         expect(coco.isHex('#12345678')).to.be.true;
       });
     });
+
     describe('isAlpha()', function() {
       isAlpha();
       it('should return true for #1234', function() {
