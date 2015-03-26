@@ -84,7 +84,10 @@ describe('test-array-conversion.js >>', function() {
         expect(fix2(coco.hsl2hex([20, 87, 76, 0.666]))).to.equal('#f7b08daa');
       });
       it('sample5', function() {
-        expect(fix2(coco.hsl2hex([350, 100, 60, 1]))).to.equal('#f35f');
+        expect(fix2(coco.hsl2hex([350, 100, 60, 1]))).to.equal('#f35');
+      });
+      it('sample6', function() {
+        expect(fix2(coco.hsl2hex([350, 100, 60, 0.8]))).to.equal('#f35c');
       });
     });
   });

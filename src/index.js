@@ -133,9 +133,7 @@
     rgb = _rgbIn(rgb);
     var rrggbb = ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2])
         .toString(16).slice(1);
-    var aa = isCss4Supported ? ((1 << 8) + _round(rgb[3] * 255))
-        .toString(16).slice(1) :  '';
-    return hex2Short(rrggbb + aa);
+    return hex2Short(rrggbb + _alpha2hex(rgb[3]));
   }
 
   function hsl2hex(hsl) {
@@ -527,6 +525,12 @@
 
   function _2percentage(arr, i, fixer) {
     arr[i] = _clip(arr[i] * fixer, 0, fixer) || 0;
+  }
+
+  function _alpha2hex(alpha) {
+    alpha = isCss4Supported ? ((1 << 8) + _round(parseFloat(alpha) * 255))
+        .toString(16).slice(1) :  '';
+    return alpha === 'ff' ? '' : alpha;
   }
 
   exportsMap = {
