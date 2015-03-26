@@ -270,12 +270,12 @@ describe('test-equality.js >>', function() {
     });
   });
 
-  describe('css4 supported', function() {
+  describe('hex8 supported', function() {
     before(function() {
-      coco.supportCss4();
+      coco.supportHex8();
     });
     after(function() {
-      coco.unsupportCss4();
+      coco.unsupportHex8();
     });
 
     describe('isHexShort()', function() {

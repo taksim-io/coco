@@ -26,7 +26,7 @@
   var rNonDigit = /[^\d\.\-\,]/g;
   var hexShort = {3: true};
   var hexLong = {6: true};
-  var isCss4Supported = false;
+  var isHex8Supported = false;
   var name2hexMap = {};
   var hex2nameMap = {};
   var exportsMap = {};
@@ -70,22 +70,22 @@
     }
   }
 
-  function supportCss4() {
+  function supportHex8() {
     rAlpha = new RegExp(rAlpha.source + '|' + rHex.source.replace('3', '4'));
     rHex = new RegExp(rHex.source.replace('3', '3,4'));
     rColor = new RegExp(rColor.source.replace('3', '3,4'), 'gi');
     hexShort[4] = true;
     hexLong[8] = true;
-    isCss4Supported = true;
+    isHex8Supported = true;
   }
 
-  function unsupportCss4() {
+  function unsupportHex8() {
     rAlpha = new RegExp(rAlpha.source.replace('|' + rHex.source.replace('3,4', '4'), ''));
     rHex = new RegExp(rHex.source.replace('3,4', '3'));
     rColor = new RegExp(rColor.source.replace('3,4', '3'), 'gi');
     hexShort[4] = false;
     hexLong[8] = false;
-    isCss4Supported = false;
+    isHex8Supported = false;
   }
 
   function coco(clr, format2) {
@@ -167,7 +167,7 @@
   //http://stackoverflow.com/a/11508164/1219553
   function hex2rgb(hex) {
     hex = _hexIn(hex2Long(hex));
-    var shift = isCss4Supported && hex.length === 8 ? 24 : 16;
+    var shift = isHex8Supported && hex.length === 8 ? 24 : 16;
     var bi = parseInt(hex, 16);
     var r = (bi >> shift) & 255;
     var g = (bi >> shift - 8) & 255;
@@ -451,7 +451,7 @@
     isNaN(alpha) && (alpha = 1);
     clr = removeAlpha(clr);
     if (isHex(clr)) {
-      if (isCss4Supported) {
+      if (isHex8Supported) {
         clr = hex2Short(hex2Long(clr) + _alpha2hex(alpha));
       }
       else {
@@ -546,14 +546,14 @@
   }
 
   function _alpha2hex(alpha) {
-    alpha = isCss4Supported ? ((1 << 8) + _round(parseFloat(alpha) * 255))
+    alpha = isHex8Supported ? ((1 << 8) + _round(parseFloat(alpha) * 255))
         .toString(16).slice(1) :  '';
     return alpha === 'ff' ? '' : alpha;
   }
 
   exportsMap = {
-    supportCss4: supportCss4,
-    unsupportCss4: unsupportCss4,
+    supportHex8: supportHex8,
+    unsupportHex8: unsupportHex8,
     // 2hex
     hex2Short: hex2Short,
     hex2Long: hex2Long,
