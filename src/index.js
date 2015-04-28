@@ -12,7 +12,9 @@
   } else if (typeof exports === 'object') {
     module.exports = coco;
   } else {
-    root.coco = coco;
+    root.coco || (root.coco = coco);
+    root.taksim || (root.taksim = {});
+    root.taksim.coco = coco;
   }
 })(this, function() {
 
