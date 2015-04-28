@@ -9,28 +9,29 @@ var pkg = require('./package');
 
 gulp.task('validate', function() {
   return gulp.src([
-        '*.js',
-        'src/*.js',
-        'test/*.js'
-      ])
-      .pipe(jscs({
-          preset: 'airbnb'
-      }))
-      .pipe(jshint({
-          lookup: false,
-          curly: true,
-          eqeqeq: true,
-          eqnull: true,
-          expr: true,
-          noarg: true,
-          undef: true,
-          unused: true,
-          node: true,
-          mocha: true,
-          predef: ['define']
-      }))
-      .pipe(jshint.reporter('jshint-stylish'))
-      .pipe(jshint.reporter('fail'));
+    '*.js',
+    'src/*.js',
+    'test/*.js'
+  ])
+  .pipe(jscs({
+    preset: 'airbnb',
+    requirePaddingNewLinesAfterBlocks: null
+  }))
+  .pipe(jshint({
+    lookup: false,
+    curly: true,
+    eqeqeq: true,
+    eqnull: true,
+    expr: true,
+    noarg: true,
+    undef: true,
+    unused: true,
+    node: true,
+    mocha: true,
+    predef: ['define']
+  }))
+  .pipe(jshint.reporter('jshint-stylish'))
+  .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('build', function() {
