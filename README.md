@@ -8,7 +8,7 @@ coco is a fast and lightweight javascript library that focuses on color conversi
 
 Install it as a [node](http://nodejs.org/) module via [npm](https://www.npmjs.com/).
 
-    npm install taksim-coco
+    npm install taksim-coco --save
 
 and include in a file;
 
@@ -20,7 +20,7 @@ var coco = require('taksim-coco');
 
 You can pull down coco using [Bower](http://bower.io/)
 
-    bower install taksim-coco
+    bower install taksim-coco --save
 
 or just [download](https://raw.githubusercontent.com/taksim-io/coco/master/dist/taksim-coco.min.js) the latest minified version and include in your document.
 
