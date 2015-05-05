@@ -1,7 +1,7 @@
 {
   "name": "taksim-coco",
   "description": "A fast and lightweight javascript color conversion library for client and server.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "dist/taksim-coco.js",
   "homepage": "https://github.com/taksim-io/coco",
   "keywords": [
@@ -26,15 +26,15 @@
     }
   ],
   "devDependencies": {
-    "chai": "^2.1.2",
+    "chai": "^2.3.0",
     "gulp": "^3.8.11",
-    "gulp-jscs": "^1.4.0",
-    "gulp-jshint": "^1.9.2",
+    "gulp-jscs": "^1.6.0",
+    "gulp-jshint": "^1.10.0",
     "gulp-mocha": "^2.0.0",
     "gulp-preprocess": "^1.2.0",
-    "gulp-rename": "^1.2.0",
-    "gulp-uglify": "^1.1.0",
-    "jshint-stylish": "^1.0.1"
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
+    "jshint-stylish": "^1.0.2"
   },
   "engines": {
     "node": ">= 0.9"
