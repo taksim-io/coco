@@ -84,6 +84,7 @@ describe('test-alpha.js >>', function() {
       it('should return 1 for #123', function() {
         expect(coco.getAlpha('#123')).to.equal(1);
       });
+
       // hex8
       it('should return 1 for #123456ff', function() {
         expect(coco.getAlpha('#123456ff')).to.equal(1);
@@ -97,6 +98,7 @@ describe('test-alpha.js >>', function() {
       it('should return 0 for #12345600', function() {
         expect(coco.getAlpha('#12345600')).to.equal(0);
       });
+
       // hex4
       it('should return 1 for #123f', function() {
         expect(coco.getAlpha('#123f')).to.equal(1);

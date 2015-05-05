@@ -1,5 +1,6 @@
 /* jshint undef: false */
-//http://www.w3.org/TR/css3-color/#svg-color
+
+// http://www.w3.org/TR/css3-color/#svg-color
 name2hexMap = {
   aliceblue: 'f0f8ff',
   antiquewhite: 'faebd7',

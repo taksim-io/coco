@@ -55,6 +55,7 @@ describe('test-equality.js >>', function() {
     it('should return false for rgba(0, 0, 0)', function() {
       expect(coco.isRgb('rgba(0, 0, 0)')).to.be.false;
     });
+
     // Extra parameter
     it('should return false for rgb(0, 0%, 0%, 1)', function() {
       expect(coco.isHsv('rgb(0, 0%, 0%, 1)')).to.be.false;
@@ -62,10 +63,12 @@ describe('test-equality.js >>', function() {
     it('should return false for rgba(0, 0%, 0%, 1, 1)', function() {
       expect(coco.isHsv('rgba(0, 0%, 0%, 1, 1)')).to.be.false;
     });
+
     // Unknown color format
     it('should return false for rg(0, 0, 0)', function() {
       expect(coco.isRgb('rg(0, 0, 0)')).to.be.false;
     });
+
     // NaN inputs
     it('should return false for rgb(a, b, c)', function() {
       expect(coco.isRgb('rgb(a, b, c)')).to.be.false;
@@ -73,6 +76,7 @@ describe('test-equality.js >>', function() {
     it('should return false for rgb(0%,0%,0%)', function() {
       expect(coco.isRgb('rgb(0%,0%,0%)')).to.be.false;
     });
+
     // Do not test validity of input ranges.
   });
 
@@ -101,6 +105,7 @@ describe('test-equality.js >>', function() {
     it('should return false for hsl(0, 0, 0)', function() {
       expect(coco.isHsl('hsl(0, 0, 0)')).to.be.false;
     });
+
     // Missing parameter
     it('should return false for hsl(0, 0%)', function() {
       expect(coco.isHsl('hsl(0, 0)')).to.be.false;
@@ -108,6 +113,7 @@ describe('test-equality.js >>', function() {
     it('should return false for hsla(0, 0%, 0%)', function() {
       expect(coco.isHsl('hsla(0, 0%, 0%)')).to.be.false;
     });
+
     // Extra parameter
     it('should return false for hsl(0, 0%, 0%, 1)', function() {
       expect(coco.isHsv('hsl(0, 0%, 0%, 1)')).to.be.false;
@@ -115,14 +121,17 @@ describe('test-equality.js >>', function() {
     it('should return false for hsla(0, 0%, 0%, 1, 1)', function() {
       expect(coco.isHsv('hsla(0, 0%, 0%, 1, 1)')).to.be.false;
     });
+
     // Unknown color format
     it('should return false for hs(0, 0%, 0%)', function() {
       expect(coco.isHsl('hs(0, 0%, 0%)')).to.be.false;
     });
+
     // NaN inputs
     it('should return false for hsl(a, b%, c%)', function() {
       expect(coco.isHsl('hsv(a, b%, c%)')).to.be.false;
     });
+
     // Do not test validity of input ranges.
   });
 
@@ -151,6 +160,7 @@ describe('test-equality.js >>', function() {
     it('should return false for hsv(0, 0, 0)', function() {
       expect(coco.isHsv('hsv(0, 0, 0)')).to.be.false;
     });
+
     // Missing parameter
     it('should return false for hsv(0, 0%)', function() {
       expect(coco.isHsv('hsv(0, 0)')).to.be.false;
@@ -158,6 +168,7 @@ describe('test-equality.js >>', function() {
     it('should return false for hsva(0, 0%, 0%)', function() {
       expect(coco.isHsv('hsva(0, 0%, 0%)')).to.be.false;
     });
+
     // Extra parameter
     it('should return false for hsv(0, 0%, 0%, 1)', function() {
       expect(coco.isHsv('hsv(0, 0%, 0%, 1)')).to.be.false;
@@ -165,14 +176,17 @@ describe('test-equality.js >>', function() {
     it('should return false for hsva(0, 0%, 0%, 1, 1)', function() {
       expect(coco.isHsv('hsva(0, 0%, 0%, 1, 1)')).to.be.false;
     });
+
     // Unknown color format
     it('should return false for hs(0, 0%, 0%)', function() {
       expect(coco.isHsv('hs(0, 0%, 0%)')).to.be.false;
     });
+
     // NaN inputs
     it('should return false for hsv(a, b%, c%)', function() {
       expect(coco.isHsv('hsv(a, b%, c%)')).to.be.false;
     });
+
     // Do not test validity of input ranges.
   });
 
@@ -385,30 +399,37 @@ function isHex() {
   it('should return true for #456789', function() {
     expect(coco.isHex('#456789')).to.be.true;
   });
+
   // hex3
   it('should return true for #123', function() {
     expect(coco.isHex('#123')).to.be.true;
   });
+
   // 2 digits
   it('should return false for #12', function() {
     expect(coco.isHex('#12')).to.be.false;
   });
+
   // 5 digits
   it('should return false for #12345', function() {
     expect(coco.isHex('#12345')).to.be.false;
   });
+
   // 7 digits
   it('should return false for #1234567', function() {
     expect(coco.isHex('#1234567')).to.be.false;
   });
+
   // 9 digits
   it('should return false for #123456789', function() {
     expect(coco.isHex('#123456789')).to.be.false;
   });
+
   // without sharp
   it('should return false for 123456', function() {
     expect(coco.isHex('123456')).to.be.false;
   });
+
   // out of range
   it('should return false for #12345g', function() {
     expect(coco.isHex('#12345g')).to.be.false;

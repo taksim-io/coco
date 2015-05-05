@@ -122,7 +122,7 @@
   }
 
   // 2HEX
-  //http://stackoverflow.com/a/5624139/1219553
+  // http://stackoverflow.com/a/5624139/1219553
   function rgb2hex(rgb) {
     rgb = _rgbIn(rgb);
     var rrggbb = ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2])
@@ -166,7 +166,7 @@
   }
 
   // 2RGB
-  //http://stackoverflow.com/a/11508164/1219553
+  // http://stackoverflow.com/a/11508164/1219553
   function hex2rgb(hex) {
     hex = _hexIn(hex2Long(hex));
     var shift = isHex8Supported && hex.length === 8 ? 24 : 16;
@@ -556,6 +556,7 @@
   exportsMap = {
     supportHex8: supportHex8,
     unsupportHex8: unsupportHex8,
+
     // 2hex
     hex2Short: hex2Short,
     hex2Long: hex2Long,
@@ -564,6 +565,7 @@
     hsv2hex: hsv2hex,
     name2hex: name2hex,
     hue2hex: hue2hex,
+
     // 2rgb
     hex2rgb: hex2rgb,
     hsl2rgb: hsl2rgb,
@@ -571,30 +573,35 @@
     name2rgb: name2rgb,
     hue2rgb: hue2rgb,
     percentage2rgb: percentage2rgb,
+
     // 2hsl
     hex2hsl: hex2hsl,
     rgb2hsl: rgb2hsl,
     hsv2hsl: hsv2hsl,
     name2hsl: name2hsl,
     hue2hsl: hue2hsl,
+
     // 2hsv
     hex2hsv: hex2hsv,
     hsl2hsv: hsl2hsv,
     rgb2hsv: rgb2hsv,
     name2hsv: name2hsv,
     hue2hsv: hue2hsv,
+
     // 2name
     hex2name: hex2name,
     rgb2name: rgb2name,
     hsl2name: hsl2name,
     hsv2name: hsv2name,
     hue2name: hue2name,
+
     // 2Str
     rgbStr: rgbStr,
     hslStr: hslStr,
     hsvStr: hsvStr,
     toString: toString,
     toArray: toArray,
+
     // Type checks
     isHexShort: isHexShort,
     isHexLong: isHexLong,
