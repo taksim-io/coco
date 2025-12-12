@@ -21,13 +21,11 @@ describe("coco", () => {
     expect(coco("#f00", "hex")).toBe("#ff0000"); // canonical
   });
 
-  it("converts hex to rgb", () => {
-    expect(coco("#ff0000", "rgb")).toBe("rgb(255, 0, 0)");
-  });
+  it("converts hex to rgb", () =>
+    expect(coco("#ff0000", "rgb")).toBe("rgb(255, 0, 0)"));
 
-  it("converts rgb to hex", () => {
-    expect(coco("rgb(255, 0, 0)", "hex")).toBe("#ff0000");
-  });
+  it("converts rgb to hex", () =>
+    expect(coco("rgb(255, 0, 0)", "hex")).toBe("#ff0000"));
 
   it("converts names to hex", () => {
     expect(coco("red", "hex")).toBe("#ff0000");
@@ -222,6 +220,32 @@ describe("coco", () => {
       expect(coco.getAlpha("oklch(0.5 0.1 100 / 0.5)")).toBe(0.5);
     });
   });
+
+  describe("Colors", () => {
+    it("Colors", () => {
+      expect(coco("hsl(0, 0%, 0%)", "hsv")).toBe("hsv(0, 0%, 0%)");
+      expect(coco("rgb(0, 0, 0)", "lab")).toBe("lab(0 0 0)");
+      expect(coco("rgb(255, 255, 255)", "lab")).toBe("lab(100 0 0)");
+      expect(coco("rgb(128, 128, 128)", "hsl")).toBe("hsl(0, 0%, 50%)");
+      expect(coco("bisque", "rgb")).toBe("rgb(255, 228, 196)");
+      expect(coco("blue", "lab")).toBe("lab(29.568 68.299 -112.029)");
+      expect(coco("oklch(0.64 0.22 295)", "rgb")).toBe("rgb(154, 101, 255)");
+      expect(coco("oklab(0.64 0.09 -0.20)", "rgb")).toBe("rgb(152, 102, 255)");
+      expect(coco("lab(75 20 -30)", "rgb")).toBe("rgb(201, 173, 240)");
+      expect(coco("color(xyz 0.25 0.40 0.15)", "rgb")).toBe("rgb(97, 190, 85)");
+      expect(coco("rgb(92, 191, 84)", "lch")).toBe("lch(69.66 63.724 136.482)");
+      expect(coco("rgb(92, 191, 84)", "lab")).toBe("lab(69.66 -46.21 43.879)");
+      expect(coco("rgb(92, 191, 84)", "xyz")).toBe(
+        "color(xyz 0.2464 0.4018 0.1484)"
+      );
+      expect(coco("rgb(153, 102, 255)", "oklab")).toBe(
+        "oklab(0.64 0.091 -0.197)"
+      );
+      expect(coco("rgb(153, 102, 255)", "oklch")).toBe(
+        "oklch(0.64 0.217 294.87)"
+      );
+    });
+  });
 });
 
 describe("factory configuration", () => {
@@ -269,51 +293,7 @@ describe("Edge Cases", () => {
       // Hue 361 -> 1. s=101->100, l=101->100. HSL(1, 100%, 100%) -> White.
       expect(coco("hsl(361, 101%, 101%)", "hex")).toBe("#ffffff");
     });
-  });
 
-  describe("Hue Rotation & Normalization", () => {
-    it("normalizes negative hue", () => {
-      // expect(coco.hue2rgb(-1)).to.deep.equal([255, 0, 0, 1]);
-      // hsl(-1, 100%, 50%)
-      const res = coco("hsl(-1, 100%, 50%)", "hex");
-      // -1 wraps to 359. HSL(359, 100%, 50%) is Red (ff000x).
-      expect(res).toMatch(/^#ff[0-9a-f]{4}$/);
-    });
-
-    it("normalizes hue > 360", () => {
-      // 361 % 360 = 1.
-      const res = coco("hsl(361, 100%, 50%)", "hex");
-      expect(res).toMatch(/^#ff[0-9a-f]{4}$/); // Red-ish
-    });
-  });
-
-  describe("Invalid/Malformed Inputs", () => {
-    it("returns undefined for totally invalid input", () => {
-      expect(coco("invalid_color")).toBe(undefined);
-    });
-
-    it("returns undefined for garbage rgb string", () => {
-      expect(coco("rgb(foo, bar, baz)")).toBe(undefined);
-    });
-
-    it("does not support raw comma numbers by default", () => {
-      expect(coco("75, 79, 33")).toBe(undefined);
-    });
-  });
-
-  describe("Alpha Edge Cases", () => {
-    it("handles alpha > 1 in input", () => {
-      // rgb(0,0,0, 1.5) -> alpha 1
-      expect(coco("rgba(0, 0, 0, 1.5)", "hex8")).toBe("#000000ff");
-    });
-
-    it("handles negative alpha", () => {
-      // rgb(0,0,0, -0.5) -> alpha 0
-      expect(coco("rgba(0,0,0,-0.5)", "hex8")).toBe("#00000000");
-    });
-  });
-
-  describe("Modern Space Edge Cases (Signed Numbers)", () => {
     it("parses negative values in xyz", () => {
       // Valid XYZ can be negative (though rare in display P3/sRGB gamut, mathematically valid)
       // color(xyz -0.1 0.2 0.3)
@@ -352,5 +332,40 @@ describe("Edge Cases", () => {
       // Normalized: -120 -> 240
       expect(coco("hsv(-120, 100%, 50%)", "hsv")).toBe("hsv(240, 100%, 50%)");
     });
+  });
+
+  describe("Hue Rotation & Normalization", () => {
+    it("normalizes negative hue", () => {
+      // expect(coco.hue2rgb(-1)).to.deep.equal([255, 0, 0, 1]);
+      // hsl(-1, 100%, 50%)
+      const res = coco("hsl(-1, 100%, 50%)", "hex");
+      // -1 wraps to 359. HSL(359, 100%, 50%) is Red (ff000x).
+      expect(res).toMatch(/^#ff[0-9a-f]{4}$/);
+    });
+
+    it("normalizes hue > 360", () => {
+      // 361 % 360 = 1.
+      const res = coco("hsl(361, 100%, 50%)", "hex");
+      expect(res).toMatch(/^#ff[0-9a-f]{4}$/); // Red-ish
+    });
+  });
+
+  describe("Invalid/Malformed Inputs", () => {
+    it("returns undefined for totally invalid input", () =>
+      expect(coco("invalid_color")).toBe(undefined));
+
+    it("returns undefined for garbage rgb string", () =>
+      expect(coco("rgb(foo, bar, baz)")).toBe(undefined));
+
+    it("does not support raw comma numbers by default", () =>
+      expect(coco("75, 79, 33")).toBe(undefined));
+  });
+
+  describe("Alpha Edge Cases", () => {
+    it("handles alpha > 1 in input", () =>
+      expect(coco("rgba(0, 0, 0, 1.5)", "hex8")).toBe("#000000ff"));
+
+    it("handles negative alpha", () =>
+      expect(coco("rgba(0,0,0,-0.5)", "hex8")).toBe("#00000000"));
   });
 });
