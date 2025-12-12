@@ -3,6 +3,7 @@ import {
   hue2hex,
   hue2rgb,
   hue2hsl,
+  hue2hsv,
   createCoco,
   namedColors,
 } from "../src/coco";
@@ -80,7 +81,14 @@ describe("coco", () => {
       expect(hue2rgb(120)).toEqual([0, 255, 0, 1]);
     });
     it("converts hue to hsl", () => {
-      expect(hue2hsl(120)).toEqual([120, 100, 50, 1]);
+      // 240 -> blue
+      const hsl = hue2hsl(240);
+      expect(hsl).toEqual([240, 100, 50, 1]);
+    });
+    it("converts hue to hsv", () => {
+      // 300 -> magenta
+      const hsv = hue2hsv(300);
+      expect(hsv).toEqual([300, 100, 100, 1]);
     });
   });
 

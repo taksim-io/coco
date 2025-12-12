@@ -124,5 +124,13 @@ export function hue2rgb(hue: number): [number, number, number, number] {
 }
 
 export function hue2hsl(hue: number): [number, number, number, number] {
-  return [hue, 100, 50, 1];
+  return [clip(hue, 0, 360), 100, 50, 1];
+}
+
+export function hue2hsv(hue: number): [number, number, number, number] {
+  return [clip(hue, 0, 360), 100, 100, 1];
+}
+
+function clip(val: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, val));
 }

@@ -52,6 +52,19 @@ coco.getType("rgba(0,0,0,1)"); // 'rgb'
 coco.getType("oklch(0.5 0.1 100)"); // 'oklch'
 ```
 
+### Hue Helpers
+
+Coco includes utilities to convert a hue angle (0-360) directly to other formats using saturation=100%, lightness=50% (for HSL) or value=100% (for HSV).
+
+```ts
+import { hue2hex, hue2rgb, hue2hsl, hue2hsv } from "taksim-coco";
+
+hue2hex(0); // '#ff0000' (Red)
+hue2rgb(120); // [0, 255, 0, 1] (Green)
+hue2hsl(240); // [240, 100, 50, 1] (Blue)
+hue2hsv(300); // [300, 100, 100, 1] (Magenta)
+```
+
 ### Advanced Usage: Tree Shaking & Custom Config
 
 By default, `coco` does not include the X11 named color map to keep bundle size smaller. If you want to include named colors, a custom color map or a custom name resolver, use `createCoco` factory function.

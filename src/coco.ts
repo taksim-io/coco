@@ -4,6 +4,7 @@ import {
   hue2hex,
   hue2rgb,
   hue2hsl,
+  hue2hsv,
   parse,
   serialize,
 } from "./core/convert";
@@ -20,5 +21,6 @@ export {
   hue2hex,
   hue2rgb,
   hue2hsl,
+  hue2hsv,
   namedColors,
 };
