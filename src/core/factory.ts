@@ -30,6 +30,22 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
 
   coco.getAlpha = (input: string): number => parse(input, config)?.alpha ?? 1;
 
+  coco.setAlpha = (input: string, alpha: number): string | undefined => {
+    const color = parse(input, config);
+
+    if (!color) return undefined;
+
+    color.alpha = Math.min(1, Math.max(0, alpha));
+
+    // Infer format: maintain Hex f input was Hex, otherwise use internal space (rgb/hsl/etc)
+    const inferredSpace = input.startsWith("#") ? "hex" : color.space;
+    return serialize(color, inferredSpace);
+  };
+
+  coco.removeAlpha = (input: string): string | undefined => {
+    return coco.setAlpha(input, 1);
+  };
+
   coco.isEqual = (c1: string, c2: string): boolean => {
     const p1 = parse(c1, config);
     const p2 = parse(c2, config);

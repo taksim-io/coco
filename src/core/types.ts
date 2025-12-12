@@ -42,5 +42,7 @@ export interface CocoInstance {
   isColor(input: string): boolean;
   getType(input: string): ColorSpace | "x11" | undefined;
   getAlpha(input: string): number;
+  setAlpha(input: string, alpha: number): string | undefined;
+  removeAlpha(input: string): string | undefined;
   isEqual(c1: string, c2: string): boolean;
 }

@@ -39,9 +39,14 @@ coco("hsl(120, 100%, 50%)", "oklch"); // 'oklch(0.866 0.29 142.5)'
 - **XYZ**: `color(xyz 0.41 0.21 0.02)`
 - **X11 Names**: `red`, `blue`, etc. (Requires opt-in configuration)
 
-### Validation Helpers
+### Utility Methods
 
-Coco exposes static methods attached to the default instance.
+- `coco.isColor(input)`: Check if a string is a valid color.
+- `coco.getType(input)`: Get the format type (e.g. `'rgb'`, `'hex'`, `'x11'`).
+- `coco.getAlpha(input)`: Get the alpha channel value (0-1).
+- `coco.setAlpha(input, alpha)`: Set the alpha channel (0-1). returns updated string.
+- `coco.removeAlpha(input)`: Remove the alpha channel (sets to 1).
+- `coco.isEqual(c1, c2)`: Compare two colors for equality.
 
 ```ts
 // Check if a string is a valid color

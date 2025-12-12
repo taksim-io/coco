@@ -150,6 +150,44 @@ describe("coco", () => {
     });
   });
 
+  describe("setAlpha / removeAlpha", () => {
+    it("sets alpha on named color (rgb)", () => {
+      // red -> rgb(255,0,0) -> setAlpha(0.5) -> rgba(255, 0, 0, 0.5)
+      expect(coco.setAlpha("red", 0.5)).toBe("rgba(255, 0, 0, 0.5)");
+    });
+    it("sets alpha on hex (returns hex8)", () => {
+      // #f00 -> #ff0000 -> setAlpha(0.5) -> #ff000080
+      expect(coco.setAlpha("#f00", 0.5)).toBe("#ff000080");
+    });
+    it("sets alpha on rgb", () => {
+      expect(coco.setAlpha("rgb(0, 0, 0)", 0.5)).toBe("rgba(0, 0, 0, 0.5)");
+    });
+    it("updates existing alpha", () => {
+      expect(coco.setAlpha("rgba(0, 0, 0, 0.5)", 0.8)).toBe(
+        "rgba(0, 0, 0, 0.8)"
+      );
+    });
+    it("removes alpha from rgba", () => {
+      expect(coco.removeAlpha("rgba(0, 0, 0, 0.5)")).toBe("rgb(0, 0, 0)");
+    });
+    it("removes alpha from hex8", () => {
+      expect(coco.removeAlpha("#ff000080")).toBe("#ff0000");
+    });
+    it("works with hsl", () => {
+      expect(coco.setAlpha("hsl(0, 50%, 50%)", 0.2)).toBe(
+        "hsla(0, 50%, 50%, 0.2)"
+      );
+      expect(coco.removeAlpha("hsla(0, 50%, 50%, 0.5)")).toBe(
+        "hsl(0, 50%, 50%)"
+      );
+    });
+    it("works with oklch", () => {
+      // oklch doesn't have legacy syntax issues so just check output
+      const res = coco.setAlpha("oklch(0.5 0.2 180)", 0.5);
+      expect(res).toBe("oklch(0.5 0.2 180 / 0.5)");
+    });
+  });
+
   describe("isEqual", () => {
     it("compares same colors", () => {
       expect(coco.isEqual("red", "#f00")).toBe(true);
