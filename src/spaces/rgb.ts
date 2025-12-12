@@ -2,12 +2,12 @@ import { ColorObject, ParseResult } from "../core/types";
 
 export function parseRgb(input: string): ParseResult {
   const match = input.match(
-    /^rgba?\(\s*([\d\.]+)(%?)\s*,\s*([\d\.]+)(%?)\s*,\s*([\d\.]+)(%?)\s*(?:,\s*([\d\.]+)(\%?))?\s*\)$/i
+    /^rgba?\(\s*([-+]?[\d\.]+)(%?)\s*,\s*([-+]?[\d\.]+)(%?)\s*,\s*([-+]?[\d\.]+)(%?)\s*(?:,\s*([-+]?[\d\.]+)(\%?))?\s*\)$/i
   );
   if (!match) {
     // Try space separated syntax (CSS4)
     const match4 = input.match(
-      /^rgba?\(\s*([\d\.]+)(%?)\s+([\d\.]+)(%?)\s+([\d\.]+)(%?)\s*(?:\/\s*([\d\.]+)(\%?))?\s*\)$/i
+      /^rgba?\(\s*([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(%?)\s*(?:\/\s*([-+]?[\d\.]+)(\%?))?\s*\)$/i
     );
     if (match4) return parseMatch(match4);
     return undefined;

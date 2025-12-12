@@ -7,7 +7,7 @@ export function parseHsl(input: string): ParseResult {
 // Better parser needed for Alpha %
 function parseHslRefined(input: string): ParseResult {
   const match = input.match(
-    /^hsla?\(\s*([\d\.]+)(deg|rad|grad|turn)?\s*[,\s]\s*([\d\.]+)%\s*[,\s]\s*([\d\.]+)%\s*(?:[,\/]\s*([\d\.]+)(%)?)?\s*\)$/i
+    /^hsla?\(\s*([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*[,\s]\s*([-+]?[\d\.]+)%\s*[,\s]\s*([-+]?[\d\.]+)%\s*(?:[,\/]\s*([-+]?[\d\.]+)(%)?)?\s*\)$/i
   );
   if (!match) return undefined;
 
@@ -33,7 +33,7 @@ function parseHslRefined(input: string): ParseResult {
 
   return {
     space: "hsl",
-    coords: [h, s, l],
+    coords: [h, Math.min(100, Math.max(0, s)), Math.min(100, Math.max(0, l))],
     alpha: Math.min(1, Math.max(0, a)),
   };
 }

@@ -2,7 +2,7 @@ import { ColorObject, ParseResult } from "../core/types";
 
 export function parseHsv(input: string): ParseResult {
   const match = input.match(
-    /^hsva?\(\s*([\d\.]+)(deg|rad|grad|turn)?\s*[,\s]\s*([\d\.]+)%?\s*[,\s]\s*([\d\.]+)%?\s*(?:[,\/]\s*([\d\.]+)(%)?)?\s*\)$/i
+    /^hsva?\(\s*([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*[,\s]\s*([-+]?[\d\.]+)%?\s*[,\s]\s*([-+]?[\d\.]+)%?\s*(?:[,\/]\s*([-+]?[\d\.]+)(%)?)?\s*\)$/i
   );
   if (!match) return undefined;
 
@@ -27,7 +27,7 @@ export function parseHsv(input: string): ParseResult {
 
   return {
     space: "hsv",
-    coords: [h, s, v],
+    coords: [h, Math.min(100, Math.max(0, s)), Math.min(100, Math.max(0, v))],
     alpha: Math.min(1, Math.max(0, a)),
   };
 }

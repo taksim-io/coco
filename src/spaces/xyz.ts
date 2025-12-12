@@ -9,7 +9,7 @@ import {
 
 export function parseXyz(input: string): ParseResult {
   const match = input.match(
-    /^color\(xyz\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)(?:\s*\/\s*([\d\.]+)%?)?\)$/i
+    /^color\(xyz\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i
   );
   if (!match) return undefined;
 

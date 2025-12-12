@@ -12,7 +12,7 @@ import {
 
 export function parseOklab(input: string): ParseResult {
   const match = input.match(
-    /^oklab\(\s*([\d\.]+)%?\s+([\d\.]+)\s+([\d\.]+)(?:\s*\/\s*([\d\.]+)%?)?\s*\)$/i
+    /^oklab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
   );
   if (!match) return undefined;
 

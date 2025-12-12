@@ -12,7 +12,7 @@ import {
 
 export function parseOklch(input: string): ParseResult {
   const match = input.match(
-    /^oklch\(\s*([\d\.]+)%?\s+([\d\.]+)(%?)\s+([\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([\d\.]+)%?)?\s*\)$/i
+    /^oklch\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
   );
   if (!match) return parseOklchRefined(input);
 
@@ -35,6 +35,9 @@ function parseOklchRefined(input: string): ParseResult {
   if (match[3].endsWith("rad")) h = (h * 180) / Math.PI;
   else if (match[3].endsWith("grad")) h = h * 0.9;
   else if (match[3].endsWith("turn")) h = h * 360;
+
+  h = h % 360;
+  if (h < 0) h += 360;
 
   const aStr = match[4];
   let a = 1;

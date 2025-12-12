@@ -3,7 +3,7 @@ import { labToRgb, rgbToLab } from "./lab";
 
 export function parseLch(input: string): ParseResult {
   const match = input.match(
-    /^lch\(\s*([\d\.]+)%?\s+([\d\.]+)\s+([\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([\d\.]+)%?)?\s*\)$/i
+    /^lch\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
   );
   if (!match) return undefined;
 
@@ -12,6 +12,9 @@ export function parseLch(input: string): ParseResult {
   if (unit === "rad") h = (h * 180) / Math.PI;
   else if (unit === "grad") h = h * 0.9;
   else if (unit === "turn") h = h * 360;
+
+  h = h % 360;
+  if (h < 0) h += 360;
 
   return {
     space: "lch",

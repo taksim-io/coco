@@ -7,7 +7,7 @@ const KAPPA = 24389 / 27; // 903.3
 
 export function parseLab(input: string): ParseResult {
   const match = input.match(
-    /^lab\(\s*([\d\.]+)%?\s+([\d\.]+)\s+([\d\.]+)(?:\s*\/\s*([\d\.]+)%?)?\)$/i
+    /^lab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i
   );
   if (!match) return undefined;
 
