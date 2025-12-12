@@ -45,6 +45,38 @@ describe("coco", () => {
     expect(hex).toMatch(/^#[0-9a-f]{6}$/);
   });
 
+  it("supports xyz parsing and conversion", () => {
+    expect(coco.isColor("color(xyz 0.41 0.21 0.02)")).toBe(true);
+    const hex = "#ff0000";
+    const xyz = coco(hex, "xyz");
+    const back = coco(xyz, "hex");
+    expect(back).toBe(hex);
+  });
+
+  it("supports lab parsing and conversion", () => {
+    expect(coco.isColor("lab(53 80 67)")).toBe(true);
+    const hex = "#ff0000";
+    const lab = coco(hex, "lab");
+    const back = coco(lab, "hex");
+    expect(back).toBe(hex);
+  });
+
+  it("supports lch parsing and conversion", () => {
+    expect(coco.isColor("lch(53 104 40)")).toBe(true);
+    const hex = "#ff0000";
+    const lch = coco(hex, "lch");
+    const back = coco(lch, "hex");
+    expect(back).toBe(hex);
+  });
+
+  it("supports oklab parsing and conversion", () => {
+    expect(coco.isColor("oklab(0.63 0.22 0.12)")).toBe(true);
+    const hex = "#ff0000";
+    const oklab = coco(hex, "oklab");
+    const back = coco(oklab, "hex");
+    expect(back).toBe(hex);
+  });
+
   it("validates isColor", () => {
     expect(coco.isColor("rgb(0,0,0)")).toBe(true);
     expect(coco.isColor("foo")).toBe(false);

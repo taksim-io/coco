@@ -7,6 +7,15 @@ import {
   rgbToOklch,
   serializeOklch,
 } from "../spaces/oklch";
+import { parseXyz, rgbToXyz, serializeXyz, xyzToRgb } from "../spaces/xyz";
+import { labToRgb, parseLab, rgbToLab, serializeLab } from "../spaces/lab";
+import { lchToRgb, parseLch, rgbToLch, serializeLch } from "../spaces/lch";
+import {
+  oklabToRgb,
+  parseOklab,
+  rgbToOklab,
+  serializeOklab,
+} from "../spaces/oklab";
 import {
   parseHex,
   serializeHex,
@@ -23,44 +32,46 @@ export function convert(
 ): ColorObject {
   if (color.space === targetSpace) return color;
 
-  // If target is hex, we treat it as RGB for the object model
-  if (
-    targetSpace === "hex" ||
-    targetSpace === "hex3" ||
-    targetSpace === "hex4" ||
-    targetSpace === "hex6" ||
-    targetSpace === "hex8"
-  ) {
-    targetSpace = "rgb";
-  }
-
   // Normalize source to RGB first
-  let rgb: ColorObject;
-  if (color.space === "rgb") {
-    rgb = color;
-  } else if (color.space === "hsl") {
-    rgb = hslToRgb(color);
-  } else if (color.space === "hsv") {
-    rgb = hsvToRgb(color);
-  } else if (color.space === "oklch") {
-    rgb = oklchToRgb(color);
-  } else {
-    throw new Error(`Unsupported source space: ${color.space}`);
-  }
+  const rgb = toRgbInternal(color);
 
   // If RGB was the target, we are done
   if (targetSpace === "rgb") return rgb;
 
   // Convert RGB to target
-  if (targetSpace === "hsl") {
-    return rgbToHsl(rgb);
-  } else if (targetSpace === "hsv") {
-    return rgbToHsv(rgb);
-  } else if (targetSpace === "oklch") {
-    return rgbToOklch(rgb);
+  if (targetSpace === "hsl") return rgbToHsl(rgb);
+  if (targetSpace === "hsv") return rgbToHsv(rgb);
+  if (targetSpace === "oklch") return rgbToOklch(rgb);
+  if (targetSpace === "xyz") return rgbToXyz(rgb);
+  if (targetSpace === "lab") return rgbToLab(rgb);
+  if (targetSpace === "lch") return rgbToLch(rgb);
+  if (targetSpace === "oklab") return rgbToOklab(rgb);
+
+  // Hex variations
+  if (targetSpace.startsWith("hex")) {
+    return rgb; // Handled by serialize
   }
 
   throw new Error(`Unsupported target space: ${targetSpace}`);
+}
+
+function toRgbInternal(color: ColorObject): ColorObject {
+  if (color.space === "rgb") return color;
+  if (color.space === "hsl") return hslToRgb(color);
+  if (color.space === "hsv") return hsvToRgb(color);
+  if (color.space === "oklch") return oklchToRgb(color);
+  if (color.space === "xyz") return xyzToRgb(color);
+  if (color.space === "lab") return labToRgb(color);
+  if (color.space === "lch") return lchToRgb(color);
+  if (color.space === "oklab") return oklabToRgb(color);
+
+  // Hex should have been parsed to one of the above (usually rgb or hex->rgb parser)
+  // But if we encounter hex object (hypothetically), we parse it.
+  if (color.space.startsWith("hex")) {
+    return { ...color, space: "rgb" };
+  }
+
+  throw new Error(`Unsupported source space: ${color.space}`);
 }
 
 export function parse(
@@ -94,6 +105,10 @@ export function parse(
   if (lower.startsWith("hsl")) return parseHsl(input);
   if (lower.startsWith("hsv")) return parseHsv(input);
   if (lower.startsWith("oklch")) return parseOklch(input);
+  if (lower.startsWith("color(xyz")) return parseXyz(input);
+  if (lower.startsWith("lab")) return parseLab(input);
+  if (lower.startsWith("lch")) return parseLch(input);
+  if (lower.startsWith("oklab")) return parseOklab(input);
 
   return undefined;
 }
@@ -108,6 +123,10 @@ export function serialize(color: ColorObject, format: ColorSpace): string {
   if (format === "hsl") return serializeHsl(color);
   if (format === "hsv") return serializeHsv(color);
   if (format === "oklch") return serializeOklch(color);
+  if (format === "xyz") return serializeXyz(color);
+  if (format === "lab") return serializeLab(color);
+  if (format === "lch") return serializeLch(color);
+  if (format === "oklab") return serializeOklab(color);
 
   return serializeHex(color);
 }

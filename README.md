@@ -33,6 +33,10 @@ coco("hsl(120, 100%, 50%)", "oklch"); // 'oklch(0.866 0.29 142.5)'
 - **HSL**: `hsl(0, 100%, 50%)`, `hsla(...)`
 - **HSV**: `hsv(0, 100%, 100%)`
 - **OKLCH**: `oklch(0.5 0.2 250)`, `oklch(50% 0.2 250)`
+- **OKLab**: `oklab(0.63 0.22 0.12)`
+- **Lab**: `lab(53 80 67)`
+- **LCH**: `lch(53 104 40)`
+- **XYZ**: `color(xyz 0.41 0.21 0.02)`
 - **X11 Names**: `red`, `blue`, etc. (Requires opt-in configuration)
 
 ### Validation Helpers
