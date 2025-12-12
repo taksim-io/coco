@@ -139,6 +139,15 @@ export function hue2hsv(hue: number): string {
   });
 }
 
+export function hue2oklch(hue: number): string {
+  // Uses L=0.7, C=0.2 for a vibrant color
+  return serializeOklch({
+    space: "oklch",
+    coords: [0.7, 0.2, clip(hue, 0, 360)],
+    alpha: 1,
+  });
+}
+
 function clip(val: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, val));
 }

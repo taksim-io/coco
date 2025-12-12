@@ -64,12 +64,13 @@ coco.isEqual("rgba(0,0,0,0.5)", "rgba(0,0,0,1)"); // false
 Coco includes utilities to convert a hue angle (0-360) directly to other formats using saturation=100%, lightness=50% (for HSL) or value=100% (for HSV).
 
 ```ts
-import { hue2hex, hue2rgb, hue2hsl, hue2hsv } from "taksim-coco";
+import { hue2hex, hue2rgb, hue2hsl, hue2hsv, hue2oklch } from "taksim-coco";
 
 hue2hex(0); // '#ff0000' (Red)
 hue2rgb(120); // 'rgb(0, 255, 0)' (Green)
 hue2hsl(240); // 'hsl(240, 100%, 50%)' (Blue)
 hue2hsv(300); // 'hsv(300, 100%, 100%)' (Magenta)
+hue2oklch(180); // 'oklch(0.7 0.2 180)' (Cyan-ish)
 ```
 
 ### Advanced Usage: Tree Shaking & Custom Config

@@ -4,6 +4,7 @@ import {
   hue2rgb,
   hue2hsl,
   hue2hsv,
+  hue2oklch,
   createCoco,
   namedColors,
 } from "../src/coco";
@@ -90,6 +91,11 @@ describe("coco", () => {
       // 300 -> magenta
       const hsv = hue2hsv(300);
       expect(hsv).toBe("hsv(300, 100%, 100%)");
+    });
+    it("converts hue to oklch", () => {
+      // 180 -> cyan-ish
+      const oklch = hue2oklch(180);
+      expect(oklch).toBe("oklch(0.7 0.2 180)");
     });
   });
 
