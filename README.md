@@ -19,14 +19,11 @@ import { coco } from "taksim-coco";
 coco("rgb(255, 0, 0)"); // '#ff0000'
 
 // Convert to specific formats
-coco("blue", "rgb"); // 'rgb(0, 0, 255)'
 coco("#f00", "hsl"); // 'hsl(0, 100%, 50%)'
-coco("red", "oklch"); // 'oklch(0.628 0.258 29.234)'
-
-// Any-to-Any Conversion
-// You can convert from any supported format to any other.
 coco("oklch(60% 0.1 180)", "hex"); // '#009a7b'
 coco("hsl(120, 100%, 50%)", "oklch"); // 'oklch(0.866 0.29 142.5)'
+
+// For named colors (e.g. "red", "blue"), see "Named Colors" section below.
 ```
 
 ### Supported Formats
@@ -36,7 +33,7 @@ coco("hsl(120, 100%, 50%)", "oklch"); // 'oklch(0.866 0.29 142.5)'
 - **HSL**: `hsl(0, 100%, 50%)`, `hsla(...)`
 - **HSV**: `hsv(0, 100%, 100%)`
 - **OKLCH**: `oklch(0.5 0.2 250)`, `oklch(50% 0.2 250)`
-- **X11 Names**: `red`, `blue`, `papayawhip`, etc.
+- **X11 Names**: `red`, `blue`, etc. (Requires opt-in configuration)
 
 ### Validation Helpers
 
@@ -57,7 +54,7 @@ coco.getAlpha("#ff000080"); // 0.5 (approx)
 coco.getAlpha("red"); // 1
 
 // Compare colors (converts to RGB for comparison)
-coco.isEqual("#f00", "red"); // true
+coco.isEqual("#f00", "#ff0000"); // true
 coco.isEqual("rgb(0,0,0)", "hsl(0,0%,0%)"); // true
 coco.isEqual("rgba(0,0,0,0.5)", "rgba(0,0,0,1)"); // false
 ```
@@ -95,6 +92,7 @@ cocoNamed("#f00"); // '#ff0000'
 const myCoco = createCoco({
   nameResolver: (name) => (name === "brand" ? "#00AEEF" : undefined),
 });
+
 myCoco("brand"); // '#00aeef'
 ```
 
