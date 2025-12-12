@@ -225,17 +225,22 @@ describe("coco", () => {
 });
 
 describe("factory configuration", () => {
-  it("supports custom name resolver (or none)", () => {
-    // Create lean instance
-    const lean = createCoco({});
-    expect(lean("red")).toBe(undefined); // Should fail to parse name
-    expect(lean("#fff")).toBe("#ffffff"); // Should still parse hex
+  it("does not support x11 names", () => {
+    const leanCoco = createCoco();
+    expect(leanCoco("red")).toBe(undefined);
+    expect(leanCoco("#fff")).toBe("#ffffff");
+  });
+
+  it("supports custom named colors", () => {
+    const cocoWithNamedColors = createCoco({ namedColors });
+    expect(cocoWithNamedColors("red")).toBe("#ff0000");
+    expect(cocoWithNamedColors("#fff")).toBe("#ffffff");
   });
 
   it("supports custom resolver", () => {
-    const custom = createCoco({
+    const cocoWithNameResolver = createCoco({
       nameResolver: (n: string) => (n === "mycolor" ? "fff" : undefined),
     });
-    expect(custom("mycolor", "hex")).toBe("#ffffff");
+    expect(cocoWithNameResolver("mycolor", "hex")).toBe("#ffffff");
   });
 });
