@@ -5,6 +5,10 @@ import {
   hue2hsl,
   hue2hsv,
   hue2oklch,
+  hue2xyz,
+  hue2lab,
+  hue2lch,
+  hue2oklab,
   createCoco,
   namedColors,
 } from "../src/coco";
@@ -128,6 +132,21 @@ describe("coco", () => {
       // 180 -> cyan-ish
       const oklch = hue2oklch(180);
       expect(oklch).toBe("oklch(0.7 0.2 180)");
+    });
+    it("converts hue to xyz", () => {
+      // 120 -> green-ish in XYZ
+      expect(hue2xyz(120)).toMatch(/^color\(xyz/);
+    });
+    it("converts hue to lab", () => {
+      // 0 -> red-ish
+      expect(hue2lab(0)).toMatch(/^lab\(53/);
+    });
+    it("converts hue to lch", () => {
+      // 40 -> orange-ish default
+      expect(hue2lch(40)).toBe("lch(53 104 40)");
+    });
+    it("converts hue to oklab", () => {
+      expect(hue2oklab(0)).toMatch(/^oklab\(0.7/);
     });
   });
 

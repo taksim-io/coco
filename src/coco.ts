@@ -6,6 +6,10 @@ import {
   hue2hsl,
   hue2hsv,
   hue2oklch,
+  hue2xyz,
+  hue2lab,
+  hue2lch,
+  hue2oklab,
   parse,
   serialize,
 } from "./core/convert";
@@ -24,5 +28,9 @@ export {
   hue2hsl,
   hue2hsv,
   hue2oklch,
+  hue2xyz,
+  hue2lab,
+  hue2lch,
+  hue2oklab,
   namedColors,
 };
