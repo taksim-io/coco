@@ -60,9 +60,9 @@ Coco includes utilities to convert a hue angle (0-360) directly to other formats
 import { hue2hex, hue2rgb, hue2hsl, hue2hsv } from "taksim-coco";
 
 hue2hex(0); // '#ff0000' (Red)
-hue2rgb(120); // [0, 255, 0, 1] (Green)
-hue2hsl(240); // [240, 100, 50, 1] (Blue)
-hue2hsv(300); // [300, 100, 100, 1] (Magenta)
+hue2rgb(120); // 'rgb(0, 255, 0)' (Green)
+hue2hsl(240); // 'hsl(240, 100%, 50%)' (Blue)
+hue2hsv(300); // 'hsv(300, 100%, 100%)' (Magenta)
 ```
 
 ### Advanced Usage: Tree Shaking & Custom Config

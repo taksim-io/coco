@@ -118,17 +118,25 @@ export function hue2hex(hue: number): string {
   );
 }
 
-export function hue2rgb(hue: number): [number, number, number, number] {
+export function hue2rgb(hue: number): string {
   const c = convert({ space: "hsl", coords: [hue, 100, 50], alpha: 1 }, "rgb");
-  return [...c.coords, c.alpha] as [number, number, number, number];
+  return serializeRgb(c);
 }
 
-export function hue2hsl(hue: number): [number, number, number, number] {
-  return [clip(hue, 0, 360), 100, 50, 1];
+export function hue2hsl(hue: number): string {
+  return serializeHsl({
+    space: "hsl",
+    coords: [clip(hue, 0, 360), 100, 50],
+    alpha: 1,
+  });
 }
 
-export function hue2hsv(hue: number): [number, number, number, number] {
-  return [clip(hue, 0, 360), 100, 100, 1];
+export function hue2hsv(hue: number): string {
+  return serializeHsv({
+    space: "hsv",
+    coords: [clip(hue, 0, 360), 100, 100],
+    alpha: 1,
+  });
 }
 
 function clip(val: number, min: number, max: number): number {

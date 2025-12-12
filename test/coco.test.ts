@@ -78,17 +78,18 @@ describe("coco", () => {
       expect(hue2hex(0)).toBe("#ff0000");
     });
     it("converts hue to rgb", () => {
-      expect(hue2rgb(120)).toEqual([0, 255, 0, 1]);
+      // 120 -> green
+      expect(hue2rgb(120)).toBe("rgb(0, 255, 0)");
     });
     it("converts hue to hsl", () => {
       // 240 -> blue
       const hsl = hue2hsl(240);
-      expect(hsl).toEqual([240, 100, 50, 1]);
+      expect(hsl).toBe("hsl(240, 100%, 50%)");
     });
     it("converts hue to hsv", () => {
       // 300 -> magenta
       const hsv = hue2hsv(300);
-      expect(hsv).toEqual([300, 100, 100, 1]);
+      expect(hsv).toBe("hsv(300, 100%, 100%)");
     });
   });
 
