@@ -1,15 +1,13 @@
 import { describe, it, expect } from "vitest";
 import {
-  coco,
-  isColor,
-  getSpace,
-  getAlpha,
-  isEqual,
   hue2hex,
   hue2rgb,
   hue2hsl,
   createCoco,
+  namedColors,
 } from "../src/coco";
+
+const coco = createCoco({ namedColors });
 
 describe("coco", () => {
   it("parses and serializes hex", () => {
@@ -36,7 +34,7 @@ describe("coco", () => {
   });
 
   it("supports oklch parsing", () => {
-    expect(isColor("oklch(0.6 0.1 0)")).toBe(true);
+    expect(coco.isColor("oklch(0.6 0.1 0)")).toBe(true);
   });
 
   it("converts oklch to hex (round trip check)", () => {
@@ -46,14 +44,14 @@ describe("coco", () => {
   });
 
   it("validates isColor", () => {
-    expect(isColor("rgb(0,0,0)")).toBe(true);
-    expect(isColor("foo")).toBe(false);
+    expect(coco.isColor("rgb(0,0,0)")).toBe(true);
+    expect(coco.isColor("foo")).toBe(false);
   });
 
   it("identifies space", () => {
-    expect(getSpace("rgb(0,0,0)")).toBe("rgb");
-    expect(getSpace("#fff")).toBe("hex");
-    expect(getSpace("oklch(0 0 0)")).toBe("oklch");
+    expect(coco.getType("rgb(0,0,0)")).toBe("rgb");
+    expect(coco.getType("#fff")).toBe("hex");
+    expect(coco.getType("oklch(0 0 0)")).toBe("oklch");
   });
 
   describe("granular hex formats", () => {
@@ -88,25 +86,25 @@ describe("coco", () => {
 
   describe("isEqual", () => {
     it("compares same colors", () => {
-      expect(isEqual("red", "#f00")).toBe(true);
-      expect(isEqual("rgb(255, 0, 0)", "hsl(0, 100%, 50%)")).toBe(true);
+      expect(coco.isEqual("red", "#f00")).toBe(true);
+      expect(coco.isEqual("rgb(255, 0, 0)", "hsl(0, 100%, 50%)")).toBe(true);
     });
     it("compares different colors", () => {
-      expect(isEqual("red", "blue")).toBe(false);
+      expect(coco.isEqual("red", "blue")).toBe(false);
     });
   });
 
   describe("getAlpha", () => {
     it("gets alpha from rgba", () => {
-      expect(getAlpha("rgba(0,0,0,0.5)")).toBe(0.5);
+      expect(coco.getAlpha("rgba(0,0,0,0.5)")).toBe(0.5);
     });
     it("gets alpha from hex8", () => {
       // #ff000080 -> 128/255 ~= 0.5019
-      const a = getAlpha("#ff000080");
+      const a = coco.getAlpha("#ff000080");
       expect(a).toBeCloseTo(0.5019, 2);
     });
     it("gets alpha defaulting to 1", () => {
-      expect(getAlpha("red")).toBe(1);
+      expect(coco.getAlpha("red")).toBe(1);
     });
   });
 });

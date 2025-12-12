@@ -1,7 +1,21 @@
-import { ColorObject, ColorSpace } from "./types";
-import { hslToRgb, rgbToHsl } from "../spaces/hsl";
-import { hsvToRgb, rgbToHsv } from "../spaces/hsv";
-import { oklchToRgb, rgbToOklch } from "../spaces/oklch";
+import { CocoConfig, ColorObject, ColorSpace, ParseResult } from "./types";
+import { hslToRgb, parseHsl, rgbToHsl, serializeHsl } from "../spaces/hsl";
+import { hsvToRgb, parseHsv, rgbToHsv, serializeHsv } from "../spaces/hsv";
+import {
+  oklchToRgb,
+  parseOklch,
+  rgbToOklch,
+  serializeOklch,
+} from "../spaces/oklch";
+import {
+  parseHex,
+  serializeHex,
+  serializeHex3,
+  serializeHex4,
+  serializeHex6,
+  serializeHex8,
+} from "../spaces/hex";
+import { parseRgb, serializeRgb } from "../spaces/rgb";
 
 export function convert(
   color: ColorObject,
@@ -47,4 +61,68 @@ export function convert(
   }
 
   throw new Error(`Unsupported target space: ${targetSpace}`);
+}
+
+export function parse(
+  input: string,
+  { namedColors, nameResolver }: CocoConfig = {}
+): ParseResult {
+  input = input.trim();
+
+  // Use resolver if provided
+  if (nameResolver) {
+    const resolved = nameResolver(input);
+
+    if (resolved) {
+      return parseHex("#" + resolved.replace("#", ""));
+    }
+  }
+
+  // Use name map if provided
+  if (namedColors) {
+    const resolved = namedColors[input];
+
+    if (resolved) {
+      return parseHex("#" + resolved.replace("#", ""));
+    }
+  }
+
+  if (input.startsWith("#")) return parseHex(input);
+
+  const lower = input.toLowerCase();
+  if (lower.startsWith("rgb")) return parseRgb(input);
+  if (lower.startsWith("hsl")) return parseHsl(input);
+  if (lower.startsWith("hsv")) return parseHsv(input);
+  if (lower.startsWith("oklch")) return parseOklch(input);
+
+  return undefined;
+}
+
+export function serialize(color: ColorObject, format: ColorSpace): string {
+  if (format === "hex") return serializeHex(color);
+  if (format === "hex3") return serializeHex3(color);
+  if (format === "hex4") return serializeHex4(color);
+  if (format === "hex6") return serializeHex6(color);
+  if (format === "hex8") return serializeHex8(color);
+  if (format === "rgb") return serializeRgb(color);
+  if (format === "hsl") return serializeHsl(color);
+  if (format === "hsv") return serializeHsv(color);
+  if (format === "oklch") return serializeOklch(color);
+
+  return serializeHex(color);
+}
+
+export function hue2hex(hue: number): string {
+  return serializeHex(
+    convert({ space: "hsl", coords: [hue, 100, 50], alpha: 1 }, "rgb")
+  );
+}
+
+export function hue2rgb(hue: number): [number, number, number, number] {
+  const c = convert({ space: "hsl", coords: [hue, 100, 50], alpha: 1 }, "rgb");
+  return [...c.coords, c.alpha] as [number, number, number, number];
+}
+
+export function hue2hsl(hue: number): [number, number, number, number] {
+  return [hue, 100, 50, 1];
 }

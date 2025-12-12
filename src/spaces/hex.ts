@@ -51,15 +51,14 @@ export function parseHex(input: string): ParseResult {
   return undefined;
 }
 
-// Actually, let's just create specific helpers for strict formats
 export function serializeHex8(color: ColorObject): string {
   const { coords, alpha } = color;
   const [r, g, b] = coords.map((c) =>
     Math.round(Math.max(0, Math.min(255, c)))
   );
   const toHex = (n: number) => n.toString(16).padStart(2, "0");
-  // Force alpha inclusion
   const a = Math.round(Math.max(0, Math.min(1, alpha)) * 255);
+
   return `#${toHex(r)}${toHex(g)}${toHex(b)}${toHex(a)}`;
 }
 
@@ -69,18 +68,13 @@ export function serializeHex6(color: ColorObject): string {
     Math.round(Math.max(0, Math.min(255, c)))
   );
   const toHex = (n: number) => n.toString(16).padStart(2, "0");
+
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
 export function serializeHex4(color: ColorObject): string {
-  // Attempt conversion to 4 char hex if possible, else fallback to 8?
-  // User requested "hex4" conversion. Usually implies strict requirement.
-  // But if value is #12345678, it can't be #1234.
-  // Old lib: coco('#ff0000', 'hex3') => '#f00'
-  // If we call 'hex3' on something valid that CAN represent it.
-  // If not representable? Old lib might return hex6 anyway or nearest?
-  // Let's implement best effort.
-  const h8 = serializeHex8(color); // #RRGGBBAA
+  const h8 = serializeHex8(color);
+
   if (
     h8[1] === h8[2] &&
     h8[3] === h8[4] &&
@@ -89,14 +83,17 @@ export function serializeHex4(color: ColorObject): string {
   ) {
     return `#${h8[1]}${h8[3]}${h8[5]}${h8[7]}`;
   }
-  return h8; // Fallback
+
+  return h8;
 }
 
 export function serializeHex3(color: ColorObject): string {
   const h6 = serializeHex6(color);
+
   if (h6[1] === h6[2] && h6[3] === h6[4] && h6[5] === h6[6]) {
     return `#${h6[1]}${h6[3]}${h6[5]}`;
   }
+
   return h6;
 }
 

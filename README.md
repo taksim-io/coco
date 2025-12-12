@@ -40,36 +40,42 @@ coco("hsl(120, 100%, 50%)", "oklch"); // 'oklch(0.866 0.29 142.5)'
 
 ### Validation Helpers
 
-Coco exposes static methods for validation.
+Coco exposes static methods attached to the default instance.
 
 ```ts
 // Check if a string is a valid color
-isColor("#ff0000"); // true
-isColor("invalid"); // false
+coco.isColor("#ff0000"); // true
+coco.isColor("invalid"); // false
 
 // Get the format of a color string
-getSpace("rgba(0,0,0,1)"); // 'rgb'
-getSpace("oklch(0.5 0.1 100)"); // 'oklch'
+coco.getType("rgba(0,0,0,1)"); // 'rgb'
+coco.getType("oklch(0.5 0.1 100)"); // 'oklch'
 ```
 
 ### Advanced Usage: Tree Shaking & Custom Config
 
-By default, `coco` includes the X11 named color map. If you want a smaller bundle or custom color names, use `createCoco`.
+By default, `coco` does not include the X11 named color map to keep bundle size smaller. If you want to include named colors, a custom color map or a custom name resolver, use `createCoco` factory function.
 
 ```ts
-import { createCoco } from "taksim-coco";
+import { createCoco, namedColors } from "taksim-coco";
 
-// Lean instance (no named colors)
-const cocoLean = createCoco({});
-cocoLean("red"); // undefined
-cocoLean("#f00"); // '#ff0000'
+// Default instance (without named colors)
+coco("red"); // undefined
+coco("#f00"); // '#ff0000'
 
-// Custom configuration
+// Custom instance with named color map
+const cocoNamed = createCoco({ namedColors });
+cocoNamed("red"); // '#ff0000'
+cocoNamed("#f00"); // '#ff0000'
+
+// Custom name resolver
 const myCoco = createCoco({
   nameResolver: (name) => (name === "brand" ? "#00AEEF" : undefined),
 });
 myCoco("brand"); // '#00aeef'
 ```
+
+If both `nameResolver` and `namedColors` are provided, `nameResolver` takes precedence.
 
 ## License
 
