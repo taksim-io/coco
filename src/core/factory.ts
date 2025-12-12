@@ -19,8 +19,6 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
 
   coco.isColor = (input: string) => !!parse(input, config);
 
-  coco.getAlpha = (input: string): number => parse(input, config)?.alpha ?? 1;
-
   coco.getType = (input: string): ColorType | undefined => {
     if (config.nameResolver?.(input) || config.namedColors?.[input]) {
       return "x11";
@@ -29,6 +27,8 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
     const p = parse(input, config);
     return p ? (input.startsWith("#") ? "hex" : p.space) : undefined;
   };
+
+  coco.getAlpha = (input: string): number => parse(input, config)?.alpha ?? 1;
 
   coco.isEqual = (c1: string, c2: string): boolean => {
     const p1 = parse(c1, config);

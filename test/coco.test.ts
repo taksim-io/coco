@@ -97,9 +97,15 @@ describe("coco", () => {
     it("compares same colors", () => {
       expect(coco.isEqual("red", "#f00")).toBe(true);
       expect(coco.isEqual("rgb(255, 0, 0)", "hsl(0, 100%, 50%)")).toBe(true);
+      expect(coco.isEqual("#ff0000ff", "rgba(255, 0, 0, 1)")).toBe(true);
     });
     it("compares different colors", () => {
       expect(coco.isEqual("red", "blue")).toBe(false);
+      expect(coco.isEqual("#000", "#fff")).toBe(false);
+    });
+    it("respects alpha in equality", () => {
+      expect(coco.isEqual("rgba(0,0,0,1)", "rgba(0,0,0,0.5)")).toBe(false);
+      expect(coco.isEqual("#ff0000", "#ff000080")).toBe(false);
     });
   });
 
@@ -114,6 +120,11 @@ describe("coco", () => {
     });
     it("gets alpha defaulting to 1", () => {
       expect(coco.getAlpha("red")).toBe(1);
+      expect(coco.getAlpha("rgb(0,0,0)")).toBe(1);
+      expect(coco.getAlpha("hsl(0,0%,0%)")).toBe(1);
+    });
+    it("gets alpha from oklch", () => {
+      expect(coco.getAlpha("oklch(0.5 0.1 100 / 0.5)")).toBe(0.5);
     });
   });
 });

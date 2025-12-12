@@ -50,6 +50,16 @@ coco.isColor("invalid"); // false
 // Get the format of a color string
 coco.getType("rgba(0,0,0,1)"); // 'rgb'
 coco.getType("oklch(0.5 0.1 100)"); // 'oklch'
+
+// Get alpha channel (0-1)
+coco.getAlpha("rgba(0, 0, 0, 0.5)"); // 0.5
+coco.getAlpha("#ff000080"); // 0.5 (approx)
+coco.getAlpha("red"); // 1
+
+// Compare colors (converts to RGB for comparison)
+coco.isEqual("#f00", "red"); // true
+coco.isEqual("rgb(0,0,0)", "hsl(0,0%,0%)"); // true
+coco.isEqual("rgba(0,0,0,0.5)", "rgba(0,0,0,1)"); // false
 ```
 
 ### Hue Helpers
