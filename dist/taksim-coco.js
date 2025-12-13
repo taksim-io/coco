@@ -44,16 +44,16 @@ function y(t) {
   }
 }
 function F(t) {
-  const { coords: a, alpha: e } = t, [s, r, o] = a.map(
+  const { coords: a, alpha: e } = t, [s, n, o] = a.map(
     (h) => Math.round(Math.max(0, Math.min(255, h)))
-  ), n = (h) => h.toString(16).padStart(2, "0"), c = Math.round(Math.max(0, Math.min(1, e)) * 255);
-  return `#${n(s)}${n(r)}${n(o)}${n(c)}`;
+  ), r = (h) => h.toString(16).padStart(2, "0"), c = Math.round(Math.max(0, Math.min(1, e)) * 255);
+  return `#${r(s)}${r(n)}${r(o)}${r(c)}`;
 }
 function T(t) {
-  const { coords: a } = t, [e, s, r] = a.map(
-    (n) => Math.round(Math.max(0, Math.min(255, n)))
-  ), o = (n) => n.toString(16).padStart(2, "0");
-  return `#${o(e)}${o(s)}${o(r)}`;
+  const { coords: a } = t, [e, s, n] = a.map(
+    (r) => Math.round(Math.max(0, Math.min(255, r)))
+  ), o = (r) => r.toString(16).padStart(2, "0");
+  return `#${o(e)}${o(s)}${o(n)}`;
 }
 function N(t) {
   const a = F(t);
@@ -67,14 +67,14 @@ function z(t) {
   return Y(t);
 }
 function Y(t) {
-  const { coords: a, alpha: e } = t, [s, r, o] = a.map(
+  const { coords: a, alpha: e } = t, [s, n, o] = a.map(
     (c) => Math.round(Math.max(0, Math.min(255, c)))
-  ), n = (c) => c.toString(16).padStart(2, "0");
+  ), r = (c) => c.toString(16).padStart(2, "0");
   if (e < 1) {
     const c = Math.round(Math.max(0, Math.min(1, e)) * 255);
-    return `#${n(s)}${n(r)}${n(o)}${n(c)}`;
+    return `#${r(s)}${r(n)}${r(o)}${r(c)}`;
   }
-  return `#${n(s)}${n(r)}${n(o)}`;
+  return `#${r(s)}${r(n)}${r(o)}`;
 }
 function Z(t) {
   return J(t);
@@ -85,54 +85,55 @@ function J(t) {
   );
   if (!a) return;
   let e = parseFloat(a[1]);
-  const s = a[2], r = parseFloat(a[3]), o = parseFloat(a[4]);
-  let n = 1;
-  a[5] && (n = parseFloat(a[5]), a[6] === "%" && (n /= 100)), s === "rad" ? e = e * 180 / Math.PI : s === "grad" ? e = e * 0.9 : s === "turn" && (e = e * 360), e = e % 360, e < 0 && (e += 360);
+  const s = a[2], n = parseFloat(a[3]), o = parseFloat(a[4]);
+  let r = 1;
+  a[5] && (r = parseFloat(a[5]), a[6] === "%" && (r /= 100)), s === "rad" ? e = e * 180 / Math.PI : s === "grad" ? e = e * 0.9 : s === "turn" && (e = e * 360), e = e % 360, e < 0 && (e += 360);
   const c = t.match(/\.\d+/g) || [], h = c.length > 0 ? Math.max(...c.map((i) => i.length - 1)) : 0;
   return {
     space: "hsl",
-    coords: [e, Math.min(100, Math.max(0, r)), Math.min(100, Math.max(0, o))],
-    alpha: Math.min(1, Math.max(0, n)),
+    coords: [e, Math.min(100, Math.max(0, n)), Math.min(100, Math.max(0, o))],
+    alpha: Math.min(1, Math.max(0, r)),
     meta: { precision: h }
   };
 }
 function H(t) {
-  const [a, e, s] = t.coords, r = t.alpha, o = t.meta?.precision ?? 3, n = Math.pow(10, o), c = Math.round(a * n) / n, h = Math.round(e * n) / n, i = Math.round(s * n) / n, l = Math.round(r * 1e3) / 1e3;
+  var f;
+  const [a, e, s] = t.coords, n = t.alpha, o = ((f = t.meta) == null ? void 0 : f.precision) ?? 3, r = Math.pow(10, o), c = Math.round(a * r) / r, h = Math.round(e * r) / r, i = Math.round(s * r) / r, l = Math.round(n * 1e3) / 1e3;
   return l < 1 ? `hsla(${c}, ${h}%, ${i}%, ${l})` : `hsl(${c}, ${h}%, ${i}%)`;
 }
 function Q(t) {
-  const [a, e, s] = t.coords, r = t.alpha, o = (1 - Math.abs(2 * (s / 100) - 1)) * (e / 100), n = o * (1 - Math.abs(a / 60 % 2 - 1)), c = s / 100 - o / 2;
+  const [a, e, s] = t.coords, n = t.alpha, o = (1 - Math.abs(2 * (s / 100) - 1)) * (e / 100), r = o * (1 - Math.abs(a / 60 % 2 - 1)), c = s / 100 - o / 2;
   let h = 0, i = 0, l = 0;
-  return 0 <= a && a < 60 ? (h = o, i = n, l = 0) : 60 <= a && a < 120 ? (h = n, i = o, l = 0) : 120 <= a && a < 180 ? (h = 0, i = o, l = n) : 180 <= a && a < 240 ? (h = 0, i = n, l = o) : 240 <= a && a < 300 ? (h = n, i = 0, l = o) : 300 <= a && a < 360 && (h = o, i = 0, l = n), {
+  return 0 <= a && a < 60 ? (h = o, i = r, l = 0) : 60 <= a && a < 120 ? (h = r, i = o, l = 0) : 120 <= a && a < 180 ? (h = 0, i = o, l = r) : 180 <= a && a < 240 ? (h = 0, i = r, l = o) : 240 <= a && a < 300 ? (h = r, i = 0, l = o) : 300 <= a && a < 360 && (h = o, i = 0, l = r), {
     space: "rgb",
     coords: [(h + c) * 255, (i + c) * 255, (l + c) * 255],
-    alpha: r
+    alpha: n
   };
 }
 function aa(t) {
   let [a, e, s] = t.coords;
   a /= 255, e /= 255, s /= 255;
-  const r = Math.max(a, e, s), o = Math.min(a, e, s);
-  let n = 0, c = 0;
-  const h = (r + o) / 2;
-  if (r !== o) {
-    const i = r - o;
-    switch (c = h > 0.5 ? i / (2 - r - o) : i / (r + o), r) {
+  const n = Math.max(a, e, s), o = Math.min(a, e, s);
+  let r = 0, c = 0;
+  const h = (n + o) / 2;
+  if (n !== o) {
+    const i = n - o;
+    switch (c = h > 0.5 ? i / (2 - n - o) : i / (n + o), n) {
       case a:
-        n = (e - s) / i + (e < s ? 6 : 0);
+        r = (e - s) / i + (e < s ? 6 : 0);
         break;
       case e:
-        n = (s - a) / i + 2;
+        r = (s - a) / i + 2;
         break;
       case s:
-        n = (a - e) / i + 4;
+        r = (a - e) / i + 4;
         break;
     }
-    n *= 60;
+    r *= 60;
   }
   return {
     space: "hsl",
-    coords: [n, c * 100, h * 100],
+    coords: [r, c * 100, h * 100],
     alpha: t.alpha
   };
 }
@@ -142,54 +143,55 @@ function ta(t) {
   );
   if (!a) return;
   let e = parseFloat(a[1]);
-  const s = a[2], r = parseFloat(a[3]), o = parseFloat(a[4]);
-  let n = 1;
-  a[5] && (n = parseFloat(a[5]), a[6] === "%" && (n /= 100)), s === "rad" ? e = e * 180 / Math.PI : s === "grad" ? e = e * 0.9 : s === "turn" && (e = e * 360), e = e % 360, e < 0 && (e += 360);
+  const s = a[2], n = parseFloat(a[3]), o = parseFloat(a[4]);
+  let r = 1;
+  a[5] && (r = parseFloat(a[5]), a[6] === "%" && (r /= 100)), s === "rad" ? e = e * 180 / Math.PI : s === "grad" ? e = e * 0.9 : s === "turn" && (e = e * 360), e = e % 360, e < 0 && (e += 360);
   const c = t.match(/\.\d+/g) || [], h = c.length > 0 ? Math.max(...c.map((i) => i.length - 1)) : 0;
   return {
     space: "hsv",
-    coords: [e, Math.min(100, Math.max(0, r)), Math.min(100, Math.max(0, o))],
-    alpha: Math.min(1, Math.max(0, n)),
+    coords: [e, Math.min(100, Math.max(0, n)), Math.min(100, Math.max(0, o))],
+    alpha: Math.min(1, Math.max(0, r)),
     meta: { precision: h }
   };
 }
 function W(t) {
-  const [a, e, s] = t.coords, r = t.alpha, o = t.meta?.precision ?? 3, n = Math.pow(10, o), c = Math.round(a * n) / n, h = Math.round(e * n) / n, i = Math.round(s * n) / n, l = Math.round(r * 1e3) / 1e3;
+  var f;
+  const [a, e, s] = t.coords, n = t.alpha, o = ((f = t.meta) == null ? void 0 : f.precision) ?? 3, r = Math.pow(10, o), c = Math.round(a * r) / r, h = Math.round(e * r) / r, i = Math.round(s * r) / r, l = Math.round(n * 1e3) / 1e3;
   return l < 1 ? `hsva(${c}, ${h}%, ${i}%, ${l})` : `hsv(${c}, ${h}%, ${i}%)`;
 }
 function ea(t) {
-  const [a, e, s] = t.coords, r = t.alpha, o = e / 100, n = s / 100, c = n * o, h = c * (1 - Math.abs(a / 60 % 2 - 1)), i = n - c;
+  const [a, e, s] = t.coords, n = t.alpha, o = e / 100, r = s / 100, c = r * o, h = c * (1 - Math.abs(a / 60 % 2 - 1)), i = r - c;
   let l = 0, f = 0, d = 0;
   return 0 <= a && a < 60 ? (l = c, f = h, d = 0) : 60 <= a && a < 120 ? (l = h, f = c, d = 0) : 120 <= a && a < 180 ? (l = 0, f = c, d = h) : 180 <= a && a < 240 ? (l = 0, f = h, d = c) : 240 <= a && a < 300 ? (l = h, f = 0, d = c) : 300 <= a && a < 360 && (l = c, f = 0, d = h), {
     space: "rgb",
     coords: [(l + i) * 255, (f + i) * 255, (d + i) * 255],
-    alpha: r
+    alpha: n
   };
 }
 function sa(t) {
   let [a, e, s] = t.coords;
   a /= 255, e /= 255, s /= 255;
-  const r = Math.max(a, e, s), o = Math.min(a, e, s);
-  let n = 0;
-  const c = r - o, h = r === 0 ? 0 : c / r, i = r;
-  if (r !== o) {
-    switch (r) {
+  const n = Math.max(a, e, s), o = Math.min(a, e, s);
+  let r = 0;
+  const c = n - o, h = n === 0 ? 0 : c / n, i = n;
+  if (n !== o) {
+    switch (n) {
       case a:
-        n = (e - s) / c + (e < s ? 6 : 0);
+        r = (e - s) / c + (e < s ? 6 : 0);
         break;
       case e:
-        n = (s - a) / c + 2;
+        r = (s - a) / c + 2;
         break;
       case s:
-        n = (a - e) / c + 4;
+        r = (a - e) / c + 4;
         break;
     }
-    n *= 60;
+    r *= 60;
   } else
-    n = 0;
+    r = 0;
   return {
     space: "hsv",
-    coords: [n, h * 100, i * 100],
+    coords: [r, h * 100, i * 100],
     alpha: t.alpha
   };
 }
@@ -228,11 +230,11 @@ const A = [
   [0.9999999985, 0.3963377774, 0.2158037573],
   [1.0000000089, -0.1055613458, -0.0638541728],
   [1.0000000547, -0.0894841775, -1.291485548]
-], na = [
+], ra = [
   [0.4124564, 0.3575761, 0.1804375],
   [0.2126729, 0.7151522, 0.072175],
   [0.0193339, 0.119192, 0.9503041]
-], ra = [
+], na = [
   [3.2404542, -1.5371385, -0.4985314],
   [-0.969266, 1.8760108, 0.041556],
   [0.0556434, -0.2040259, 1.0572252]
@@ -250,22 +252,23 @@ function ha(t) {
     /^color\(xyz\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i
   );
   if (!a) return;
-  const [e, s, r, o, n] = a;
+  const [e, s, n, o, r] = a;
   return {
     space: "xyz",
-    coords: [parseFloat(s), parseFloat(r), parseFloat(o)],
-    alpha: n ? parseFloat(n) : 1,
+    coords: [parseFloat(s), parseFloat(n), parseFloat(o)],
+    alpha: r ? parseFloat(r) : 1,
     meta: {
       precision: (t.match(/\.\d+/g) || []).length > 0 ? Math.max(...(t.match(/\.\d+/g) || []).map((c) => c.length - 1)) : 0
     }
   };
 }
 function D(t) {
-  const a = t.meta?.precision ?? 4, e = Math.pow(10, a), [s, r, o] = t.coords.map((c) => Math.round(c * e) / e), n = Math.round(t.alpha * 1e3) / 1e3;
-  return n < 1 ? `color(xyz ${s} ${r} ${o} / ${n})` : `color(xyz ${s} ${r} ${o})`;
+  var c;
+  const a = ((c = t.meta) == null ? void 0 : c.precision) ?? 4, e = Math.pow(10, a), [s, n, o] = t.coords.map((h) => Math.round(h * e) / e), r = Math.round(t.alpha * 1e3) / 1e3;
+  return r < 1 ? `color(xyz ${s} ${n} ${o} / ${r})` : `color(xyz ${s} ${n} ${o})`;
 }
 function P(t) {
-  const a = t.coords, e = u(ra, a);
+  const a = t.coords, e = u(na, a);
   return {
     space: "rgb",
     coords: R(e),
@@ -276,7 +279,7 @@ function q(t) {
   const a = v(t.coords);
   return {
     space: "xyz",
-    coords: u(na, a),
+    coords: u(ra, a),
     alpha: t.alpha
   };
 }
@@ -286,26 +289,27 @@ function ia(t) {
     /^lab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i
   );
   if (!a) return;
-  const [e, s, r, o, n] = a;
+  const [e, s, n, o, r] = a;
   return {
     space: "lab",
-    coords: [parseFloat(s), parseFloat(r), parseFloat(o)],
-    alpha: n ? parseFloat(n) : 1,
+    coords: [parseFloat(s), parseFloat(n), parseFloat(o)],
+    alpha: r ? parseFloat(r) : 1,
     meta: {
       precision: (t.match(/\.\d+/g) || []).length > 0 ? Math.max(...(t.match(/\.\d+/g) || []).map((c) => c.length - 1)) : 0
     }
   };
 }
 function G(t) {
-  const a = t.meta?.precision ?? 3, e = Math.pow(10, a), [s, r, o] = t.coords.map((c) => Math.round(c * e) / e), n = Math.round(t.alpha * 1e3) / 1e3;
-  return n < 1 ? `lab(${s} ${r} ${o} / ${n})` : `lab(${s} ${r} ${o})`;
+  var c;
+  const a = ((c = t.meta) == null ? void 0 : c.precision) ?? 3, e = Math.pow(10, a), [s, n, o] = t.coords.map((h) => Math.round(h * e) / e), r = Math.round(t.alpha * 1e3) / 1e3;
+  return r < 1 ? `lab(${s} ${n} ${o} / ${r})` : `lab(${s} ${n} ${o})`;
 }
 function la(t) {
-  const [a, e, s] = t, r = a / m[0], o = e / m[1], n = s / m[2], c = (k) => k > w ? Math.cbrt(k) : (x * k + 16) / 116, h = c(r), i = c(o), l = c(n), f = 116 * i - 16, d = 500 * (h - i), M = 200 * (i - l);
+  const [a, e, s] = t, n = a / m[0], o = e / m[1], r = s / m[2], c = (k) => k > w ? Math.cbrt(k) : (x * k + 16) / 116, h = c(n), i = c(o), l = c(r), f = 116 * i - 16, d = 500 * (h - i), M = 200 * (i - l);
   return [f, d, M];
 }
 function fa(t) {
-  const [a, e, s] = t, r = (a + 16) / 116, o = e / 500 + r, n = r - s / 200, c = (f) => f * f * f > w ? f * f * f : (116 * f - 16) / x, h = c(o), i = a > x * w ? Math.pow((a + 16) / 116, 3) : a / x, l = c(n);
+  const [a, e, s] = t, n = (a + 16) / 116, o = e / 500 + n, r = n - s / 200, c = (f) => f * f * f > w ? f * f * f : (116 * f - 16) / x, h = c(o), i = a > x * w ? Math.pow((a + 16) / 116, 3) : a / x, l = c(r);
   return [h * m[0], i * m[1], l * m[2]];
 }
 function X(t) {
@@ -328,11 +332,11 @@ function da(t) {
     /^lch\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
   );
   if (!a) return;
-  const [e, s, r, o, n, c] = a;
+  const [e, s, n, o, r, c] = a;
   let h = parseFloat(o);
-  return n === "rad" ? h = h * 180 / Math.PI : n === "grad" ? h = h * 0.9 : n === "turn" && (h = h * 360), h = h % 360, h < 0 && (h += 360), {
+  return r === "rad" ? h = h * 180 / Math.PI : r === "grad" ? h = h * 0.9 : r === "turn" && (h = h * 360), h = h % 360, h < 0 && (h += 360), {
     space: "lch",
-    coords: [parseFloat(s), parseFloat(r), h],
+    coords: [parseFloat(s), parseFloat(n), h],
     alpha: c ? parseFloat(c) : 1,
     meta: {
       precision: (t.match(/\.\d+/g) || []).length > 0 ? Math.max(...(t.match(/\.\d+/g) || []).map((i) => i.length - 1)) : 0
@@ -340,22 +344,23 @@ function da(t) {
   };
 }
 function E(t) {
-  const a = t.meta?.precision ?? 3, e = Math.pow(10, a), [s, r, o] = t.coords, n = Math.round(s * e) / e, c = Math.round(r * e) / e, h = Math.round(o * e) / e, i = Math.round(t.alpha * 1e3) / 1e3;
-  return i < 1 ? `lch(${n} ${c} ${h} / ${i})` : `lch(${n} ${c} ${h})`;
+  var l;
+  const a = ((l = t.meta) == null ? void 0 : l.precision) ?? 3, e = Math.pow(10, a), [s, n, o] = t.coords, r = Math.round(s * e) / e, c = Math.round(n * e) / e, h = Math.round(o * e) / e, i = Math.round(t.alpha * 1e3) / 1e3;
+  return i < 1 ? `lch(${r} ${c} ${h} / ${i})` : `lch(${r} ${c} ${h})`;
 }
 function ua(t) {
-  const [a, e, s] = t.coords, r = s * Math.PI / 180, o = e * Math.cos(r), n = e * Math.sin(r);
+  const [a, e, s] = t.coords, n = s * Math.PI / 180, o = e * Math.cos(n), r = e * Math.sin(n);
   return X({
-    coords: [a, o, n],
+    coords: [a, o, r],
     alpha: t.alpha
   });
 }
 function pa(t) {
-  const a = K(t), [e, s, r] = a.coords, o = Math.sqrt(s * s + r * r);
-  let n;
-  return o < 1e-4 ? n = 0 : (n = Math.atan2(r, s) * 180 / Math.PI, n < 0 && (n += 360)), {
+  const a = K(t), [e, s, n] = a.coords, o = Math.sqrt(s * s + n * n);
+  let r;
+  return o < 1e-4 ? r = 0 : (r = Math.atan2(n, s) * 180 / Math.PI, r < 0 && (r += 360)), {
     space: "lch",
-    coords: [e, o, n],
+    coords: [e, o, r],
     alpha: t.alpha
   };
 }
@@ -364,34 +369,35 @@ function ba(t) {
     /^oklab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
   );
   if (!a) return;
-  const [e, s, r, o, n] = a;
+  const [e, s, n, o, r] = a;
   let c = parseFloat(s);
   return a[1].endsWith("%") && (c /= 100), {
     space: "oklab",
-    coords: [c, parseFloat(r), parseFloat(o)],
-    alpha: n ? parseFloat(n) : 1,
+    coords: [c, parseFloat(n), parseFloat(o)],
+    alpha: r ? parseFloat(r) : 1,
     meta: {
       precision: (t.match(/\.\d+/g) || []).length > 0 ? Math.max(...(t.match(/\.\d+/g) || []).map((h) => h.length - 1)) : 0
     }
   };
 }
 function U(t) {
-  const a = t.meta?.precision ?? 3, e = Math.pow(10, a), [s, r, o] = t.coords, n = Math.round(s * e) / e, c = Math.round(r * e) / e, h = Math.round(o * e) / e, i = Math.round(t.alpha * 1e3) / 1e3;
-  return i < 1 ? `oklab(${n} ${c} ${h} / ${i})` : `oklab(${n} ${c} ${h})`;
+  var l;
+  const a = ((l = t.meta) == null ? void 0 : l.precision) ?? 3, e = Math.pow(10, a), [s, n, o] = t.coords, r = Math.round(s * e) / e, c = Math.round(n * e) / e, h = Math.round(o * e) / e, i = Math.round(t.alpha * 1e3) / 1e3;
+  return i < 1 ? `oklab(${r} ${c} ${h} / ${i})` : `oklab(${r} ${c} ${h})`;
 }
 function ma(t) {
-  const [a, e, s] = t.coords, r = t.alpha, n = u(C, [a, e, s]).map((i) => i * i * i), c = u(B, n);
+  const [a, e, s] = t.coords, n = t.alpha, r = u(C, [a, e, s]).map((i) => i * i * i), c = u(B, r);
   return {
     space: "rgb",
     coords: R(c),
-    alpha: r
+    alpha: n
   };
 }
 function ga(t) {
-  const [a, e, s] = t.coords, r = v([a, e, s]), n = u(A, r).map((h) => Math.cbrt(h));
+  const [a, e, s] = t.coords, n = v([a, e, s]), r = u(A, n).map((h) => Math.cbrt(h));
   return {
     space: "oklab",
-    coords: u(O, n),
+    coords: u(O, r),
     alpha: t.alpha
   };
 }
@@ -409,33 +415,34 @@ function _(t) {
   a[1].endsWith("%") && (e /= 100);
   let s = parseFloat(a[2]);
   a[2].endsWith("%") && (s = s / 100 * 0.4);
-  let r = parseFloat(a[3]);
-  a[3].endsWith("rad") ? r = r * 180 / Math.PI : a[3].endsWith("grad") ? r = r * 0.9 : a[3].endsWith("turn") && (r = r * 360), r = r % 360, r < 0 && (r += 360);
+  let n = parseFloat(a[3]);
+  a[3].endsWith("rad") ? n = n * 180 / Math.PI : a[3].endsWith("grad") ? n = n * 0.9 : a[3].endsWith("turn") && (n = n * 360), n = n % 360, n < 0 && (n += 360);
   const o = a[4];
-  let n = 1;
-  return o && (n = parseFloat(o), o.endsWith("%") && (n /= 100)), {
+  let r = 1;
+  return o && (r = parseFloat(o), o.endsWith("%") && (r /= 100)), {
     space: "oklch",
-    coords: [e, s, r],
-    alpha: Math.min(1, Math.max(0, n)),
+    coords: [e, s, n],
+    alpha: Math.min(1, Math.max(0, r)),
     meta: {
       precision: (t.match(/\.\d+/g) || []).length > 0 ? Math.max(...(t.match(/\.\d+/g) || []).map((c) => c.length - 1)) : 0
     }
   };
 }
 function V(t) {
-  const [a, e, s] = t.coords, r = t.meta?.precision ?? 3, o = Math.pow(10, r), n = Math.round(a * o) / o, c = Math.round(e * o) / o, h = Math.round(s * o) / o, i = Math.round(t.alpha * 1e3) / 1e3;
-  return i < 1 ? `oklch(${n} ${c} ${h} / ${i})` : `oklch(${n} ${c} ${h})`;
+  var l;
+  const [a, e, s] = t.coords, n = ((l = t.meta) == null ? void 0 : l.precision) ?? 3, o = Math.pow(10, n), r = Math.round(a * o) / o, c = Math.round(e * o) / o, h = Math.round(s * o) / o, i = Math.round(t.alpha * 1e3) / 1e3;
+  return i < 1 ? `oklch(${r} ${c} ${h} / ${i})` : `oklch(${r} ${c} ${h})`;
 }
 function $a(t) {
-  const [a, e, s] = t.coords, r = t.alpha, o = s * Math.PI / 180, n = a, c = e * Math.cos(o), h = e * Math.sin(o), l = u(C, [n, c, h]).map((M) => M * M * M), f = u(B, l);
+  const [a, e, s] = t.coords, n = t.alpha, o = s * Math.PI / 180, r = a, c = e * Math.cos(o), h = e * Math.sin(o), l = u(C, [r, c, h]).map((M) => M * M * M), f = u(B, l);
   return {
     space: "rgb",
     coords: R(f),
-    alpha: r
+    alpha: n
   };
 }
 function xa(t) {
-  const [a, e, s] = t.coords, r = v([a, e, s]), n = u(A, r).map((d) => Math.cbrt(d)), [c, h, i] = u(O, n), l = Math.sqrt(h * h + i * i);
+  const [a, e, s] = t.coords, n = v([a, e, s]), r = u(A, n).map((d) => Math.cbrt(d)), [c, h, i] = u(O, r), l = Math.sqrt(h * h + i * i);
   let f;
   return l < 1e-4 ? f = 0 : (f = Math.atan2(i, h) * (180 / Math.PI), f < 0 && (f += 360)), {
     space: "oklch",
@@ -456,11 +463,11 @@ function ka(t) {
   return I(a);
 }
 function I(t) {
-  const a = $(t[1], t[2], 255), e = $(t[3], t[4], 255), s = $(t[5], t[6], 255), r = t[7] ? $(t[7], t[8], 1) : 1;
+  const a = $(t[1], t[2], 255), e = $(t[3], t[4], 255), s = $(t[5], t[6], 255), n = t[7] ? $(t[7], t[8], 1) : 1;
   return {
     space: "rgb",
     coords: [a, e, s],
-    alpha: r
+    alpha: n
   };
 }
 function $(t, a, e) {
@@ -468,8 +475,8 @@ function $(t, a, e) {
   return a === "%" && (s = s / 100 * e), Math.min(Math.max(s, 0), e);
 }
 function j(t) {
-  const { coords: a, alpha: e } = t, [s, r, o] = a.map((c) => Math.round(c)), n = Math.round(e * 1e3) / 1e3;
-  return n < 1 ? `rgba(${s}, ${r}, ${o}, ${n})` : `rgb(${s}, ${r}, ${o})`;
+  const { coords: a, alpha: e } = t, [s, n, o] = a.map((c) => Math.round(c)), r = Math.round(e * 1e3) / 1e3;
+  return r < 1 ? `rgba(${s}, ${n}, ${o}, ${r})` : `rgb(${s}, ${n}, ${o})`;
 }
 function g(t, a) {
   if (t.space === a) return t;
@@ -503,14 +510,14 @@ function b(t, { namedColors: a, nameResolver: e } = {}) {
   if (!t)
     return;
   if (t = t.trim(), e) {
-    const r = e(t);
-    if (r)
-      return y("#" + r.replace("#", ""));
+    const n = e(t);
+    if (n)
+      return y("#" + n.replace("#", ""));
   }
   if (a) {
-    const r = a[t];
-    if (r)
-      return y("#" + r.replace("#", ""));
+    const n = a[t];
+    if (n)
+      return y("#" + n.replace("#", ""));
   }
   if (t.startsWith("#")) return y(t);
   const s = t.toLowerCase();
@@ -590,31 +597,33 @@ function p(t) {
   return (t % 360 + 360) % 360;
 }
 function za(t = {}) {
-  const e = (s, r) => {
+  const e = (s, n) => {
     const o = b(s, t);
     if (o)
-      return r = r ?? "hex", L(g(o, r), r);
+      return n = n ?? "hex", L(g(o, n), n);
   };
   return e.isColor = (s) => !!b(s, t), e.getType = (s) => {
-    if (t.nameResolver?.(s) || t.namedColors?.[s])
+    var o, r;
+    if ((o = t.nameResolver) != null && o.call(t, s) || (r = t.namedColors) != null && r[s])
       return "x11";
-    const r = b(s, t);
-    return r ? s.startsWith("#") ? "hex" : r.space : void 0;
+    const n = b(s, t);
+    return n ? s.startsWith("#") ? "hex" : n.space : void 0;
   }, e.getAlpha = (s) => {
-    const r = b(s, t)?.alpha ?? 1;
-    return Math.round(r * 1e3) / 1e3;
-  }, e.setAlpha = (s, r) => {
+    var o;
+    const n = ((o = b(s, t)) == null ? void 0 : o.alpha) ?? 1;
+    return Math.round(n * 1e3) / 1e3;
+  }, e.setAlpha = (s, n) => {
     const o = b(s, t);
     if (!o) return;
-    o.alpha = Math.min(1, Math.max(0, r));
-    const n = s.startsWith("#") ? "hex" : o.space;
-    return L(o, n);
-  }, e.removeAlpha = (s) => e.setAlpha(s, 1), e.isEqual = (s, r) => {
-    if (s === r) return !0;
-    if (!s || !r) return !1;
-    const o = b(s, t), n = b(r, t);
-    if (!o || !n) return !1;
-    const c = g(o, "rgb"), h = g(n, "rgb"), i = 0.5;
+    o.alpha = Math.min(1, Math.max(0, n));
+    const r = s.startsWith("#") ? "hex" : o.space;
+    return L(o, r);
+  }, e.removeAlpha = (s) => e.setAlpha(s, 1), e.isEqual = (s, n) => {
+    if (s === n) return !0;
+    if (!s || !n) return !1;
+    const o = b(s, t), r = b(n, t);
+    if (!o || !r) return !1;
+    const c = g(o, "rgb"), h = g(r, "rgb"), i = 0.5;
     return Math.abs(c.coords[0] - h.coords[0]) < i && Math.abs(c.coords[1] - h.coords[1]) < i && Math.abs(c.coords[2] - h.coords[2]) < i && Math.abs(c.alpha - h.alpha) < 0.01;
   }, e;
 }
@@ -786,3 +795,4 @@ export {
   b as parse,
   L as serialize
 };
+//# sourceMappingURL=taksim-coco.js.map
