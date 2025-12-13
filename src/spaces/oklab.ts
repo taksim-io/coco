@@ -1,14 +1,14 @@
-import { ColorObject, ParseResult } from "../core/types";
 import {
   gam_sRGB,
   lin_sRGB,
   mul3x3,
-  Vector3,
   OKLAB_M1,
   OKLAB_M1_INV,
   OKLAB_M2,
   OKLAB_M2_INV,
+  Vector3,
 } from "../core/math";
+import { ColorObject, ParseResult } from "../core/types";
 
 export function parseOklab(input: string): ParseResult {
   const match = input.match(
@@ -56,9 +56,14 @@ export function oklabToRgb(color: ColorObject): ColorObject {
   const lms_hat = mul3x3(OKLAB_M2_INV, [L, a, b]);
   const lms = lms_hat.map((v) => v * v * v) as Vector3;
   const linRGB = mul3x3(OKLAB_M1_INV, lms);
-
-  // sRGB
-  const srgb = gam_sRGB(linRGB);
+  const Chroma = Math.sqrt(a * a + b * b);
+  const threshold = Chroma > 0.01 ? 0.003 : 0.0001;
+  const snappedLin = linRGB.map((v) => {
+    if (Math.abs(v) < threshold) return 0;
+    if (Math.abs(v - 1) < threshold) return 1;
+    return v;
+  }) as [number, number, number];
+  const srgb = gam_sRGB(snappedLin);
 
   return {
     space: "rgb",

@@ -89,9 +89,14 @@ export function oklchToRgb(color: ColorObject): ColorObject {
   const lms_hat = mul3x3(OKLAB_M2_INV, [labL, labA, labB]);
   const lms = lms_hat.map((v) => v * v * v) as Vector3;
   const linRGB = mul3x3(OKLAB_M1_INV, lms);
-
-  // sRGB
-  const srgb = gam_sRGB(linRGB);
+  // Adaptive snapping: Aggressive for high chroma (gamut mapping noise), gentle for dark shades
+  const threshold = c > 0.01 ? 0.003 : 0.0001;
+  const snappedLin = linRGB.map((v) => {
+    if (Math.abs(v) < threshold) return 0;
+    if (Math.abs(v - 1) < threshold) return 1;
+    return v;
+  }) as [number, number, number];
+  const srgb = gam_sRGB(snappedLin);
 
   return {
     space: "rgb",

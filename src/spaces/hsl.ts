@@ -102,9 +102,19 @@ export function hslToRgb(color: ColorObject): ColorObject {
     b = X;
   }
 
+  const clamp = (v: number) => Math.min(255, Math.max(0, v));
+  const snap = (v: number) => {
+    const rounded = Math.round(v);
+    return Math.abs(v - rounded) < 0.01 ? rounded : v;
+  };
+
+  const R = snap(clamp((r + m) * 255));
+  const G = snap(clamp((g + m) * 255));
+  const B = snap(clamp((b + m) * 255));
+
   return {
     space: "rgb",
-    coords: [(r + m) * 255, (g + m) * 255, (b + m) * 255],
+    coords: [R, G, B],
     alpha: a,
   };
 }

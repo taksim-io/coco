@@ -42,7 +42,12 @@ export function serializeXyz(color: ColorObject): string {
 export function xyzToRgb(color: ColorObject): ColorObject {
   const xyz = color.coords;
   const linRGB = mul3x3(M_XYZ_D65_TO_SRGB, xyz as [number, number, number]);
-  const sRGB = gam_sRGB(linRGB);
+  const snappedLin = linRGB.map((v) => {
+    if (Math.abs(v) < 0.0001) return 0;
+    if (Math.abs(v - 1) < 0.0001) return 1;
+    return v;
+  }) as [number, number, number];
+  const sRGB = gam_sRGB(snappedLin);
   return {
     space: "rgb",
     coords: sRGB,
