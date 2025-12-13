@@ -1,53 +1,61 @@
 import { ColorObject, ParseResult } from "../core/types";
 
-export function parseHex(input: string): ParseResult {
-  if (input.startsWith("#")) {
-    const hex = input.slice(1);
-    if (hex.match(/^[0-9a-f]{3}$/i)) {
-      return {
-        space: "rgb",
-        coords: [
-          parseInt(hex[0] + hex[0], 16),
-          parseInt(hex[1] + hex[1], 16),
-          parseInt(hex[2] + hex[2], 16),
-        ],
-        alpha: 1,
-      };
-    }
-    if (hex.match(/^[0-9a-f]{4}$/i)) {
-      return {
-        space: "rgb",
-        coords: [
-          parseInt(hex[0] + hex[0], 16),
-          parseInt(hex[1] + hex[1], 16),
-          parseInt(hex[2] + hex[2], 16),
-        ],
-        alpha: parseInt(hex[3] + hex[3], 16) / 255,
-      };
-    }
-    if (hex.match(/^[0-9a-f]{6}$/i)) {
-      return {
-        space: "rgb",
-        coords: [
-          parseInt(hex.slice(0, 2), 16),
-          parseInt(hex.slice(2, 4), 16),
-          parseInt(hex.slice(4, 6), 16),
-        ],
-        alpha: 1,
-      };
-    }
-    if (hex.match(/^[0-9a-f]{8}$/i)) {
-      return {
-        space: "rgb",
-        coords: [
-          parseInt(hex.slice(0, 2), 16),
-          parseInt(hex.slice(2, 4), 16),
-          parseInt(hex.slice(4, 6), 16),
-        ],
-        alpha: parseInt(hex.slice(6, 8), 16) / 255,
-      };
-    }
+const R_HEX3 = /^[0-9a-f]{3}$/i;
+const R_HEX4 = /^[0-9a-f]{4}$/i;
+const R_HEX6 = /^[0-9a-f]{6}$/i;
+const R_HEX8 = /^[0-9a-f]{8}$/i;
+
+export function parseHex(input: string): ParseResult | undefined {
+  if (!input.startsWith("#")) {
+    return undefined;
   }
+
+  const hex = input.slice(1);
+  if (hex.match(R_HEX3)) {
+    return {
+      space: "rgb",
+      coords: [
+        parseInt(hex[0] + hex[0], 16),
+        parseInt(hex[1] + hex[1], 16),
+        parseInt(hex[2] + hex[2], 16),
+      ],
+      alpha: 1,
+    };
+  }
+  if (hex.match(R_HEX4)) {
+    return {
+      space: "rgb",
+      coords: [
+        parseInt(hex[0] + hex[0], 16),
+        parseInt(hex[1] + hex[1], 16),
+        parseInt(hex[2] + hex[2], 16),
+      ],
+      alpha: parseInt(hex[3] + hex[3], 16) / 255,
+    };
+  }
+  if (hex.match(R_HEX6)) {
+    return {
+      space: "rgb",
+      coords: [
+        parseInt(hex.slice(0, 2), 16),
+        parseInt(hex.slice(2, 4), 16),
+        parseInt(hex.slice(4, 6), 16),
+      ],
+      alpha: 1,
+    };
+  }
+  if (hex.match(R_HEX8)) {
+    return {
+      space: "rgb",
+      coords: [
+        parseInt(hex.slice(0, 2), 16),
+        parseInt(hex.slice(2, 4), 16),
+        parseInt(hex.slice(4, 6), 16),
+      ],
+      alpha: parseInt(hex.slice(6, 8), 16) / 255,
+    };
+  }
+
   return undefined;
 }
 

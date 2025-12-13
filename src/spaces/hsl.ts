@@ -1,4 +1,8 @@
 import { ColorObject, ParseResult } from "../core/types";
+import { clampAlpha, clampRgb, R_DECIMAL, snapToInt } from "../core/utils";
+
+const R_HSL =
+  /^hsla?\(\s*([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*[,\s]\s*([-+]?[\d\.]+)%\s*[,\s]\s*([-+]?[\d\.]+)%\s*(?:[,\/]\s*([-+]?[\d\.]+)(%)?)?\s*\)$/i;
 
 export function parseHsl(input: string): ParseResult {
   return parseHslRefined(input);
@@ -6,9 +10,7 @@ export function parseHsl(input: string): ParseResult {
 
 // Better parser needed for Alpha %
 function parseHslRefined(input: string): ParseResult {
-  const match = input.match(
-    /^hsla?\(\s*([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*[,\s]\s*([-+]?[\d\.]+)%\s*[,\s]\s*([-+]?[\d\.]+)%\s*(?:[,\/]\s*([-+]?[\d\.]+)(%)?)?\s*\)$/i
-  );
+  const match = input.match(R_HSL);
   if (!match) return undefined;
 
   let h = parseFloat(match[1]);
@@ -32,7 +34,7 @@ function parseHslRefined(input: string): ParseResult {
   if (h < 0) h += 360;
 
   // Detect max precision from input
-  const decimalMatches = input.match(/\.\d+/g) || [];
+  const decimalMatches = input.match(R_DECIMAL) || [];
   const precision =
     decimalMatches.length > 0
       ? Math.max(...decimalMatches.map((m) => m.length - 1))
@@ -41,7 +43,7 @@ function parseHslRefined(input: string): ParseResult {
   return {
     space: "hsl",
     coords: [h, Math.min(100, Math.max(0, s)), Math.min(100, Math.max(0, l))],
-    alpha: Math.min(1, Math.max(0, a)),
+    alpha: clampAlpha(a),
     meta: { precision },
   };
 }
@@ -102,15 +104,9 @@ export function hslToRgb(color: ColorObject): ColorObject {
     b = X;
   }
 
-  const clamp = (v: number) => Math.min(255, Math.max(0, v));
-  const snap = (v: number) => {
-    const rounded = Math.round(v);
-    return Math.abs(v - rounded) < 0.01 ? rounded : v;
-  };
-
-  const R = snap(clamp((r + m) * 255));
-  const G = snap(clamp((g + m) * 255));
-  const B = snap(clamp((b + m) * 255));
+  const R = snapToInt(clampRgb((r + m) * 255));
+  const G = snapToInt(clampRgb((g + m) * 255));
+  const B = snapToInt(clampRgb((b + m) * 255));
 
   return {
     space: "rgb",

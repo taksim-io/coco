@@ -9,11 +9,13 @@ import {
   Vector3,
 } from "../core/math";
 import { ColorObject, ParseResult } from "../core/types";
+import { clampAlpha, getPrecision } from "../core/utils";
+
+const R_OKLAB =
+  /^oklab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i;
 
 export function parseOklab(input: string): ParseResult {
-  const match = input.match(
-    /^oklab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
-  );
+  const match = input.match(R_OKLAB);
   if (!match) return undefined;
 
   const [_, l, a, b, alpha] = match;
@@ -23,13 +25,8 @@ export function parseOklab(input: string): ParseResult {
   return {
     space: "oklab",
     coords: [L, parseFloat(a), parseFloat(b)],
-    alpha: alpha ? parseFloat(alpha) : 1,
-    meta: {
-      precision:
-        (input.match(/\.\d+/g) || []).length > 0
-          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
-          : 0,
-    },
+    alpha: alpha ? clampAlpha(parseFloat(alpha)) : 1,
+    meta: { precision: getPrecision(input) },
   };
 }
 

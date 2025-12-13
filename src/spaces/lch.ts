@@ -1,10 +1,12 @@
 import { ColorObject, ParseResult } from "../core/types";
+import { clampAlpha, getPrecision } from "../core/utils";
 import { labToRgb, rgbToLab } from "./lab";
 
+const R_LCH =
+  /^lch\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i;
+
 export function parseLch(input: string): ParseResult {
-  const match = input.match(
-    /^lch\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
-  );
+  const match = input.match(R_LCH);
   if (!match) return undefined;
 
   const [_, l, c, hStr, unit, alpha] = match;
@@ -19,13 +21,8 @@ export function parseLch(input: string): ParseResult {
   return {
     space: "lch",
     coords: [parseFloat(l), parseFloat(c), h],
-    alpha: alpha ? parseFloat(alpha) : 1,
-    meta: {
-      precision:
-        (input.match(/\.\d+/g) || []).length > 0
-          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
-          : 0,
-    },
+    alpha: alpha ? clampAlpha(parseFloat(alpha)) : 1,
+    meta: { precision: getPrecision(input) },
   };
 }
 

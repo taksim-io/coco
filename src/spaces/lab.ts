@@ -1,27 +1,23 @@
 import { D50, M_D50_TO_D65, M_D65_TO_D50, mul3x3, Vector3 } from "../core/math";
 import { ColorObject, ParseResult } from "../core/types";
+import { clampAlpha, getPrecision } from "../core/utils";
 import { rgbToXyz, xyzToRgb } from "./xyz";
 
 const EPSILON = 216 / 24389; // 0.008856
 const KAPPA = 24389 / 27; // 903.3
+const R_LAB =
+  /^lab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i;
 
 export function parseLab(input: string): ParseResult {
-  const match = input.match(
-    /^lab\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i
-  );
+  const match = input.match(R_LAB);
   if (!match) return undefined;
 
   const [_, l, a, b, alpha] = match;
   return {
     space: "lab",
     coords: [parseFloat(l), parseFloat(a), parseFloat(b)],
-    alpha: alpha ? parseFloat(alpha) : 1,
-    meta: {
-      precision:
-        (input.match(/\.\d+/g) || []).length > 0
-          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
-          : 0,
-    },
+    alpha: alpha ? clampAlpha(parseFloat(alpha)) : 1,
+    meta: { precision: getPrecision(input) },
   };
 }
 

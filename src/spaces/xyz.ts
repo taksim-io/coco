@@ -6,24 +6,21 @@ import {
   mul3x3,
 } from "../core/math";
 import { ColorObject, ParseResult } from "../core/types";
+import { clampAlpha, getPrecision } from "../core/utils";
+
+const R_XYZ =
+  /^color\(xyz\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i;
 
 export function parseXyz(input: string): ParseResult {
-  const match = input.match(
-    /^color\(xyz\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)\s+([-+]?[\d\.]+)(?:\s*\/\s*([-+]?[\d\.]+)%?)?\)$/i
-  );
+  const match = input.match(R_XYZ);
   if (!match) return undefined;
 
   const [_, x, y, z, a] = match;
   return {
     space: "xyz",
     coords: [parseFloat(x), parseFloat(y), parseFloat(z)],
-    alpha: a ? parseFloat(a) : 1,
-    meta: {
-      precision:
-        (input.match(/\.\d+/g) || []).length > 0
-          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
-          : 0,
-    },
+    alpha: a ? clampAlpha(parseFloat(a)) : 1,
+    meta: { precision: getPrecision(input) },
   };
 }
 

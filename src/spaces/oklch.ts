@@ -9,20 +9,13 @@ import {
   Vector3,
 } from "../core/math";
 import { ColorObject, ParseResult } from "../core/types";
+import { clampAlpha, getPrecision } from "../core/utils";
+
+const R_OKLCH =
+  /^oklch\(\s*([^\s\/,]+)[\s,]+([^\s\/,]+)[\s,]+([^\s\/,]+)(?:[\s\/,]+([^\s\)]+))?\s*\)$/i;
 
 export function parseOklch(input: string): ParseResult {
-  const match = input.match(
-    /^oklch\(\s*([-+]?[\d\.]+)%?\s+([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(deg|rad|grad|turn)?\s*(?:\/\s*([-+]?[\d\.]+)%?)?\s*\)$/i
-  );
-  if (!match) return parseOklchRefined(input);
-
-  return parseOklchRefined(input);
-}
-
-function parseOklchRefined(input: string): ParseResult {
-  const match = input.match(
-    /^oklch\(\s*([^\s\/,]+)[\s,]+([^\s\/,]+)[\s,]+([^\s\/,]+)(?:[\s\/,]+([^\s\)]+))?\s*\)$/i
-  );
+  const match = input.match(R_OKLCH);
   if (!match) return undefined;
 
   let l = parseFloat(match[1]);
@@ -49,13 +42,8 @@ function parseOklchRefined(input: string): ParseResult {
   return {
     space: "oklch",
     coords: [l, c, h],
-    alpha: Math.min(1, Math.max(0, a)),
-    meta: {
-      precision:
-        (input.match(/\.\d+/g) || []).length > 0
-          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
-          : 0,
-    },
+    alpha: clampAlpha(a),
+    meta: { precision: getPrecision(input) },
   };
 }
 
@@ -100,7 +88,7 @@ export function serializeOklch(color: ColorObject): string {
 
           const valL = Math.round((l + dl / factor) * factor) / factor;
           const valC = Math.round((c + dc / factor) * factor) / factor;
-          const valH = Math.round((h + dh / factor) * factor) / factor; // H is larger, step might need scaling? No, factor applies same.
+          const valH = Math.round((h + dh / factor) * factor) / factor;
 
           const candidateRgb = getRgb(valL, valC, valH);
           if (

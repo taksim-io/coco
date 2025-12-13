@@ -1,14 +1,15 @@
 import { ColorObject, ParseResult } from "../core/types";
 
+const R_RGB_COMMA =
+  /^rgba?\(\s*([-+]?[\d\.]+)(%?)\s*,\s*([-+]?[\d\.]+)(%?)\s*,\s*([-+]?[\d\.]+)(%?)\s*(?:,\s*([-+]?[\d\.]+)(\%?))?\s*\)$/i;
+const R_RGB_SPACE =
+  /^rgba?\(\s*([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(%?)\s*(?:\/\s*([-+]?[\d\.]+)(\%?))?\s*\)$/i;
+
 export function parseRgb(input: string): ParseResult {
-  const match = input.match(
-    /^rgba?\(\s*([-+]?[\d\.]+)(%?)\s*,\s*([-+]?[\d\.]+)(%?)\s*,\s*([-+]?[\d\.]+)(%?)\s*(?:,\s*([-+]?[\d\.]+)(\%?))?\s*\)$/i
-  );
+  const match = input.match(R_RGB_COMMA);
   if (!match) {
     // Try space separated syntax (CSS4)
-    const match4 = input.match(
-      /^rgba?\(\s*([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(%?)\s+([-+]?[\d\.]+)(%?)\s*(?:\/\s*([-+]?[\d\.]+)(\%?))?\s*\)$/i
-    );
+    const match4 = input.match(R_RGB_SPACE);
     if (match4) return parseMatch(match4);
     return undefined;
   }
@@ -33,7 +34,7 @@ function parseValue(val: string, unit: string, max: number): number {
   if (unit === "%") {
     num = (num / 100) * max;
   }
-  return Math.min(Math.max(num, 0), max); // Clamp
+  return Math.min(Math.max(num, 0), max);
 }
 
 export function serializeRgb(color: ColorObject): string {
