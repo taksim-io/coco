@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
-import { defineConfig } from "vitest/config";
 import { resolve } from "path";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   build: {
@@ -10,6 +10,8 @@ export default defineConfig({
       fileName: "taksim-coco",
       formats: ["es", "umd", "cjs"],
     },
+    minify: true,
+    sourcemap: true,
     rollupOptions: {
       external: [],
       output: {
