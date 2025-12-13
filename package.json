@@ -18,7 +18,8 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint src --ext .ts",
-    "format": "prettier --write \"src/**/*.{ts,js,json}\""
+    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "prepublishOnly": "npm run build"
   },
   "homepage": "https://github.com/taksim-io/coco",
   "keywords": [
@@ -47,6 +48,7 @@
     "prettier": "^3.0.0",
     "typescript": "^5.0.0",
     "vite": "^5.0.0",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^1.0.0"
   },
   "engines": {
