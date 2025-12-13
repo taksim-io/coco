@@ -57,22 +57,13 @@ export function serializeOklch(color: ColorObject): string {
   let C = Math.round(c * factor) / factor;
   let H = Math.round(h * factor) / factor;
   const A = Math.round(color.alpha * 1000) / 1000;
+  const currentRgb = getRgb(L, C, H);
+  const targetRgb = getRgb(l, c, h);
 
   // "Smart Quantization": Check if strict 3-decimal round-trip preserves the RGB int values.
   // If we came from an integer RGB, the "exact" OKLCH should point back to it.
   // We check if the 3-decimal approximation *also* points back to it.
   // If not, we search neighbors.
-
-  const getRgb = (lVal: number, cVal: number, hVal: number) => {
-    return oklchToRgb({
-      space: "oklch",
-      coords: [lVal, cVal, hVal],
-      alpha: 1,
-    }).coords.map((v) => Math.round(v));
-  };
-
-  const currentRgb = getRgb(L, C, H);
-  const targetRgb = getRgb(l, c, h);
 
   if (
     currentRgb[0] !== targetRgb[0] ||
@@ -196,4 +187,12 @@ export function rgbToOklch(color: ColorObject): ColorObject {
     coords: [L, Chroma, Hue],
     alpha: color.alpha,
   };
+}
+
+function getRgb(l: number, c: number, h: number) {
+  return oklchToRgb({
+    space: "oklch",
+    coords: [l, c, h],
+    alpha: 1,
+  }).coords.map((v) => Math.round(v));
 }

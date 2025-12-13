@@ -38,15 +38,6 @@ export function serializeOklab(color: ColorObject): string {
   let A = Math.round(a * factor) / factor;
   let B = Math.round(b * factor) / factor;
   const Alpha = Math.round(color.alpha * 1000) / 1000;
-
-  const getRgb = (l: number, a: number, b: number) => {
-    return oklabToRgb({
-      space: "oklab",
-      coords: [l, a, b],
-      alpha: 1,
-    }).coords.map((v) => Math.round(v));
-  };
-
   const currentRgb = getRgb(L, A, B);
   const targetRgb = getRgb(l, a, b);
 
@@ -158,4 +149,12 @@ export function rgbToOklab(color: ColorObject): ColorObject {
     coords: lab,
     alpha: color.alpha,
   };
+}
+
+function getRgb(l: number, a: number, b: number) {
+  return oklabToRgb({
+    space: "oklab",
+    coords: [l, a, b],
+    alpha: 1,
+  }).coords.map((v) => Math.round(v));
 }
