@@ -93,7 +93,6 @@ export function hsvToRgb(color: ColorObject): ColorObject {
     r = X;
     g = 0;
     b = C;
-    b = C;
   } else if (300 <= h && h < 360) {
     r = C;
     g = 0;
