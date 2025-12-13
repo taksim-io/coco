@@ -50,7 +50,7 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
   };
 
   coco.isEqual = (c1: string, c2: string): boolean => {
-    if (c1 === c2) return true;
+    if (c1?.toLowerCase() === c2?.toLowerCase()) return true;
     if (!c1 || !c2) return false;
 
     const p1 = parse(c1, config);
@@ -62,12 +62,13 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
     const rgb2 = convert(p2, "rgb");
 
     // Fuzzy matching to handle floating-point drift (e.g. rgb(1,1,1) vs hsl -> 0.9996)
-    const epsilon = 0.5; // < 0.5 ensures rounding to same integer (0-255)
+    const epsilon = Number.EPSILON * 255;
+
     return (
       Math.abs(rgb1.coords[0] - rgb2.coords[0]) < epsilon &&
       Math.abs(rgb1.coords[1] - rgb2.coords[1]) < epsilon &&
       Math.abs(rgb1.coords[2] - rgb2.coords[2]) < epsilon &&
-      Math.abs(rgb1.alpha - rgb2.alpha) < 0.01
+      Math.abs(rgb1.alpha - rgb2.alpha) < Number.EPSILON
     );
   };
 
