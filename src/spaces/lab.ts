@@ -1,5 +1,5 @@
+import { D50, M_D50_TO_D65, M_D65_TO_D50, mul3x3, Vector3 } from "../core/math";
 import { ColorObject, ParseResult } from "../core/types";
-import { M_D50_TO_D65, M_D65_TO_D50, D50, mul3x3, Vector3 } from "../core/math";
 import { rgbToXyz, xyzToRgb } from "./xyz";
 
 const EPSILON = 216 / 24389; // 0.008856

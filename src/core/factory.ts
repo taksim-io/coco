@@ -1,5 +1,5 @@
-import { CocoConfig, CocoInstance, ColorSpace, ColorType } from "./types";
 import { convert, parse, serialize } from "./convert";
+import { CocoConfig, CocoInstance, ColorSpace, ColorType } from "./types";
 
 export function createCoco(config: CocoConfig = {}): CocoInstance {
   const _coco = (

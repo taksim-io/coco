@@ -1,14 +1,14 @@
-import { ColorObject, ParseResult } from "../core/types";
 import {
   gam_sRGB,
   lin_sRGB,
   mul3x3,
-  Vector3,
   OKLAB_M1,
   OKLAB_M1_INV,
   OKLAB_M2,
   OKLAB_M2_INV,
+  Vector3,
 } from "../core/math";
+import { ColorObject, ParseResult } from "../core/types";
 
 export function parseOklch(input: string): ParseResult {
   const match = input.match(

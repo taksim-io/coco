@@ -1,4 +1,3 @@
-import { ColorObject, ParseResult } from "../core/types";
 import {
   M_SRGB_TO_XYZ_D65,
   M_XYZ_D65_TO_SRGB,
@@ -6,6 +5,7 @@ import {
   lin_sRGB,
   mul3x3,
 } from "../core/math";
+import { ColorObject, ParseResult } from "../core/types";
 
 export function parseXyz(input: string): ParseResult {
   const match = input.match(

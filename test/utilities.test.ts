@@ -1,14 +1,14 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   hue2hex,
-  hue2rgb,
   hue2hsl,
   hue2hsv,
-  hue2oklch,
-  hue2xyz,
   hue2lab,
   hue2lch,
   hue2oklab,
+  hue2oklch,
+  hue2rgb,
+  hue2xyz,
 } from "../src/coco";
 
 describe("Utilities", () => {

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { createCoco, namedColors } from "../src/coco";
 import { ColorSpace } from "../src/core/types";
 

@@ -1,13 +1,13 @@
-import { CocoConfig, ColorObject, ColorSpace, ParseResult } from "./types";
+import {
+  parseHex,
+  serializeHex,
+  serializeHex3,
+  serializeHex4,
+  serializeHex6,
+  serializeHex8,
+} from "../spaces/hex";
 import { hslToRgb, parseHsl, rgbToHsl, serializeHsl } from "../spaces/hsl";
 import { hsvToRgb, parseHsv, rgbToHsv, serializeHsv } from "../spaces/hsv";
-import {
-  oklchToRgb,
-  parseOklch,
-  rgbToOklch,
-  serializeOklch,
-} from "../spaces/oklch";
-import { parseXyz, rgbToXyz, serializeXyz, xyzToRgb } from "../spaces/xyz";
 import { labToRgb, parseLab, rgbToLab, serializeLab } from "../spaces/lab";
 import { lchToRgb, parseLch, rgbToLch, serializeLch } from "../spaces/lch";
 import {
@@ -17,14 +17,14 @@ import {
   serializeOklab,
 } from "../spaces/oklab";
 import {
-  parseHex,
-  serializeHex,
-  serializeHex3,
-  serializeHex4,
-  serializeHex6,
-  serializeHex8,
-} from "../spaces/hex";
+  oklchToRgb,
+  parseOklch,
+  rgbToOklch,
+  serializeOklch,
+} from "../spaces/oklch";
 import { parseRgb, serializeRgb } from "../spaces/rgb";
+import { parseXyz, rgbToXyz, serializeXyz, xyzToRgb } from "../spaces/xyz";
+import { CocoConfig, ColorObject, ColorSpace, ParseResult } from "./types";
 
 export function convert(
   color: ColorObject,

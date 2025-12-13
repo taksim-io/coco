@@ -149,14 +149,3 @@ export const namedColors: Record<string, string> = {
   yellow: "ff0",
   yellowgreen: "9acd32",
 };
-
-// Inverse map for fast lookups
-export const hex2nameMap: Record<string, string> = Object.entries(
-  namedColors
-).reduce(
-  (acc, [name, hex]) => {
-    acc[hex] = name;
-    return acc;
-  },
-  {} as Record<string, string>
-);
