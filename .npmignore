@@ -1,6 +1,7 @@
-/build
-/test
 /src
-/dist/*.min.js
-CONTRIBUTING.md
+/test
+/build
+vite.config.ts
+tsconfig.json
 .vscode
+CONTRIBUTING.md
