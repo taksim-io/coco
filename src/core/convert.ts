@@ -77,7 +77,11 @@ function toRgbInternal(color: ColorObject): ColorObject {
 export function parse(
   input: string,
   { namedColors, nameResolver }: CocoConfig = {}
-): ParseResult {
+): ParseResult | undefined {
+  if (!input) {
+    return undefined;
+  }
+
   input = input.trim();
 
   // Use resolver if provided
