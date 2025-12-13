@@ -50,14 +50,23 @@ function parseOklchRefined(input: string): ParseResult {
     space: "oklch",
     coords: [l, c, h],
     alpha: Math.min(1, Math.max(0, a)),
+    meta: {
+      precision:
+        (input.match(/\.\d+/g) || []).length > 0
+          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
+          : 0,
+    },
   };
 }
 
 export function serializeOklch(color: ColorObject): string {
   const [l, c, h] = color.coords;
-  const L = Math.round(l * 1000) / 1000;
-  const C = Math.round(c * 1000) / 1000;
-  const H = Math.round(h * 100) / 100;
+  const prec = color.meta?.precision ?? 3;
+  const factor = Math.pow(10, prec);
+
+  const L = Math.round(l * factor) / factor;
+  const C = Math.round(c * factor) / factor;
+  const H = Math.round(h * factor) / factor;
   const A = color.alpha;
 
   if (A < 1) {
@@ -100,8 +109,13 @@ export function rgbToOklch(color: ColorObject): ColorObject {
   const [L, aTerm, bTerm] = mul3x3(OKLAB_M2, lms_hat);
 
   const Chroma = Math.sqrt(aTerm * aTerm + bTerm * bTerm);
-  let Hue = Math.atan2(bTerm, aTerm) * (180 / Math.PI);
-  if (Hue < 0) Hue += 360;
+  let Hue: number;
+  if (Chroma < 0.0001) {
+    Hue = 0;
+  } else {
+    Hue = Math.atan2(bTerm, aTerm) * (180 / Math.PI);
+    if (Hue < 0) Hue += 360;
+  }
 
   return {
     space: "oklch",

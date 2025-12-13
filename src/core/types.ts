@@ -21,6 +21,9 @@ export interface ColorObject {
   space: ColorSpace;
   coords: [number, number, number];
   alpha: number;
+  meta?: {
+    precision?: number;
+  };
 }
 
 export interface ColorParser {

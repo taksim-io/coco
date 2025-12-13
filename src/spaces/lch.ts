@@ -20,11 +20,19 @@ export function parseLch(input: string): ParseResult {
     space: "lch",
     coords: [parseFloat(l), parseFloat(c), h],
     alpha: alpha ? parseFloat(alpha) : 1,
+    meta: {
+      precision:
+        (input.match(/\.\d+/g) || []).length > 0
+          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
+          : 0,
+    },
   };
 }
 
 export function serializeLch(color: ColorObject): string {
-  const [l, c, h] = color.coords.map((v) => Math.round(v * 1000) / 1000); // Rounding
+  const prec = color.meta?.precision ?? 3;
+  const factor = Math.pow(10, prec);
+  const [l, c, h] = color.coords.map((v) => Math.round(v * factor) / factor);
   const alpha = color.alpha;
   return alpha < 1 ? `lch(${l} ${c} ${h} / ${alpha})` : `lch(${l} ${c} ${h})`;
 }
@@ -47,8 +55,13 @@ export function rgbToLch(color: ColorObject): ColorObject {
   const [l, a, b] = lab.coords;
 
   const c = Math.sqrt(a * a + b * b);
-  let h = (Math.atan2(b, a) * 180) / Math.PI;
-  if (h < 0) h += 360;
+  let h: number;
+  if (c < 0.0001) {
+    h = 0;
+  } else {
+    h = (Math.atan2(b, a) * 180) / Math.PI;
+    if (h < 0) h += 360;
+  }
 
   return {
     space: "lch",

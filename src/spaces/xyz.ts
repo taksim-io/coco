@@ -18,11 +18,19 @@ export function parseXyz(input: string): ParseResult {
     space: "xyz",
     coords: [parseFloat(x), parseFloat(y), parseFloat(z)],
     alpha: a ? parseFloat(a) : 1,
+    meta: {
+      precision:
+        (input.match(/\.\d+/g) || []).length > 0
+          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
+          : 0,
+    },
   };
 }
 
 export function serializeXyz(color: ColorObject): string {
-  const [x, y, z] = color.coords.map((v) => Math.round(v * 10000) / 10000);
+  const prec = color.meta?.precision ?? 4;
+  const factor = Math.pow(10, prec);
+  const [x, y, z] = color.coords.map((v) => Math.round(v * factor) / factor);
   const a = color.alpha;
   return a < 1
     ? `color(xyz ${x} ${y} ${z} / ${a})`

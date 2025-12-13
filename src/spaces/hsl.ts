@@ -31,10 +31,18 @@ function parseHslRefined(input: string): ParseResult {
   h = h % 360;
   if (h < 0) h += 360;
 
+  // Detect max precision from input
+  const decimalMatches = input.match(/\.\d+/g) || [];
+  const precision =
+    decimalMatches.length > 0
+      ? Math.max(...decimalMatches.map((m) => m.length - 1))
+      : 0;
+
   return {
     space: "hsl",
     coords: [h, Math.min(100, Math.max(0, s)), Math.min(100, Math.max(0, l))],
     alpha: Math.min(1, Math.max(0, a)),
+    meta: { precision },
   };
 }
 
@@ -42,9 +50,12 @@ export function serializeHsl(color: ColorObject): string {
   const [h, s, l] = color.coords;
   const a = color.alpha;
 
-  const hRound = Math.round(h);
-  const sRound = Math.round(s);
-  const lRound = Math.round(l);
+  const prec = color.meta?.precision ?? 3;
+  const factor = Math.pow(10, prec);
+
+  const hRound = Math.round(h * factor) / factor;
+  const sRound = Math.round(s * factor) / factor;
+  const lRound = Math.round(l * factor) / factor;
 
   if (a < 1) {
     return `hsla(${hRound}, ${sRound}%, ${lRound}%, ${a})`;

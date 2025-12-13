@@ -25,10 +25,18 @@ export function parseHsv(input: string): ParseResult {
   h = h % 360;
   if (h < 0) h += 360;
 
+  // Detect max precision from input
+  const decimalMatches = input.match(/\.\d+/g) || [];
+  const precision =
+    decimalMatches.length > 0
+      ? Math.max(...decimalMatches.map((m) => m.length - 1))
+      : 0;
+
   return {
     space: "hsv",
     coords: [h, Math.min(100, Math.max(0, s)), Math.min(100, Math.max(0, v))],
     alpha: Math.min(1, Math.max(0, a)),
+    meta: { precision },
   };
 }
 
@@ -36,10 +44,17 @@ export function serializeHsv(color: ColorObject): string {
   const [h, s, v] = color.coords;
   const a = color.alpha;
 
+  const prec = color.meta?.precision ?? 3;
+  const factor = Math.pow(10, prec);
+
+  const H = Math.round(h * factor) / factor;
+  const S = Math.round(s * factor) / factor;
+  const V = Math.round(v * factor) / factor;
+
   if (a < 1) {
-    return `hsva(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(v)}%, ${a})`;
+    return `hsva(${H}, ${S}%, ${V}%, ${a})`;
   }
-  return `hsv(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(v)}%)`;
+  return `hsv(${H}, ${S}%, ${V}%)`;
 }
 
 export function hsvToRgb(color: ColorObject): ColorObject {
@@ -116,6 +131,8 @@ export function rgbToHsv(color: ColorObject): ColorObject {
         break;
     }
     h *= 60;
+  } else {
+    h = 0; // Achromatic
   }
 
   return {

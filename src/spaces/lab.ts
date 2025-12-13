@@ -16,11 +16,19 @@ export function parseLab(input: string): ParseResult {
     space: "lab",
     coords: [parseFloat(l), parseFloat(a), parseFloat(b)],
     alpha: alpha ? parseFloat(alpha) : 1,
+    meta: {
+      precision:
+        (input.match(/\.\d+/g) || []).length > 0
+          ? Math.max(...(input.match(/\.\d+/g) || []).map((m) => m.length - 1))
+          : 0,
+    },
   };
 }
 
 export function serializeLab(color: ColorObject): string {
-  const [l, a, b] = color.coords.map((v) => Math.round(v * 1000) / 1000);
+  const prec = color.meta?.precision ?? 3;
+  const factor = Math.pow(10, prec);
+  const [l, a, b] = color.coords.map((v) => Math.round(v * factor) / factor);
   const alpha = color.alpha;
   return alpha < 1 ? `lab(${l} ${a} ${b} / ${alpha})` : `lab(${l} ${a} ${b})`;
 }
