@@ -2,6 +2,5 @@
 /test
 /src
 /dist/*.min.js
-gulpfile.js
-bower.json
 CONTRIBUTING.md
+.vscode
