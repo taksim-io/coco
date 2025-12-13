@@ -120,6 +120,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.997 0 0 / 0.8)",
   },
   midGray: {
+    x11: "gray",
     hex3: "#808080",
     hex6: "#808080",
     hex4: "#808080ff",
