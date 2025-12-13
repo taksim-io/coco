@@ -1,16 +1,26 @@
 import { coco } from "../dist/taksim-coco.js";
 
-const x11 = ["black", "white", "gray", "red", "blue", "green", "yellow"];
+const x11 = [
+  "black",
+  "white",
+  "gray",
+  "red",
+  "blue",
+  "green",
+  "lime",
+  "yellow",
+];
 
 const colors = {
   black: "rgb(0, 0, 0)",
   nearBlack: "rgb(1, 1, 1)",
   white: "rgb(255, 255, 255)",
   nearWhite: "rgb(254, 254, 254)",
-  midGray: "rgb(128, 128, 128)",
   darkGray: "rgb(26, 26, 26)",
   red: "rgb(255, 0, 0)",
-  green: "rgb(0, 255, 0)",
+  gray: "rgb(128, 128, 128)",
+  green: "rgb(0, 128, 0)",
+  lime: "rgb(0, 255, 0)",
   blue: "rgb(0, 0, 255)",
   yellow: "rgb(255, 255, 0)",
   cyan: "rgb(0, 255, 255)",
@@ -25,6 +35,13 @@ const colors = {
   midnightBlue: "rgb(25, 25, 112)",
   darkOliveGreen: "rgb(85, 107, 47)",
   saddleBrown: "rgb(139, 69, 19)",
+  almostGrayWarm: "rgb(128, 127, 126)",
+  almostGrayCool: "rgb(126, 127, 128)",
+  highChromaBlue: "rgb(0, 80, 255)",
+  highChromaOrange: "rgb(255, 120, 0)",
+  x11gray: "rgb(190, 190, 190)",
+  veryDarkRed: "rgb(1, 0, 0)",
+  veryLightRed: "rgb(254, 1, 1)",
 };
 
 const formats = [
