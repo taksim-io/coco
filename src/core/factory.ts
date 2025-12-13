@@ -47,6 +47,9 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
   };
 
   coco.isEqual = (c1: string, c2: string): boolean => {
+    if (c1 === c2) return true;
+    if (!c1 || !c2) return false;
+
     const p1 = parse(c1, config);
     const p2 = parse(c2, config);
 
