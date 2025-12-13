@@ -28,7 +28,10 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
     return p ? (input.startsWith("#") ? "hex" : p.space) : undefined;
   };
 
-  coco.getAlpha = (input: string): number => parse(input, config)?.alpha ?? 1;
+  coco.getAlpha = (input: string): number => {
+    const alpha = parse(input, config)?.alpha ?? 1;
+    return Math.round(alpha * 1000) / 1000;
+  };
 
   coco.setAlpha = (input: string, alpha: number): string | undefined => {
     const color = parse(input, config);

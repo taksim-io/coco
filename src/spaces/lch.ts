@@ -32,9 +32,16 @@ export function parseLch(input: string): ParseResult {
 export function serializeLch(color: ColorObject): string {
   const prec = color.meta?.precision ?? 3;
   const factor = Math.pow(10, prec);
-  const [l, c, h] = color.coords.map((v) => Math.round(v * factor) / factor);
-  const alpha = color.alpha;
-  return alpha < 1 ? `lch(${l} ${c} ${h} / ${alpha})` : `lch(${l} ${c} ${h})`;
+  const [l, c, h] = color.coords;
+  const L = Math.round(l * factor) / factor;
+  const C = Math.round(c * factor) / factor;
+  const H = Math.round(h * factor) / factor;
+  const A = Math.round(color.alpha * 1000) / 1000;
+
+  if (A < 1) {
+    return `lch(${L} ${C} ${H} / ${A})`;
+  }
+  return `lch(${L} ${C} ${H})`;
 }
 
 export function lchToRgb(color: ColorObject): ColorObject {

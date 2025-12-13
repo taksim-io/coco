@@ -36,11 +36,16 @@ export function parseOklab(input: string): ParseResult {
 export function serializeOklab(color: ColorObject): string {
   const prec = color.meta?.precision ?? 3;
   const factor = Math.pow(10, prec);
-  const [l, a, b] = color.coords.map((v) => Math.round(v * factor) / factor);
-  const alpha = color.alpha;
-  return alpha < 1
-    ? `oklab(${l} ${a} ${b} / ${alpha})`
-    : `oklab(${l} ${a} ${b})`;
+  const [l, a, b] = color.coords;
+  const L = Math.round(l * factor) / factor;
+  const A = Math.round(a * factor) / factor;
+  const B = Math.round(b * factor) / factor;
+  const Alpha = Math.round(color.alpha * 1000) / 1000;
+
+  if (Alpha < 1) {
+    return `oklab(${L} ${A} ${B} / ${Alpha})`;
+  }
+  return `oklab(${L} ${A} ${B})`;
 }
 
 export function oklabToRgb(color: ColorObject): ColorObject {

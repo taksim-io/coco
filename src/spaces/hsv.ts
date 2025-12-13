@@ -50,9 +50,10 @@ export function serializeHsv(color: ColorObject): string {
   const H = Math.round(h * factor) / factor;
   const S = Math.round(s * factor) / factor;
   const V = Math.round(v * factor) / factor;
+  const A = Math.round(a * 1000) / 1000;
 
-  if (a < 1) {
-    return `hsva(${H}, ${S}%, ${V}%, ${a})`;
+  if (A < 1) {
+    return `hsva(${H}, ${S}%, ${V}%, ${A})`;
   }
   return `hsv(${H}, ${S}%, ${V}%)`;
 }

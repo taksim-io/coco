@@ -29,8 +29,12 @@ export function serializeLab(color: ColorObject): string {
   const prec = color.meta?.precision ?? 3;
   const factor = Math.pow(10, prec);
   const [l, a, b] = color.coords.map((v) => Math.round(v * factor) / factor);
-  const alpha = color.alpha;
-  return alpha < 1 ? `lab(${l} ${a} ${b} / ${alpha})` : `lab(${l} ${a} ${b})`;
+  const A = Math.round(color.alpha * 1000) / 1000;
+
+  if (A < 1) {
+    return `lab(${l} ${a} ${b} / ${A})`;
+  }
+  return `lab(${l} ${a} ${b})`;
 }
 
 // XYZ (D50) to Lab

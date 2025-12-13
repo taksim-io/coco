@@ -39,9 +39,10 @@ function parseValue(val: string, unit: string, max: number): number {
 export function serializeRgb(color: ColorObject): string {
   const { coords, alpha } = color;
   const [r, g, b] = coords.map((c) => Math.round(c));
+  const A = Math.round(alpha * 1000) / 1000;
 
-  if (alpha < 1) {
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  if (A < 1) {
+    return `rgba(${r}, ${g}, ${b}, ${A})`;
   }
   return `rgb(${r}, ${g}, ${b})`;
 }

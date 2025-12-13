@@ -31,10 +31,12 @@ export function serializeXyz(color: ColorObject): string {
   const prec = color.meta?.precision ?? 4;
   const factor = Math.pow(10, prec);
   const [x, y, z] = color.coords.map((v) => Math.round(v * factor) / factor);
-  const a = color.alpha;
-  return a < 1
-    ? `color(xyz ${x} ${y} ${z} / ${a})`
-    : `color(xyz ${x} ${y} ${z})`;
+  const a = Math.round(color.alpha * 1000) / 1000;
+
+  if (a < 1) {
+    return `color(xyz ${x} ${y} ${z} / ${a})`;
+  }
+  return `color(xyz ${x} ${y} ${z})`;
 }
 
 export function xyzToRgb(color: ColorObject): ColorObject {

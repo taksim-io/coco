@@ -56,9 +56,10 @@ export function serializeHsl(color: ColorObject): string {
   const hRound = Math.round(h * factor) / factor;
   const sRound = Math.round(s * factor) / factor;
   const lRound = Math.round(l * factor) / factor;
+  const A = Math.round(a * 1000) / 1000;
 
-  if (a < 1) {
-    return `hsla(${hRound}, ${sRound}%, ${lRound}%, ${a})`;
+  if (A < 1) {
+    return `hsla(${hRound}, ${sRound}%, ${lRound}%, ${A})`;
   }
   return `hsl(${hRound}, ${sRound}%, ${lRound}%)`;
 }

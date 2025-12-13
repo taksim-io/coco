@@ -45,11 +45,9 @@ describe("Edge Cases", () => {
       expect(coco("hsl(361, 100%, 50%)", "hex")).toBe("#ff0400");
     });
 
-    // TODO: Add more extreme value tests for other spaces
-
     // TODO: opacity precision
     it("gets alpha from hex8", () =>
-      expect(coco.getAlpha("#ff000080")).toBeCloseTo(0.5019, 2));
+      expect(coco.getAlpha("#ff000080")).toBe(0.502));
 
     it("handles alpha > 1 in input", () =>
       expect(coco("rgba(0, 0, 0, 1.5)", "hex")).toBe("#000000"));

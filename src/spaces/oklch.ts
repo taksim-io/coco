@@ -67,7 +67,7 @@ export function serializeOklch(color: ColorObject): string {
   const L = Math.round(l * factor) / factor;
   const C = Math.round(c * factor) / factor;
   const H = Math.round(h * factor) / factor;
-  const A = color.alpha;
+  const A = Math.round(color.alpha * 1000) / 1000;
 
   if (A < 1) {
     return `oklch(${L} ${C} ${H} / ${A})`;
