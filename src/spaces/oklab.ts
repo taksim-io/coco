@@ -37,10 +37,86 @@ export function serializeOklab(color: ColorObject): string {
   const prec = color.meta?.precision ?? 3;
   const factor = Math.pow(10, prec);
   const [l, a, b] = color.coords;
-  const L = Math.round(l * factor) / factor;
-  const A = Math.round(a * factor) / factor;
-  const B = Math.round(b * factor) / factor;
+  let L = Math.round(l * factor) / factor;
+  let A = Math.round(a * factor) / factor;
+  let B = Math.round(b * factor) / factor;
   const Alpha = Math.round(color.alpha * 1000) / 1000;
+
+  const getRgb = (l: number, a: number, b: number) => {
+    return oklabToRgb({
+      space: "oklab",
+      coords: [l, a, b],
+      alpha: 1,
+    }).coords.map((v) => Math.round(v));
+  };
+
+  const currentRgb = getRgb(L, A, B);
+  const targetRgb = getRgb(l, a, b);
+
+  if (
+    currentRgb[0] !== targetRgb[0] ||
+    currentRgb[1] !== targetRgb[1] ||
+    currentRgb[2] !== targetRgb[2]
+  ) {
+    let found = false;
+    // Search neighborhood
+    for (let dl = -2; dl <= 2; dl++) {
+      for (let da = -2; da <= 2; da++) {
+        for (let db = -2; db <= 2; db++) {
+          if (dl === 0 && da === 0 && db === 0) continue;
+
+          const valL = Math.round((l + dl / factor) * factor) / factor;
+          const valA = Math.round((a + da / factor) * factor) / factor;
+          const valB = Math.round((b + db / factor) * factor) / factor;
+
+          const candidateRgb = getRgb(valL, valA, valB);
+
+          if (
+            candidateRgb[0] === targetRgb[0] &&
+            candidateRgb[1] === targetRgb[1] &&
+            candidateRgb[2] === targetRgb[2]
+          ) {
+            L = valL;
+            A = valA;
+            B = valB;
+            found = true;
+            break;
+          }
+        }
+        if (found) break;
+      }
+      if (found) break;
+    }
+
+    // Adaptive Precision: If 3-decimal search failed, try 4-decimal
+    if (!found && prec === 3) {
+      const factor4 = 10000;
+      for (let dl = -2; dl <= 2; dl++) {
+        for (let da = -2; da <= 2; da++) {
+          for (let db = -2; db <= 2; db++) {
+            const valL = Math.round((l + dl / factor4) * factor4) / factor4;
+            const valA = Math.round((a + da / factor4) * factor4) / factor4;
+            const valB = Math.round((b + db / factor4) * factor4) / factor4;
+
+            const candidateRgb = getRgb(valL, valA, valB);
+            if (
+              candidateRgb[0] === targetRgb[0] &&
+              candidateRgb[1] === targetRgb[1] &&
+              candidateRgb[2] === targetRgb[2]
+            ) {
+              L = valL;
+              A = valA;
+              B = valB;
+              found = true;
+              break;
+            }
+          }
+          if (found) break;
+        }
+        if (found) break;
+      }
+    }
+  }
 
   if (Alpha < 1) {
     return `oklab(${L} ${A} ${B} / ${Alpha})`;
