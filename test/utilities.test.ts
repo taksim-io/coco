@@ -23,5 +23,18 @@ describe("Utilities", () => {
     it("hue2oklab", () => expect(hue2oklab(0)).toBe("oklab(0.7 0.2 0)"));
     it("hue2xyz", () =>
       expect(hue2xyz(120)).toBe("color(xyz 0.3576 0.7152 0.1192)"));
+
+    it("normalizes hue (wraps around)", () => {
+      // 370 % 360 = 10
+      // hue2hsl(10) -> hsl(10, 100%, 50%) -> #ff2a00
+      expect(hue2hex(370)).toBe("#ff2a00");
+      expect(hue2hex(10)).toBe("#ff2a00");
+      expect(hue2hex(360)).toBe("#ff0000"); // 0 degrees
+      expect(hue2hex(0)).toBe("#ff0000");
+
+      // -10 % 360 = 350
+      // hue2hsl(350) -> #ff002b (B=42.5 rounds to 43)
+      expect(hue2hex(-10)).toBe("#ff002b");
+    });
   });
 });

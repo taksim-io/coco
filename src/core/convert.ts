@@ -137,19 +137,25 @@ export function serialize(color: ColorObject, format: ColorSpace): string {
 
 export function hue2hex(hue: number): string {
   return serializeHex(
-    convert({ space: "hsl", coords: [hue, 100, 50], alpha: 1 }, "rgb")
+    convert(
+      { space: "hsl", coords: [normalizeHue(hue), 100, 50], alpha: 1 },
+      "rgb"
+    )
   );
 }
 
 export function hue2rgb(hue: number): string {
-  const c = convert({ space: "hsl", coords: [hue, 100, 50], alpha: 1 }, "rgb");
+  const c = convert(
+    { space: "hsl", coords: [normalizeHue(hue), 100, 50], alpha: 1 },
+    "rgb"
+  );
   return serializeRgb(c);
 }
 
 export function hue2hsl(hue: number): string {
   return serializeHsl({
     space: "hsl",
-    coords: [clip(hue, 0, 360), 100, 50],
+    coords: [normalizeHue(hue), 100, 50],
     alpha: 1,
   });
 }
@@ -157,7 +163,7 @@ export function hue2hsl(hue: number): string {
 export function hue2hsv(hue: number): string {
   return serializeHsv({
     space: "hsv",
-    coords: [clip(hue, 0, 360), 100, 100],
+    coords: [normalizeHue(hue), 100, 100],
     alpha: 1,
   });
 }
@@ -166,14 +172,18 @@ export function hue2oklch(hue: number): string {
   // Uses L=0.7, C=0.2 for a vibrant color
   return serializeOklch({
     space: "oklch",
-    coords: [0.7, 0.2, clip(hue, 0, 360)],
+    coords: [0.7, 0.2, normalizeHue(hue)],
     alpha: 1,
   });
 }
 
 export function hue2xyz(hue: number): string {
   // Use HSL -> RGB -> XYZ path for consistency with hue2rgb
-  const c = convert({ space: "hsl", coords: [hue, 100, 50], alpha: 1 }, "xyz");
+  // Use HSL -> RGB -> XYZ path for consistency with hue2rgb
+  const c = convert(
+    { space: "hsl", coords: [normalizeHue(hue), 100, 50], alpha: 1 },
+    "xyz"
+  );
   return serializeXyz(c);
 }
 
@@ -182,7 +192,7 @@ export function hue2lab(hue: number): string {
   // a = C * cos(h), b = C * sin(h)
   const C = 104;
   const L = 53;
-  const hRad = (clip(hue, 0, 360) * Math.PI) / 180;
+  const hRad = (normalizeHue(hue) * Math.PI) / 180;
   return serializeLab({
     space: "lab",
     coords: [L, C * Math.cos(hRad), C * Math.sin(hRad)],
@@ -193,7 +203,7 @@ export function hue2lab(hue: number): string {
 export function hue2lch(hue: number): string {
   return serializeLch({
     space: "lch",
-    coords: [53, 104, clip(hue, 0, 360)],
+    coords: [53, 104, normalizeHue(hue)],
     alpha: 1,
   });
 }
@@ -202,7 +212,7 @@ export function hue2oklab(hue: number): string {
   // L=0.7, C=0.2 from hue2oklch
   const C = 0.2;
   const L = 0.7;
-  const hRad = (clip(hue, 0, 360) * Math.PI) / 180;
+  const hRad = (normalizeHue(hue) * Math.PI) / 180;
   return serializeOklab({
     space: "oklab",
     coords: [L, C * Math.cos(hRad), C * Math.sin(hRad)],
@@ -210,6 +220,6 @@ export function hue2oklab(hue: number): string {
   });
 }
 
-function clip(val: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, val));
+function normalizeHue(hue: number): number {
+  return ((hue % 360) + 360) % 360;
 }
