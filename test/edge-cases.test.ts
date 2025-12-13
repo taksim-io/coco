@@ -8,15 +8,36 @@ describe("Edge Cases", () => {
     });
 
     it("returns undefined for totally invalid input", () => {
-      expect(coco("invalid_color")).toBe(undefined);
+      expect(coco("invalid_color")).toBeUndefined();
+    });
+
+    it("should handle empty strings", () => {
+      expect(coco("")).toBeUndefined();
+      expect(coco("   ")).toBeUndefined();
     });
 
     it("returns undefined for garbage rgb string", () => {
-      expect(coco("rgb(foo, bar, baz)")).toBe(undefined);
+      expect(coco("rgb(foo, bar, baz)")).toBeUndefined();
     });
 
     it("does not support raw comma numbers by default", () => {
-      expect(coco("75, 79, 33")).toBe(undefined);
+      expect(coco("75, 79, 33")).toBeUndefined();
+    });
+
+    it("should reject malformed hex", () => {
+      expect(coco("##ff0000")).toBeUndefined();
+      expect(coco("#gg0000")).toBeUndefined();
+      expect(coco("#12345")).toBeUndefined();
+    });
+
+    it("should reject malformed RGB", () => {
+      expect(coco("rgb(255, 0)")).toBeUndefined();
+      expect(coco("rgb(255, 0, 0, 0, 0)")).toBeUndefined();
+      expect(coco("rgb(abc, 0, 0)")).toBeUndefined(); // Non-numeric
+    });
+
+    it("should handle out-of-range values", () => {
+      expect(coco("rgb(300, -50, 1000)")).toBe("#ff00ff"); // Clamped to 255, 0, 255
     });
   });
 
@@ -65,12 +86,47 @@ describe("Edge Cases", () => {
       expect(coco("oklch(0.5 0.1 400)", "oklch")).toBe("oklch(0.5 0.1 40)");
     });
 
+    it("hsl(0°) → rgb → hsl", () => {
+      const original = "hsl(0, 100%, 50%)";
+      const rgb = coco(original, "rgb");
+      const backToHsl = coco(rgb!, "hsl");
+      expect(coco.isEqual(original, backToHsl!)).toBe(true);
+    });
+
+    it("hsl with 0% saturation should be achromatic", () => {
+      const gray = coco("hsl(180, 0%, 50%)", "rgb");
+      const grayRgb = coco("rgb(128, 128, 128)", "rgb");
+      expect(coco.isEqual(gray, grayRgb)).toBe(true);
+    });
+
+    it("oklch(0.9 0.4 180) clamps to valid RGB", () => {
+      expect(coco("oklch(0.9 0.4 180)", "rgb")).toBe("rgb(0, 255, 232)");
+    });
+
     it("compares different colors", () => {
       expect(coco.isEqual("red", "blue")).toBe(false);
     });
 
     it("respects alpha in equality", () => {
       expect(coco.isEqual("#ff0000", "#ff000080")).toBe(false);
+    });
+  });
+
+  describe("OKLCH Round Trip", () => {
+    const testColors = [
+      "rgb(255, 0, 0)",
+      "rgb(0, 255, 0)",
+      "rgb(0, 0, 255)",
+      "rgb(128, 128, 128)",
+      "rgb(123, 45, 67)",
+    ];
+
+    testColors.forEach((color) => {
+      it(`${color} survives OKLCH round-trip`, () => {
+        const oklch = coco(color, "oklch");
+        const back = coco(oklch!, "rgb");
+        expect(coco.isEqual(color, back!)).toBe(true);
+      });
     });
   });
 
