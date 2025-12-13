@@ -132,8 +132,8 @@ export function oklabToRgb(color: ColorObject): ColorObject {
   const lms_hat = mul3x3(OKLAB_M2_INV, [L, a, b]);
   const lms = lms_hat.map((v) => v * v * v) as Vector3;
   const linRGB = mul3x3(OKLAB_M1_INV, lms);
-  const Chroma = Math.sqrt(a * a + b * b);
-  const threshold = Chroma > 0.01 ? 0.003 : 0.0001;
+  // Precise matrices are stable, so we only need a tiny threshold for epsilon noise
+  const threshold = 0.0001;
   const snappedLin = linRGB.map((v) => {
     if (Math.abs(v) < threshold) return 0;
     if (Math.abs(v - 1) < threshold) return 1;
