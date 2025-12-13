@@ -1,0 +1,212 @@
+import { describe, it, expect } from "vitest";
+import { createCoco, namedColors } from "../src/coco";
+import { ColorSpace } from "../src/core/types";
+
+const coco = createCoco({ namedColors });
+
+const formats: Array<ColorSpace> = [
+  "hex",
+  "hex3",
+  "hex4",
+  "hex6",
+  "hex8",
+  "rgb",
+  "hsl",
+  "hsv",
+  "xyz",
+  "lab",
+  "lch",
+  "oklab",
+  "oklch",
+];
+
+const colors: Record<string, Record<string, string>> = {
+  black: {
+    x11: "black",
+    hex3: "#000",
+    hex6: "#000000",
+    hex4: "#000f",
+    hex4_80: "#000c",
+    hex8: "#000000ff",
+    hex8_80: "#000000cc",
+    rgb: "rgb(0, 0, 0)",
+    rgb_80: "rgba(0, 0, 0, 0.8)",
+    hsl: "hsl(0, 0%, 0%)",
+    hsl_80: "hsla(0, 0%, 0%, 0.8)",
+    hsv: "hsv(0, 0%, 0%)",
+    hsv_80: "hsva(0, 0%, 0%, 0.8)",
+    xyz: "color(xyz 0 0 0)",
+    xyz_80: "color(xyz 0 0 0 / 0.8)",
+    lab: "lab(0 0 0)",
+    lab_80: "lab(0 0 0 / 0.8)",
+    lch: "lch(0 0 0)",
+    lch_80: "lch(0 0 0 / 0.8)",
+    oklab: "oklab(0 0 0)",
+    oklab_80: "oklab(0 0 0 / 0.8)",
+    oklch: "oklch(0 0 0)",
+    oklch_80: "oklch(0 0 0 / 0.8)",
+  },
+  nearBlack: {
+    hex3: "#010101",
+    hex6: "#010101",
+    hex4: "#010101ff",
+    hex4_80: "#010101cc",
+    hex8: "#010101ff",
+    hex8_80: "#010101cc",
+    rgb: "rgb(1, 1, 1)",
+    rgb_80: "rgba(1, 1, 1, 0.8)",
+    hsl: "hsl(0, 0%, 0.392%)",
+    hsl_80: "hsla(0, 0%, 0.392%, 0.8)",
+    hsv: "hsv(0, 0%, 0.392%)",
+    hsv_80: "hsva(0, 0%, 0.392%, 0.8)",
+    xyz: "color(xyz 0.0003 0.0003 0.0003)",
+    xyz_80: "color(xyz 0.0003 0.0003 0.0003 / 0.8)",
+    lab: "lab(0.274 0 0)",
+    lab_80: "lab(0.274 0 0 / 0.8)",
+    lch: "lch(0.274 0 0)",
+    lch_80: "lch(0.274 0 0 / 0.8)",
+    oklab: "oklab(0.067 0 0)",
+    oklab_80: "oklab(0.067 0 0 / 0.8)",
+    oklch: "oklch(0.067 0 0)",
+    oklch_80: "oklch(0.067 0 0 / 0.8)",
+  },
+  white: {
+    x11: "white",
+    hex3: "#fff",
+    hex6: "#ffffff",
+    hex4: "#ffff",
+    hex4_80: "#fffc",
+    hex8: "#ffffffff",
+    hex8_80: "#ffffffcc",
+    rgb: "rgb(255, 255, 255)",
+    rgb_80: "rgba(255, 255, 255, 0.8)",
+    hsl: "hsl(0, 0%, 100%)",
+    hsl_80: "hsla(0, 0%, 100%, 0.8)",
+    hsv: "hsv(0, 0%, 100%)",
+    hsv_80: "hsva(0, 0%, 100%, 0.8)",
+    xyz: "color(xyz 0.9505 1 1.0888)",
+    xyz_80: "color(xyz 0.9505 1 1.0888 / 0.8)",
+    lab: "lab(100 0 0)",
+    lab_80: "lab(100 0 0 / 0.8)",
+    lch: "lch(100 0 0)",
+    lch_80: "lch(100 0 0 / 0.8)",
+    oklab: "oklab(1 0 0)",
+    oklab_80: "oklab(1 0 0 / 0.8)",
+    oklch: "oklch(1 0 0)",
+    oklch_80: "oklch(1 0 0 / 0.8)",
+  },
+  red: {
+    x11: "red",
+    hex3: "#f00",
+    hex6: "#ff0000",
+    hex4: "#f00f",
+    hex4_80: "#f00c",
+    hex8: "#ff0000ff",
+    hex8_80: "#ff0000cc",
+    rgb: "rgb(255, 0, 0)",
+    rgb_80: "rgba(255, 0, 0, 0.8)",
+    hsl: "hsl(0, 100%, 50%)",
+    hsl_80: "hsla(0, 100%, 50%, 0.8)",
+    hsv: "hsv(0, 100%, 100%)",
+    hsv_80: "hsva(0, 100%, 100%, 0.8)",
+    xyz: "color(xyz 0.4125 0.2127 0.0193)",
+    xyz_80: "color(xyz 0.4125 0.2127 0.0193 / 0.8)",
+    lab: "lab(54.292 80.812 69.885)",
+    lab_80: "lab(54.292 80.812 69.885 / 0.8)",
+    lch: "lch(54.292 106.839 40.853)",
+    lch_80: "lch(54.292 106.839 40.853 / 0.8)",
+    oklab: "oklab(0.628 0.225 0.126)",
+    oklab_80: "oklab(0.628 0.225 0.126 / 0.8)",
+    oklch: "oklch(0.628 0.258 29.234)",
+    oklch_80: "oklch(0.628 0.258 29.234 / 0.8)",
+  },
+};
+
+describe("Conversions", () => {
+  Object.keys(colors).forEach((colorName) => {
+    describe(colorName, () => {
+      const variations = colors[colorName];
+
+      Object.keys(variations).forEach((variationName) => {
+        describe(variationName, () => {
+          const sourceColor = variations[variationName];
+          const [sourceFormat, transparency] = variationName.split("_");
+          const suffix = transparency ? `_${transparency}` : "";
+
+          formats.forEach((fmt) => {
+            const targetColor = variations[fmt + suffix];
+
+            it(fmt, () => {
+              if (fmt === "hex") {
+                if (transparency) {
+                  expect(coco(sourceColor, fmt)).toBe(
+                    variations["hex8" + suffix]
+                  );
+                } else {
+                  expect(coco(sourceColor, fmt)).toBe(variations["hex6"]);
+                }
+              } else if (fmt === "hex6") {
+                expect(coco(sourceColor, fmt)).toBe(variations["hex6"]);
+              } else if (fmt === "hex3") {
+                expect(coco(sourceColor, fmt)).toBe(variations["hex3"]);
+              } else {
+                expect(coco(sourceColor, fmt)).toBe(targetColor);
+              }
+            });
+
+            it(`isEqual(${sourceColor}, ${targetColor})`, () =>
+              expect(coco.isEqual(sourceColor, targetColor)).toBe(
+                targetColor ? true : false
+              ));
+          });
+
+          it("getType", () => {
+            if (sourceFormat.startsWith("hex")) {
+              expect(coco.getType(sourceColor)).toBe("hex");
+            } else {
+              expect(coco.getType(sourceColor)).toBe(sourceFormat);
+            }
+          });
+
+          it("getAlpha", () => {
+            if (transparency) {
+              expect(coco.getAlpha(sourceColor)).toBe(0.8);
+            } else {
+              expect(coco.getAlpha(sourceColor)).toBe(1);
+            }
+          });
+
+          it("setAlpha", () => {
+            if (sourceFormat === "x11") {
+              expect(coco.setAlpha(sourceColor, 0.8)).toBe(
+                variations["rgb_80"]
+              );
+            } else if (sourceFormat.startsWith("hex")) {
+              expect(coco.setAlpha(sourceColor, 0.8)).toBe(
+                variations["hex8_80"]
+              );
+            } else {
+              expect(coco.setAlpha(sourceColor, 0.8)).toBe(
+                variations[sourceFormat + "_80"]
+              );
+            }
+          });
+
+          it("removeAlpha", () => {
+            if (sourceFormat === "x11") {
+              expect(coco.removeAlpha(sourceColor)).toBe(variations["rgb"]);
+            } else if (sourceFormat.startsWith("hex")) {
+              expect(coco.removeAlpha(sourceColor)).toBe(variations["hex6"]);
+            } else {
+              expect(coco.removeAlpha(sourceColor)).toBe(
+                variations[sourceFormat]
+              );
+            }
+          });
+
+          it("isColor", () => expect(coco.isColor(sourceColor)).toBe(true));
+        });
+      });
+    });
+  });
+});
