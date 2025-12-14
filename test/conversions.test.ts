@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { createCoco, namedColors } from "../src";
-import { ColorSpace } from "../src/core/types";
+import { ColorType } from "../src/core/types";
 
 const coco = createCoco({ namedColors });
 
-const formats: Array<ColorSpace> = [
+const formats: Array<ColorType> = [
+  "name",
   "hex",
   "hex3",
   "hex4",
@@ -293,7 +294,8 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.968 -0.071 0.199 / 0.8)",
     oklch_80: "oklch(0.968 0.211 109.769 / 0.8)",
   },
-  cyan: {
+  aqua: {
+    name: "aqua",
     hex3: "#0ff",
     hex6: "#00ffff",
     hex4: "#0fff",
@@ -365,7 +367,8 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.64 0.091 -0.197 / 0.8)",
     oklch_80: "oklch(0.64 0.217 294.866 / 0.8)",
   },
-  magenta: {
+  fuchsia: {
+    name: "fuchsia",
     hex3: "#f0f",
     hex6: "#ff00ff",
     hex4: "#f0ff",
@@ -413,7 +416,8 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.872 -0.224 0.178 / 0.8)",
     oklch_80: "oklch(0.8712 0.2858 141.5305 / 0.8)",
   },
-  neonPink: {
+  deepPink: {
+    name: "deeppink",
     hex3: "#ff1493",
     hex6: "#ff1493",
     hex4: "#ff1493ff",
@@ -486,6 +490,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.677 0.093 8.413 / 0.8)",
   },
   oliveDrab: {
+    name: "olivedrab",
     hex3: "#6b8e23",
     hex6: "#6b8e23",
     hex4: "#6b8e23ff",
@@ -510,6 +515,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.599 0.137 126.322 / 0.8)",
   },
   midnightBlue: {
+    name: "midnightblue",
     hex3: "#191970",
     hex6: "#191970",
     hex4: "#191970ff",
@@ -534,6 +540,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.288 0.144 272.765 / 0.8)",
   },
   darkOliveGreen: {
+    name: "darkolivegreen",
     hex3: "#556b2f",
     hex6: "#556b2f",
     hex4: "#556b2fff",
@@ -558,6 +565,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.496 0.09 126.186 / 0.8)",
   },
   saddleBrown: {
+    name: "saddlebrown",
     hex3: "#8b4513",
     hex6: "#8b4513",
     hex4: "#8b4513ff",
