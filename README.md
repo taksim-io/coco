@@ -46,7 +46,7 @@ Pass these format strings as the second argument to `coco(color, format)`:
 - `'lab'`: Lab (e.g. `lab(53 80 67)`, `lab(53 80 67 / 0.5)`)
 - `'lch'`: LCH (e.g. `lch(53 104 40)`, `lch(53 104 40 / 0.5)`)
 - `'xyz'`: XYZ (e.g. `color(xyz 0.41 0.21 0.02)`, `color(xyz 0.4 0.2 0.02 / 0.5)`)
-- **X11 Names**: `red`, `blue`, etc. (Requires opt-in configuration)
+- `'name'`: Named Color (e.g. `red`, `blue`). Requires `namedColors` configuration. Returns undefined if no name is found.
 
 ### Utility Methods
 
@@ -91,10 +91,10 @@ const hue2rgb = (h) => coco(`hsl(${h}, 100%, 50%)`, "rgb");
 
 ### Advanced Usage: Tree Shaking & Custom Config
 
-By default, `coco` does not include the X11 named color map to keep bundle size smaller. If you want to include named colors, a custom color map or a custom name resolver, use `createCoco` factory function.
+By default, `coco` does not include the named color map to keep bundle size smaller. If you want to include named colors, a custom color map or a custom name resolver, use `createCoco` factory function.
 
 ```ts
-import { createCoco, namedColors } from "taksim-coco";
+import { coco, createCoco, namedColors } from "taksim-coco";
 
 // Default instance (without named colors)
 coco("red"); // undefined
@@ -106,15 +106,22 @@ cocoNamed("red"); // '#ff0000'
 cocoNamed("#f00"); // '#ff0000'
 
 // Custom name resolver
-const myCoco = createCoco({
+const cocoWithResolver = createCoco({
   nameResolver: (name) => (name === "brand" ? "#00AEEF" : undefined),
+  valueResolver: (color) =>
+    cocoWithResolver(color.meta?.originalInput, "hex3") === "#00AEEF"
+      ? "brand"
+      : undefined,
 });
 
-myCoco("brand"); // '#00aeef'
+cocoWithResolver("brand"); // '#00aeef'
+cocoWithResolver("#00aeef", "name"); // 'brand'
+cocoWithResolver("rgb(0, 174, 239)", "name"); // 'brand'
+cocoWithResolver("rgb(255, 255, 255)", "name"); // undefined
 ```
 
 If both `nameResolver` and `namedColors` are provided, `nameResolver` takes precedence.
 
 ## License
 
-MIT Copyright (c) 2015-2025 taksim.io
+MIT Copyright (c) 2015-2025

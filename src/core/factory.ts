@@ -1,10 +1,15 @@
 import { convert, parse, serialize } from "./convert";
-import { CocoConfig, CocoInstance, ColorSpace, ColorType } from "./types";
+import { CocoConfig, CocoInstance, ColorType } from "./types";
+import { reverseNamedColors } from "./utils";
 
 export function createCoco(config: CocoConfig = {}): CocoInstance {
+  if (config.namedColors && !config.namedColorsReverse) {
+    config.namedColorsReverse = reverseNamedColors(config.namedColors);
+  }
+
   const _coco = (
-    input: string,
-    targetFormat?: ColorSpace
+    input: string | undefined,
+    targetFormat?: ColorType
   ): string | undefined => {
     const color = parse(input, config);
 
@@ -12,14 +17,15 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
 
     targetFormat = targetFormat ?? "hex";
 
-    return serialize(convert(color, targetFormat), targetFormat);
+    return serialize(convert(color, targetFormat, config), targetFormat);
   };
 
   const coco = _coco as CocoInstance;
 
-  coco.isColor = (input: string) => !!parse(input, config);
+  coco.isColor = (input: string | undefined) => !!parse(input, config);
 
-  coco.getType = (input: string): ColorType | undefined => {
+  coco.getType = (input: string | undefined): ColorType | undefined => {
+    if (!input) return undefined;
     if (config.nameResolver?.(input) || config.namedColors?.[input]) {
       return "name";
     }
@@ -28,12 +34,18 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
     return p ? (input.startsWith("#") ? "hex" : p.space) : undefined;
   };
 
-  coco.getAlpha = (input: string): number => {
+  coco.getAlpha = (input: string | undefined): number | undefined => {
+    if (!input) return undefined;
     const alpha = parse(input, config)?.alpha ?? 1;
     return Math.round(alpha * 1000) / 1000;
   };
 
-  coco.setAlpha = (input: string, alpha: number): string | undefined => {
+  coco.setAlpha = (
+    input: string | undefined,
+    alpha: number | undefined
+  ): string | undefined => {
+    if (!input || !alpha) return undefined;
+
     const color = parse(input, config);
 
     if (!color) return undefined;
@@ -45,11 +57,11 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
     return serialize(color, inferredSpace);
   };
 
-  coco.removeAlpha = (input: string): string | undefined => {
+  coco.removeAlpha = (input: string | undefined): string | undefined => {
     return coco.setAlpha(input, 1);
   };
 
-  coco.isEqual = (c1: string, c2: string): boolean => {
+  coco.isEqual = (c1: string | undefined, c2: string | undefined): boolean => {
     if (c1?.toLowerCase() === c2?.toLowerCase()) return true;
     if (!c1 || !c2) return false;
 

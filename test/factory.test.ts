@@ -7,10 +7,19 @@ describe("Factory Configuration", () => {
     expect(leanCoco("red")).toBe(undefined);
   });
 
-  it("supports custom resolver", () => {
-    const cocoWithNameResolver = createCoco({
-      nameResolver: (n: string) => (n === "mycolor" ? "f00" : undefined),
+  it("supports custom name resolvers", () => {
+    const cocoWithResolver = createCoco({
+      nameResolver: (name) => (name === "mycolor" ? "#f00" : undefined),
+      valueResolver: (color) => {
+        return cocoWithResolver(color.meta?.originalInput, "hex3") === "#f00"
+          ? "mycolor"
+          : undefined;
+      },
     });
-    expect(cocoWithNameResolver("mycolor", "hex")).toBe("#ff0000");
+    expect(cocoWithResolver("mycolor", "hex")).toBe("#ff0000");
+    expect(cocoWithResolver("#ff0000", "name")).toBe("mycolor");
+    expect(cocoWithResolver("rgb(255, 0, 0)", "name")).toBe("mycolor");
+    expect(cocoWithResolver("rgb(255, 255, 255)", "name")).toBeUndefined();
+    expect(cocoWithResolver("rgb(0, 255, 0)", "name")).toBeUndefined();
   });
 });

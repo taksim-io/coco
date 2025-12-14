@@ -24,35 +24,79 @@ import {
 } from "../spaces/oklch";
 import { parseRgb, serializeRgb } from "../spaces/rgb";
 import { parseXyz, rgbToXyz, serializeXyz, xyzToRgb } from "../spaces/xyz";
-import { CocoConfig, ColorObject, ColorSpace, ParseResult } from "./types";
+import { CocoConfig, ColorObject, ColorType, ParseResult } from "./types";
 
 export function convert(
   color: ColorObject,
-  targetSpace: ColorSpace
+  targetType: ColorType,
+  config: CocoConfig = {}
 ): ColorObject {
-  if (color.space === targetSpace) return color;
+  if (color.space === targetType) return color;
 
   // Normalize source to RGB first
   const rgb = toRgbInternal(color);
 
   // If RGB was the target, we are done
-  if (targetSpace === "rgb") return rgb;
+  if (targetType === "rgb") return rgb;
 
   // Convert RGB to target
-  if (targetSpace === "hsl") return rgbToHsl(rgb);
-  if (targetSpace === "hsv") return rgbToHsv(rgb);
-  if (targetSpace === "oklch") return rgbToOklch(rgb);
-  if (targetSpace === "xyz") return rgbToXyz(rgb);
-  if (targetSpace === "lab") return rgbToLab(rgb);
-  if (targetSpace === "lch") return rgbToLch(rgb);
-  if (targetSpace === "oklab") return rgbToOklab(rgb);
+  if (targetType === "hsl") return rgbToHsl(rgb);
+  if (targetType === "hsv") return rgbToHsv(rgb);
+  if (targetType === "oklch") return rgbToOklch(rgb);
+  if (targetType === "xyz") return rgbToXyz(rgb);
+  if (targetType === "lab") return rgbToLab(rgb);
+  if (targetType === "lch") return rgbToLch(rgb);
+  if (targetType === "oklab") return rgbToOklab(rgb);
 
   // Hex variations
-  if (targetSpace.startsWith("hex")) {
+  if (targetType.startsWith("hex")) {
     return rgb; // Handled by serialize
   }
 
-  throw new Error(`Unsupported target space: ${targetSpace}`);
+  if (targetType === "name") {
+    // 1. Try value resolver
+    if (config.valueResolver) {
+      const name = config.valueResolver(color);
+      if (name) {
+        return {
+          space: "name",
+          coords: [0, 0, 0],
+          alpha: color.alpha,
+          meta: { ...color.meta, name },
+        };
+      }
+    }
+
+    // 2. Try named colors map
+    if (config.namedColorsReverse) {
+      const hex = serializeHex(toRgbInternal(color)); // #RRGGBB
+      const currentHex = hex.toLowerCase().replace("#", "");
+      let foundName = config.namedColorsReverse[currentHex];
+
+      if (!foundName && currentHex.length === 8 && currentHex.endsWith("ff")) {
+        foundName = config.namedColorsReverse[currentHex.substring(0, 6)];
+      }
+
+      if (foundName) {
+        return {
+          space: "name",
+          coords: [0, 0, 0],
+          alpha: color.alpha,
+          meta: { ...color.meta, name: foundName },
+        };
+      }
+    }
+
+    // Fallback: return "name" object without name property set (or undefined)
+    return {
+      space: "name",
+      coords: [0, 0, 0], // dummy
+      alpha: color.alpha,
+      meta: { ...color.meta, name: undefined },
+    };
+  }
+
+  throw new Error(`Unsupported target color type: ${targetType}`);
 }
 
 function toRgbInternal(color: ColorObject): ColorObject {
@@ -75,7 +119,7 @@ function toRgbInternal(color: ColorObject): ColorObject {
 }
 
 export function parse(
-  input: string,
+  input: string | undefined,
   { namedColors, nameResolver }: CocoConfig = {}
 ): ParseResult | undefined {
   if (!input) {
@@ -84,40 +128,49 @@ export function parse(
 
   input = input.trim();
 
+  let result: ParseResult;
+  const lower = input.toLowerCase();
+
   // Use resolver if provided
   if (nameResolver) {
     const resolved = nameResolver(input);
-
     if (resolved) {
-      return parseHex("#" + resolved.replace("#", ""));
+      result = parseHex("#" + resolved.replace("#", ""));
     }
   }
 
   // Use name map if provided
-  if (namedColors) {
+  if (!result && namedColors) {
     const resolved = namedColors[input];
-
     if (resolved) {
-      return parseHex("#" + resolved.replace("#", ""));
+      result = parseHex("#" + resolved.replace("#", ""));
     }
   }
 
-  if (input.startsWith("#")) return parseHex(input);
+  if (!result) {
+    if (input.startsWith("#")) result = parseHex(input);
+    else if (lower.startsWith("rgb")) result = parseRgb(input);
+    else if (lower.startsWith("hsl")) result = parseHsl(input);
+    else if (lower.startsWith("hsv")) result = parseHsv(input);
+    else if (lower.startsWith("oklch")) result = parseOklch(input);
+    else if (lower.startsWith("color(xyz")) result = parseXyz(input);
+    else if (lower.startsWith("lab")) result = parseLab(input);
+    else if (lower.startsWith("lch")) result = parseLch(input);
+    else if (lower.startsWith("oklab")) result = parseOklab(input);
+  }
 
-  const lower = input.toLowerCase();
-  if (lower.startsWith("rgb")) return parseRgb(input);
-  if (lower.startsWith("hsl")) return parseHsl(input);
-  if (lower.startsWith("hsv")) return parseHsv(input);
-  if (lower.startsWith("oklch")) return parseOklch(input);
-  if (lower.startsWith("color(xyz")) return parseXyz(input);
-  if (lower.startsWith("lab")) return parseLab(input);
-  if (lower.startsWith("lch")) return parseLch(input);
-  if (lower.startsWith("oklab")) return parseOklab(input);
+  if (result) {
+    result.meta = { ...result.meta, originalInput: input };
+    return result;
+  }
 
   return undefined;
 }
 
-export function serialize(color: ColorObject, format: ColorSpace): string {
+export function serialize(
+  color: ColorObject,
+  format: ColorType
+): string | undefined {
   if (format === "hex") return serializeHex(color);
   if (format === "hex3") return serializeHex3(color);
   if (format === "hex4") return serializeHex4(color);
@@ -131,6 +184,7 @@ export function serialize(color: ColorObject, format: ColorSpace): string {
   if (format === "lab") return serializeLab(color);
   if (format === "lch") return serializeLch(color);
   if (format === "oklab") return serializeOklab(color);
+  if (format === "name") return color.meta?.name;
 
   return serializeHex(color);
 }
