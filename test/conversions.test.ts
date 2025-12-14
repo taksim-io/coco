@@ -416,7 +416,7 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.872 -0.224 0.178 / 0.8)",
     oklch_80: "oklch(0.8712 0.2858 141.5305 / 0.8)",
   },
-  deepPink: {
+  deeppink: {
     name: "deeppink",
     hex3: "#ff1493",
     hex6: "#ff1493",
@@ -489,7 +489,7 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.677 0.092 0.014 / 0.8)",
     oklch_80: "oklch(0.677 0.093 8.413 / 0.8)",
   },
-  oliveDrab: {
+  olivedrab: {
     name: "olivedrab",
     hex3: "#6b8e23",
     hex6: "#6b8e23",
@@ -514,7 +514,7 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.6 -0.082 0.111 / 0.8)",
     oklch_80: "oklch(0.599 0.137 126.322 / 0.8)",
   },
-  midnightBlue: {
+  midnightblue: {
     name: "midnightblue",
     hex3: "#191970",
     hex6: "#191970",
@@ -539,7 +539,7 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.288 0.007 -0.143 / 0.8)",
     oklch_80: "oklch(0.288 0.144 272.765 / 0.8)",
   },
-  darkOliveGreen: {
+  darkolivegreen: {
     name: "darkolivegreen",
     hex3: "#556b2f",
     hex6: "#556b2f",
@@ -564,7 +564,7 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.496 -0.053 0.072 / 0.8)",
     oklch_80: "oklch(0.496 0.09 126.186 / 0.8)",
   },
-  saddleBrown: {
+  saddlebrown: {
     name: "saddlebrown",
     hex3: "#8b4513",
     hex6: "#8b4513",
