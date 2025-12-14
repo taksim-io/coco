@@ -21,7 +21,7 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
 
   coco.getType = (input: string): ColorType | undefined => {
     if (config.nameResolver?.(input) || config.namedColors?.[input]) {
-      return "x11";
+      return "name";
     }
 
     const p = parse(input, config);

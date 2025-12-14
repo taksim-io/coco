@@ -13,7 +13,7 @@ export type ColorSpace =
   | "lab"
   | "xyz";
 
-export type ColorType = "x11" | ColorSpace;
+export type ColorType = "name" | ColorSpace;
 export type ParseResult = ColorObject | undefined;
 export type NameResolver = (name: string) => string | undefined;
 
@@ -43,7 +43,7 @@ export interface CocoInstance {
   (color: string, targetFormat: ColorSpace): string;
   (color: string): string;
   isColor(input: string): boolean;
-  getType(input: string): ColorSpace | "x11" | undefined;
+  getType(input: string): ColorType | undefined;
   getAlpha(input: string): number;
   setAlpha(input: string, alpha: number): string | undefined;
   removeAlpha(input: string): string | undefined;

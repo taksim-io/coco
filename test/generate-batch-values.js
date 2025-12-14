@@ -1,6 +1,6 @@
 import { coco } from "../dist/taksim-coco.js";
 
-const x11 = [
+const names = [
   "black",
   "white",
   "gray",
@@ -45,7 +45,7 @@ const colors = {
 };
 
 const formats = [
-  "x11",
+  "name",
   "hex3",
   "hex6",
   "hex4",
@@ -66,8 +66,8 @@ for (const [name, rgb] of Object.entries(colors)) {
 
   // Solid
   formats.forEach((f) => {
-    if (f === "x11") {
-      let val = x11.find((c) => c === name);
+    if (f === "name") {
+      let val = names.find((c) => c === name);
 
       if (val) {
         console.log(`    ${f}: "${val}",`);
@@ -88,7 +88,7 @@ for (const [name, rgb] of Object.entries(colors)) {
   const rgb80 = rgb.replace(")", ", 0.8)").replace("rgb", "rgba");
 
   formats.forEach((f) => {
-    if (f === "x11") {
+    if (f === "name") {
       return;
     }
 

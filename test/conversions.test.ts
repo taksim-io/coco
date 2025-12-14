@@ -22,7 +22,7 @@ const formats: Array<ColorSpace> = [
 
 const colors: Record<string, Record<string, string>> = {
   black: {
-    x11: "black",
+    name: "black",
     hex3: "#000",
     hex6: "#000000",
     hex4: "#000f",
@@ -71,7 +71,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.067 0 0 / 0.8)",
   },
   white: {
-    x11: "white",
+    name: "white",
     hex3: "#fff",
     hex6: "#ffffff",
     hex4: "#ffff",
@@ -144,7 +144,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.218 0 0 / 0.8)",
   },
   red: {
-    x11: "red",
+    name: "red",
     hex3: "#f00",
     hex6: "#ff0000",
     hex4: "#f00f",
@@ -169,7 +169,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.628 0.258 29.234 / 0.8)",
   },
   gray: {
-    x11: "gray",
+    name: "gray",
     hex3: "#808080",
     hex6: "#808080",
     hex4: "#808080ff",
@@ -194,7 +194,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.6 0 0 / 0.8)",
   },
   green: {
-    x11: "green",
+    name: "green",
     hex3: "#008000",
     hex6: "#008000",
     hex4: "#008000ff",
@@ -219,7 +219,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.52 0.177 142.495 / 0.8)",
   },
   lime: {
-    x11: "lime",
+    name: "lime",
     hex3: "#0f0",
     hex6: "#00ff00",
     hex4: "#0f0f",
@@ -244,7 +244,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.866 0.295 142.495 / 0.8)",
   },
   blue: {
-    x11: "blue",
+    name: "blue",
     hex3: "#00f",
     hex6: "#0000ff",
     hex4: "#00ff",
@@ -269,7 +269,7 @@ const colors: Record<string, Record<string, string>> = {
     oklch_80: "oklch(0.452 0.313 264.052 / 0.8)",
   },
   yellow: {
-    x11: "yellow",
+    name: "yellow",
     hex3: "#ff0",
     hex6: "#ffff00",
     hex4: "#ff0f",
@@ -823,7 +823,7 @@ describe("Conversions", () => {
           });
 
           it("setAlpha", () => {
-            if (sourceFormat === "x11") {
+            if (sourceFormat === "name") {
               expect(coco.setAlpha(sourceColor, 0.8)).toBe(
                 variations["rgb_80"]
               );
@@ -839,7 +839,7 @@ describe("Conversions", () => {
           });
 
           it("removeAlpha", () => {
-            if (sourceFormat === "x11") {
+            if (sourceFormat === "name") {
               expect(coco.removeAlpha(sourceColor)).toBe(variations["rgb"]);
             } else if (sourceFormat.startsWith("hex")) {
               expect(coco.removeAlpha(sourceColor)).toBe(variations["hex6"]);
