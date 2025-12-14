@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [dts({ rollupTypes: true })],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/coco.ts"),
+      entry: resolve(__dirname, "src/index.ts"),
       name: "coco",
       fileName: "taksim-coco",
       formats: ["es", "umd", "cjs"],

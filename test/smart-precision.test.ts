@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createCoco } from "../src/coco";
+import { createCoco } from "../src";
 
 const coco = createCoco();
 

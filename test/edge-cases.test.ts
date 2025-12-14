@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { coco } from "../src/coco";
+import { createCoco } from "../src";
+
+const coco = createCoco();
 
 describe("Edge Cases", () => {
   describe("Core Parsing & Validation", () => {
