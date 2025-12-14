@@ -2,6 +2,9 @@
 
 Coco is a fast, lightweight, and modern JavaScript color manipulation library. It supports conversion between various formats including Hex, RGB, HSL, HSV, and modern color spaces like OKLCH. It is written in TypeScript and has zero dependencies.
 
+> [!IMPORTANT]
+> **v2.0.0 Released**: This version introduces breaking changes including stricter alpha precision (3 decimals), improved hue normalization, and minified outputs. Please check the [Changelog](CHANGELOG.md).
+
 ## Installation
 
 ```bash
@@ -28,15 +31,21 @@ coco("hsl(120, 100%, 50%)", "oklch"); // 'oklch(0.866 0.29 142.5)'
 
 ### Supported Formats
 
-- **Hex** (3, 4, 6, and 8 digits): `#f00`, `#ff0000`, `#f00c` (with alpha)
-- **RGB**: `rgb(255, 0, 0)`, `rgba(255, 0, 0, 0.5)`
-- **HSL**: `hsl(0, 100%, 50%)`, `hsla(...)`
-- **HSV**: `hsv(0, 100%, 100%)`
-- **OKLCH**: `oklch(0.5 0.2 250)`, `oklch(50% 0.2 250)`
-- **OKLab**: `oklab(0.63 0.22 0.12)`
-- **Lab**: `lab(53 80 67)`
-- **LCH**: `lch(53 104 40)`
-- **XYZ**: `color(xyz 0.41 0.21 0.02)`
+Pass these format strings as the second argument to `coco(color, format)`:
+
+- `'hex'`: Automatic Hex (defaults to 6 digits, or 8 with alpha)
+- `'hex3'`: 3-digit Hex (e.g. `#f00`)
+- `'hex4'`: 4-digit Hex with Alpha (e.g. `#f00c`)
+- `'hex6'`: 6-digit Hex (e.g. `#ff0000`)
+- `'hex8'`: 8-digit Hex with Alpha (e.g. `#ff0000cc`)
+- `'rgb'`: RGB/RGBA (e.g. `rgb(255, 0, 0)`, `rgba(255, 0, 0, 0.5)`)
+- `'hsl'`: HSL/HSLA (e.g. `hsl(0, 100%, 50%)`, `hsla(0, 100%, 50%, 0.5)`)
+- `'hsv'`: HSV/HSVA (e.g. `hsv(0, 100%, 100%)`, `hsva(0, 100%, 100%, 0.5)`)
+- `'oklch'`: OKLCH (e.g. `oklch(0.6 0.2 250)`, `oklch(60% 0.25 350 / 0.5)`)
+- `'oklab'`: OKLab (e.g. `oklab(0.63 0.22 0.12)`, `oklab(0.6 0.2 0.1 / 0.5)`)
+- `'lab'`: Lab (e.g. `lab(53 80 67)`, `lab(53 80 67 / 0.5)`)
+- `'lch'`: LCH (e.g. `lch(53 104 40)`, `lch(53 104 40 / 0.5)`)
+- `'xyz'`: XYZ (e.g. `color(xyz 0.41 0.21 0.02)`, `color(xyz 0.4 0.2 0.02 / 0.5)`)
 - **X11 Names**: `red`, `blue`, etc. (Requires opt-in configuration)
 
 ### Utility Methods
@@ -59,7 +68,7 @@ coco.getType("oklch(0.5 0.1 100)"); // 'oklch'
 
 // Get alpha channel (0-1)
 coco.getAlpha("rgba(0, 0, 0, 0.5)"); // 0.5
-coco.getAlpha("#ff000080"); // 0.5 (approx)
+coco.getAlpha("#ff000080"); // 0.502
 coco.getAlpha("red"); // 1
 
 // Compare colors (converts to RGB for comparison)
@@ -68,32 +77,16 @@ coco.isEqual("rgb(0,0,0)", "hsl(0,0%,0%)"); // true
 coco.isEqual("rgba(0,0,0,0.5)", "rgba(0,0,0,1)"); // false
 ```
 
-### Hue Helpers
+### Recipes
 
-Coco includes utilities to convert a hue angle (0-360) directly to other formats using saturation=100%, lightness=50% (for HSL) or value=100% (for HSV).
+Coco is designed to be minimal. Instead of built-in helpers, you can easily create your own:
 
 ```ts
-import {
-  hue2hex,
-  hue2rgb,
-  hue2hsl,
-  hue2hsv,
-  hue2oklch,
-  hue2lch,
-  hue2lab,
-  hue2xyz,
-  hue2oklab,
-} from "taksim-coco";
+// Hue to Hex (Saturation 100%, Lightness 50%)
+const hue2hex = (h) => coco(`hsl(${h}, 100%, 50%)`, "hex");
 
-hue2hex(0); // '#ff0000' (Red)
-hue2rgb(120); // 'rgb(0, 255, 0)' (Green)
-hue2hsl(240); // 'hsl(240, 100%, 50%)' (Blue)
-hue2hsv(300); // 'hsv(300, 100%, 100%)' (Magenta)
-hue2oklch(180); // 'oklch(0.7 0.2 180)' (Cyan-ish)
-hue2lch(40); // 'lch(53 104 40)' (Orange-ish)
-hue2lab(0); // 'lab(53 80 67)' (Red-ish)
-hue2xyz(120); // 'color(xyz 0.41 0.21 0.02)'
-hue2oklab(0); // 'oklab(0.7 0.2 0.12)'
+// Hue to RGB (Saturation 100%, Lightness 50%)
+const hue2rgb = (h) => coco(`hsl(${h}, 100%, 50%)`, "rgb");
 ```
 
 ### Advanced Usage: Tree Shaking & Custom Config
