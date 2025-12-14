@@ -1,7 +1,7 @@
 {
   "name": "taksim-coco",
   "description": "A fast and lightweight javascript color conversion library.",
-  "version": "0.1.3",
+  "version": "2.0.0",
   "type": "module",
   "main": "./dist/taksim-coco.umd.cjs",
   "module": "./dist/taksim-coco.js",
