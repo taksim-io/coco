@@ -132,6 +132,21 @@ describe("Edge Cases", () => {
     });
   });
 
+  describe("All Formats Round Trip", () => {
+    const intialColor = "#f00";
+    const rgb = coco(intialColor, "rgb");
+    const hsl = coco(rgb, "hsl");
+    const hsv = coco(hsl, "hsv");
+    const lab = coco(hsv, "lab");
+    const lch = coco(lab, "lch");
+    const xyz = coco(lch, "xyz");
+    const oklab = coco(xyz, "oklab");
+    const oklch = coco(oklab, "oklch");
+    const hex3 = coco(oklch, "hex3");
+
+    it("round trip", () => expect(coco.isEqual(intialColor, hex3)).toBe(true));
+  });
+
   describe("Same Color With Multiple Names", () => {
     it("survives named color round-trip", () => {
       // #808080 maps to 'grey' (canonical) because it appears last in the map
