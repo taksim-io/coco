@@ -174,5 +174,18 @@ describe("Edge Cases", () => {
       expect(coco.setAlpha("rgba(0, 0, 0, 0.5)", 0.8)).toBe(
         "rgba(0, 0, 0, 0.8)"
       ));
+
+    it("checks for alpha existence with hasAlpha", () => {
+      const coco = createCoco();
+      expect(coco.hasAlpha("#ff0000")).toBe(false);
+      expect(coco.hasAlpha("#ff0000ff")).toBe(false);
+      expect(coco.hasAlpha("#ff000080")).toBe(true);
+      expect(coco.hasAlpha("rgb(255, 0, 0)")).toBe(false);
+      expect(coco.hasAlpha("rgba(255, 0, 0, 1)")).toBe(false);
+      expect(coco.hasAlpha("rgba(255, 0, 0, 0.5)")).toBe(true);
+      expect(coco.hasAlpha("invalid")).toBe(false);
+      expect(coco.hasAlpha(undefined)).toBe(false);
+      expect(coco.hasAlpha("")).toBe(false);
+    });
   });
 });

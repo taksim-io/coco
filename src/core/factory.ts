@@ -61,6 +61,13 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
     return coco.setAlpha(input, 1);
   };
 
+  coco.hasAlpha = (input: string | undefined): boolean => {
+    if (!input) return false;
+    const color = parse(input, config);
+    if (!color) return false;
+    return color.alpha < 1;
+  };
+
   coco.isEqual = (c1: string | undefined, c2: string | undefined): boolean => {
     if (c1?.toLowerCase() === c2?.toLowerCase()) return true;
     if (!c1 || !c2) return false;

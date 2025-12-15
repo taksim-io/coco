@@ -55,5 +55,6 @@ export interface CocoInstance {
     alpha: number | undefined
   ): string | undefined;
   removeAlpha(input: string | undefined): string | undefined;
+  hasAlpha(input: string | undefined): boolean;
   isEqual(c1: string | undefined, c2: string | undefined): boolean;
 }
