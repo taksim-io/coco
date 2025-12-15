@@ -34,21 +34,21 @@ coco("#f00", "all"); // { name: 'red', rgb: 'rgb(255, 0, 0)', ... }
 
 Pass these format strings as the second argument to `coco(color, format)`:
 
-- `'hex'`: Automatic Hex (defaults to 6 digits, or 8 with alpha)
-- `'hex3'`: 3-digit Hex (e.g. `#f00`)
-- `'hex4'`: 4-digit Hex with Alpha (e.g. `#f00c`)
-- `'hex6'`: 6-digit Hex (e.g. `#ff0000`)
-- `'hex8'`: 8-digit Hex with Alpha (e.g. `#ff0000cc`)
-- `'rgb'`: RGB/RGBA (e.g. `rgb(255, 0, 0)`, `rgba(255, 0, 0, 0.5)`)
-- `'hsl'`: HSL/HSLA (e.g. `hsl(0, 100%, 50%)`, `hsla(0, 100%, 50%, 0.5)`)
-- `'hsv'`: HSV/HSVA (e.g. `hsv(0, 100%, 100%)`, `hsva(0, 100%, 100%, 0.5)`)
-- `'oklch'`: OKLCH (e.g. `oklch(0.6 0.2 250)`, `oklch(60% 0.25 350 / 0.5)`)
-- `'oklab'`: OKLab (e.g. `oklab(0.63 0.22 0.12)`, `oklab(0.6 0.2 0.1 / 0.5)`)
-- `'lab'`: Lab (e.g. `lab(53 80 67)`, `lab(53 80 67 / 0.5)`)
-- `'lch'`: LCH (e.g. `lch(53 104 40)`, `lch(53 104 40 / 0.5)`)
-- `'xyz'`: XYZ (e.g. `color(xyz 0.41 0.21 0.02)`, `color(xyz 0.4 0.2 0.02 / 0.5)`)
-- `'name'`: Named Color (e.g. `red`, `blue`). Requires `namedColors` configuration. Returns undefined if no name is found.
-- `'all'`: Returns an object containing all valid conversions for a given color.
+- `hex`: Automatic Hex (defaults to 6 digits, or 8 with alpha)
+- `hex3`: 3-digit Hex (e.g. `#f00`)
+- `hex4`: 4-digit Hex with Alpha (e.g. `#f00c`)
+- `hex6`: 6-digit Hex (e.g. `#ff0000`)
+- `hex8`: 8-digit Hex with Alpha (e.g. `#ff0000cc`)
+- `rgb`: RGB/RGBA (e.g. `rgb(255, 0, 0)`, `rgba(255, 0, 0, 0.5)`)
+- `hsl`: HSL/HSLA (e.g. `hsl(0, 100%, 50%)`, `hsla(0, 100%, 50%, 0.5)`)
+- `hsv`: HSV/HSVA (e.g. `hsv(0, 100%, 100%)`, `hsva(0, 100%, 100%, 0.5)`)
+- `oklch`: OKLCH (e.g. `oklch(0.6 0.2 250)`, `oklch(60% 0.25 350 / 0.5)`)
+- `oklab`: OKLab (e.g. `oklab(0.63 0.22 0.12)`, `oklab(0.6 0.2 0.1 / 0.5)`)
+- `lab`: Lab (e.g. `lab(53 80 67)`, `lab(53 80 67 / 0.5)`)
+- `lch`: LCH (e.g. `lch(53 104 40)`, `lch(53 104 40 / 0.5)`)
+- `xyz`: XYZ (e.g. `color(xyz 0.41 0.21 0.02)`, `color(xyz 0.4 0.2 0.02 / 0.5)`)
+- `name`: Named Color (e.g. `red`, `blue`). Requires `namedColors` configuration. Returns undefined if no name is found.
+- `all`: Returns an object containing all valid conversions for a given color.
 
 ### Utility Methods
 
