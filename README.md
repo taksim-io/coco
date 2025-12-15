@@ -48,6 +48,7 @@ Pass these format strings as the second argument to `coco(color, format)`:
 - `'lch'`: LCH (e.g. `lch(53 104 40)`, `lch(53 104 40 / 0.5)`)
 - `'xyz'`: XYZ (e.g. `color(xyz 0.41 0.21 0.02)`, `color(xyz 0.4 0.2 0.02 / 0.5)`)
 - `'name'`: Named Color (e.g. `red`, `blue`). Requires `namedColors` configuration. Returns undefined if no name is found.
+- `'all'`: Returns an object containing all valid conversions for a given color.
 
 ### Utility Methods
 
