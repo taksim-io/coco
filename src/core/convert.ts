@@ -26,6 +26,23 @@ import { parseRgb, serializeRgb } from "../spaces/rgb";
 import { parseXyz, rgbToXyz, serializeXyz, xyzToRgb } from "../spaces/xyz";
 import { CocoConfig, ColorObject, ColorType, ParseResult } from "./types";
 
+const SUPPORTED_FORMATS: Array<ColorType> = [
+  "name",
+  "hex",
+  "hex3",
+  "hex4",
+  "hex6",
+  "hex8",
+  "rgb",
+  "hsl",
+  "hsv",
+  "xyz",
+  "lab",
+  "lch",
+  "oklab",
+  "oklch",
+];
+
 export function convert(
   color: ColorObject,
   targetType: ColorType,
@@ -97,6 +114,32 @@ export function convert(
   }
 
   throw new Error(`Unsupported target color type: ${targetType}`);
+}
+
+export function convertToAll(
+  input: string | undefined,
+  config: CocoConfig
+): Partial<Record<ColorType, string>> {
+  const result: Partial<Record<ColorType, string>> = {};
+
+  if (!input) return result;
+
+  const color = parse(input, config);
+
+  if (!color) return result;
+
+  SUPPORTED_FORMATS.forEach((fmt) => {
+    try {
+      const val = serialize(convert(color, fmt, config), fmt);
+      if (val && val !== input) {
+        result[fmt] = val;
+      }
+    } catch (e) {
+      // ignore
+    }
+  });
+
+  return result;
 }
 
 function toRgbInternal(color: ColorObject): ColorObject {

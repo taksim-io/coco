@@ -1,4 +1,4 @@
-import { convert, parse, serialize } from "./convert";
+import { convert, convertToAll, parse, serialize } from "./convert";
 import { CocoConfig, CocoInstance, ColorType } from "./types";
 import { reverseNamedColors } from "./utils";
 
@@ -9,8 +9,12 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
 
   const _coco = (
     input: string | undefined,
-    targetFormat?: ColorType
-  ): string | undefined => {
+    targetFormat?: ColorType | "all"
+  ): string | Record<string, string> | undefined => {
+    if (targetFormat === "all") {
+      return convertToAll(input, config);
+    }
+
     const color = parse(input, config);
 
     if (!color) return undefined;

@@ -45,6 +45,10 @@ export interface CocoConfig {
 }
 
 export interface CocoInstance {
+  (
+    color: string | undefined,
+    targetFormat: "all"
+  ): Record<string, string> | undefined;
   (color: string | undefined, targetFormat: ColorType): string | undefined;
   (color: string | undefined): string | undefined;
   isColor(input: string | undefined): boolean;

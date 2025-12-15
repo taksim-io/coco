@@ -188,4 +188,39 @@ describe("Edge Cases", () => {
       expect(coco.hasAlpha("")).toBe(false);
     });
   });
+
+  describe("Supports Conversion To All Formats", () => {
+    it("converts to all formats excluding input", () => {
+      const coco = createCoco({ namedColors });
+      const result = coco("red", "all");
+
+      expect(result).toBeDefined();
+
+      if (!result) return;
+
+      expect(result.hex).toBe("#ff0000");
+      expect(result.rgb).toBe("rgb(255, 0, 0)");
+
+      // Input was "red", so "name" should be excluded if it serializes to "red"
+      // "name" serializer returns "red". Input is "red".
+      expect(result.name).toBeUndefined();
+
+      // Check that other formats are present
+      expect(result.hsl).toBeDefined();
+      expect(result.oklch).toBeDefined();
+    });
+
+    it("converts hex to all including name", () => {
+      const coco = createCoco({ namedColors });
+      const result = coco("#ff0000", "all");
+
+      expect(result).toBeDefined();
+
+      if (!result) return;
+
+      expect(result.name).toBe("red");
+      expect(result.hex6).toBeUndefined();
+      expect(result.hex3).toBe("#f00");
+    });
+  });
 });
