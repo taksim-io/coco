@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { createCoco } from "../src";
+import { createCoco, namedColors } from "../src";
 
-const coco = createCoco();
+const coco = createCoco({ namedColors });
 
 describe("Edge Cases", () => {
   describe("Core Parsing & Validation", () => {
@@ -129,6 +129,16 @@ describe("Edge Cases", () => {
         const back = coco(oklch!, "rgb");
         expect(coco.isEqual(color, back!)).toBe(true);
       });
+    });
+  });
+
+  describe("Same Color With Multiple Names", () => {
+    it("survives named color round-trip", () => {
+      // #808080 maps to 'grey' (canonical) because it appears last in the map
+      expect(coco("#808080", "name")).toBe("grey");
+
+      expect(coco("gray", "hex")).toBe("#808080");
+      expect(coco("grey", "hex")).toBe("#808080");
     });
   });
 

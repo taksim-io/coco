@@ -169,8 +169,8 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.628 0.225 0.126 / 0.8)",
     oklch_80: "oklch(0.628 0.258 29.234 / 0.8)",
   },
-  gray: {
-    name: "gray",
+  grey: {
+    name: "grey",
     hex3: "#808080",
     hex6: "#808080",
     hex4: "#808080ff",
@@ -294,8 +294,8 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.968 -0.071 0.199 / 0.8)",
     oklch_80: "oklch(0.968 0.211 109.769 / 0.8)",
   },
-  aqua: {
-    name: "aqua",
+  cyan: {
+    name: "cyan",
     hex3: "#0ff",
     hex6: "#00ffff",
     hex4: "#0fff",
@@ -367,8 +367,8 @@ const colors: Record<string, Record<string, string>> = {
     oklab_80: "oklab(0.64 0.091 -0.197 / 0.8)",
     oklch_80: "oklch(0.64 0.217 294.866 / 0.8)",
   },
-  fuchsia: {
-    name: "fuchsia",
+  magenta: {
+    name: "magenta",
     hex3: "#f0f",
     hex6: "#ff00ff",
     hex4: "#f0ff",
