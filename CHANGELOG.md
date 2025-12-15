@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.1.1] - 2025-12-15
+
+### Updated
+
+- Updated dependencies to latest versions.
+
+### Fixed
+
+- **Named Color Consistency**: Resolved ambiguity in reverse named color lookups. The library now deterministically returns the canonical name (e.g., `grey` instead of `gray`, `cyan` instead of `aqua`) when converting to "name".
+- **Named Color Parsing**: "Name" target format is now correctly handled in the core conversion logic.
+
 ## [2.1.0] - 2025-12-15
 
 ### Added
