@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0] - 2025-12-15
+
+### Added
+
+- **Conversion to All Formats**: New `coco(color, "all")` signature returns an object containing all valid conversions for a given color.
+- **Alpha Check**: New `coco.hasAlpha(value)` utility method to check for transparency.
+- **Reverse Resolve Configuration**: Added `valueResolver` to configuration to allow custom logic when resolving colors back to names.
+- **Improved Type Exports**: All core types are now exported from the root entry point.
+
+### Fixed
+
+- **Named Color Consistency**: Resolved ambiguity in reverse named color lookups. The library now deterministically returns the canonical name (e.g., `grey` instead of `gray`, `cyan` instead of `aqua`) when converting to "name".
+- **Named Color Parsing**: "Name" target format is now correctly handled in the core conversion logic.
+
 ## [2.0.0] - 2025-12-13
 
 ### ⚠️ Breaking Changes
