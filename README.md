@@ -54,6 +54,7 @@ Pass these format strings as the second argument to `coco(color, format)`:
 - `coco.getType(input)`: Get the format type (e.g. `'rgb'`, `'hex'`, `'name'`).
 - `coco.getAlpha(input)`: Get the alpha channel value (0-1).
 - `coco.setAlpha(input, alpha)`: Set the alpha channel (0-1). returns updated string.
+- `coco.hasAlpha(input)`: Check if the color has an alpha channel.
 - `coco.removeAlpha(input)`: Remove the alpha channel (sets to 1).
 - `coco.isEqual(c1, c2)`: Compare two colors for equality.
 
