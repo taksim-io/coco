@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.2] - 2025-12-15
+
+### Updated
+
+- Update README.md to remove single quotes from format definitions.
+
+### Added
+
+- **All Formats Round Trip**: Add a unit test to verify that all formats round trip correctly.
+
 ## [2.1.1] - 2025-12-15
 
 ### Updated
