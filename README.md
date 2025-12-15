@@ -26,7 +26,8 @@ coco("#f00", "hsl"); // 'hsl(0, 100%, 50%)'
 coco("oklch(60% 0.1 180)", "hex"); // '#009a7b'
 coco("hsl(120, 100%, 50%)", "oklch"); // 'oklch(0.866 0.29 142.5)'
 
-// For named colors (e.g. "red", "blue"), see "Named Colors" section below.
+// Convert to all supported formats (returns an object)
+coco("#f00", "all"); // { name: 'red', rgb: 'rgb(255, 0, 0)', ... }
 ```
 
 ### Supported Formats
