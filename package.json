@@ -1,7 +1,7 @@
 {
   "name": "@f12io/coco",
   "description": "A fast and lightweight javascript color conversion library.",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "type": "module",
   "main": "./dist/f12io-coco.umd.cjs",
   "module": "./dist/f12io-coco.js",
