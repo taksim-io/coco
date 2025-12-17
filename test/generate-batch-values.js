@@ -1,4 +1,4 @@
-import { coco } from "../dist/taksim-coco.js";
+import { coco } from "../dist/f12io-coco.js";
 
 const names = [
   "black",

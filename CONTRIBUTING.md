@@ -68,10 +68,10 @@ npm run build
 
 This generates:
 
-- `dist/taksim-coco.js` (ESM)
-- `dist/taksim-coco.cjs` (CommonJS)
-- `dist/taksim-coco.umd.cjs` (UMD)
-- `dist/taksim-coco.d.ts` (TypeScript Declarations)
+- `dist/f12io-coco.js` (ESM)
+- `dist/f12io-coco.cjs` (CommonJS)
+- `dist/f12io-coco.umd.cjs` (UMD)
+- `dist/f12io-coco.d.ts` (TypeScript Declarations)
 
 ## Submitting a Pull Request
 

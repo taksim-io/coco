@@ -8,7 +8,7 @@ Coco is a fast, lightweight, and modern JavaScript color manipulation library. I
 ## Installation
 
 ```bash
-npm install taksim-coco
+npm install @f12io/coco
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ npm install taksim-coco
 Coco provides a simple, unified API for parsing and converting colors.
 
 ```ts
-import { coco } from "taksim-coco";
+import { coco } from "@f12io/coco";
 
 // Basic conversion to Hex (default)
 coco("rgb(255, 0, 0)"); // '#ff0000'
@@ -97,7 +97,7 @@ const hue2rgb = (h) => coco(`hsl(${h}, 100%, 50%)`, "rgb");
 By default, `coco` does not include the named color map to keep bundle size smaller. If you want to include named colors, a custom color map or a custom name resolver, use `createCoco` factory function.
 
 ```ts
-import { coco, createCoco, namedColors } from "taksim-coco";
+import { coco, createCoco, namedColors } from "@f12io/coco";
 
 // Default instance (without named colors)
 coco("red"); // undefined

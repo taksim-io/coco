@@ -9,7 +9,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "coco",
-      fileName: "taksim-coco",
+      fileName: "f12io-coco",
       formats: ["es", "umd", "cjs"],
     },
     minify: true,

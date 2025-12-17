@@ -1,15 +1,15 @@
 {
-  "name": "taksim-coco",
+  "name": "@f12io/coco",
   "description": "A fast and lightweight javascript color conversion library.",
   "version": "2.1.2",
   "type": "module",
-  "main": "./dist/taksim-coco.umd.cjs",
-  "module": "./dist/taksim-coco.js",
-  "types": "./dist/taksim-coco.d.ts",
+  "main": "./dist/f12io-coco.umd.cjs",
+  "module": "./dist/f12io-coco.js",
+  "types": "./dist/f12io-coco.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/taksim-coco.js",
-      "require": "./dist/taksim-coco.umd.cjs"
+      "import": "./dist/f12io-coco.js",
+      "require": "./dist/f12io-coco.umd.cjs"
     }
   },
   "scripts": {
@@ -21,7 +21,7 @@
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
     "prepublishOnly": "npm run build"
   },
-  "homepage": "https://github.com/taksim-io/coco",
+  "homepage": "https://github.com/f12io/coco",
   "keywords": [
     "color",
     "conversion",
@@ -36,10 +36,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/taksim-io/coco.git"
+    "url": "https://github.com/f12io/coco.git"
   },
   "bugs": {
-    "url": "https://github.com/taksim-io/coco/issues"
+    "url": "https://github.com/f12io/coco/issues"
   },
   "license": "MIT",
   "devDependencies": {
