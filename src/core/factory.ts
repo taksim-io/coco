@@ -48,7 +48,10 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
     input: string | undefined,
     alpha: number | undefined
   ): string | undefined => {
-    if (!input || !alpha) return undefined;
+    // Guard the argument, not its truthiness: 0 is a valid (fully transparent) alpha.
+    if (!input || typeof alpha !== "number" || Number.isNaN(alpha)) {
+      return undefined;
+    }
 
     const color = parse(input, config);
 
@@ -62,6 +65,16 @@ export function createCoco(config: CocoConfig = {}): CocoInstance {
   };
 
   coco.removeAlpha = (input: string | undefined): string | undefined => {
+    if (!input) return undefined;
+
+    const color = parse(input, config);
+
+    if (!color) return undefined;
+
+    // Already opaque: there is nothing to remove, so leave the notation alone.
+    // Re-serializing here would rewrite names and short hex (red -> rgb(...), #f00 -> #ff0000).
+    if (color.alpha >= 1) return input;
+
     return coco.setAlpha(input, 1);
   };
 

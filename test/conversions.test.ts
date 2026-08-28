@@ -847,9 +847,11 @@ describe("Conversions", () => {
           });
 
           it("removeAlpha", () => {
-            if (sourceFormat === "name") {
-              expect(coco.removeAlpha(sourceColor)).toBe(variations["rgb"]);
+            if (!transparency) {
+              // Nothing to remove: the input is returned untouched, notation included.
+              expect(coco.removeAlpha(sourceColor)).toBe(sourceColor);
             } else if (sourceFormat.startsWith("hex")) {
+              // Alpha was dropped, so the color is re-serialized as long hex.
               expect(coco.removeAlpha(sourceColor)).toBe(variations["hex6"]);
             } else {
               expect(coco.removeAlpha(sourceColor)).toBe(

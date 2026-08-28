@@ -57,7 +57,7 @@ Pass these format strings as the second argument to `coco(color, format)`:
 - `coco.getAlpha(input)`: Get the alpha channel value (0-1).
 - `coco.setAlpha(input, alpha)`: Set the alpha channel (0-1). returns updated string.
 - `coco.hasAlpha(input)`: Check if the color has an alpha channel.
-- `coco.removeAlpha(input)`: Remove the alpha channel (sets to 1).
+- `coco.removeAlpha(input)`: Remove the alpha channel. Colors that are already opaque are returned unchanged.
 - `coco.isEqual(c1, c2)`: Compare two colors for equality.
 
 ```ts
@@ -111,10 +111,7 @@ cocoNamed("#f00"); // '#ff0000'
 // Custom name resolver
 const cocoWithResolver = createCoco({
   nameResolver: (name) => (name === "brand" ? "#00AEEF" : undefined),
-  valueResolver: (color) =>
-    cocoWithResolver(color.meta?.originalInput, "hex3") === "#00AEEF"
-      ? "brand"
-      : undefined,
+  valueResolver: (color) => (cocoWithResolver(color.meta?.originalInput, "hex3") === "#00AEEF" ? "brand" : undefined),
 });
 
 cocoWithResolver("brand"); // '#00aeef'

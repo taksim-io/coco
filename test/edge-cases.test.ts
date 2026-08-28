@@ -190,6 +190,42 @@ describe("Edge Cases", () => {
         "rgba(0, 0, 0, 0.8)"
       ));
 
+    it("accepts 0 as a fully transparent alpha", () => {
+      expect(coco.setAlpha("#ff0000", 0)).toBe("#ff000000");
+      expect(coco.setAlpha("rgb(255, 0, 0)", 0)).toBe("rgba(255, 0, 0, 0)");
+    });
+
+    it("still rejects a missing alpha argument", () => {
+      expect(coco.setAlpha("#ff0000", undefined)).toBeUndefined();
+      expect(coco.setAlpha("#ff0000", NaN)).toBeUndefined();
+    });
+
+    it("removeAlpha leaves an already opaque color untouched", () => {
+      expect(coco.removeAlpha("red")).toBe("red");
+      expect(coco.removeAlpha("#f00")).toBe("#f00");
+      expect(coco.removeAlpha("#ff0000")).toBe("#ff0000");
+      expect(coco.removeAlpha("#ff0000ff")).toBe("#ff0000ff");
+      expect(coco.removeAlpha("rgb(255, 0, 0)")).toBe("rgb(255, 0, 0)");
+      expect(coco.removeAlpha("rgba(255, 0, 0, 1)")).toBe("rgba(255, 0, 0, 1)");
+    });
+
+    it("removeAlpha strips alpha while keeping the notation", () => {
+      expect(coco.removeAlpha("rgba(255, 0, 0, 0.5)")).toBe("rgb(255, 0, 0)");
+      expect(coco.removeAlpha("hsla(0, 100%, 50%, 0.5)")).toBe(
+        "hsl(0, 100%, 50%)"
+      );
+      expect(coco.removeAlpha("lch(50 50 50 / 0.5)")).toBe("lch(50 50 50)");
+      // Hex is re-serialized long, since the short form cannot always represent it.
+      expect(coco.removeAlpha("#ff0000cc")).toBe("#ff0000");
+      expect(coco.removeAlpha("#f00c")).toBe("#ff0000");
+    });
+
+    it("removeAlpha returns undefined for invalid input", () => {
+      expect(coco.removeAlpha("invalid")).toBeUndefined();
+      expect(coco.removeAlpha(undefined)).toBeUndefined();
+      expect(coco.removeAlpha("")).toBeUndefined();
+    });
+
     it("checks for alpha existence with hasAlpha", () => {
       const coco = createCoco();
       expect(coco.hasAlpha("#ff0000")).toBe(false);
