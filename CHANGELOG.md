@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0] - 2026-08-28
+
+### ⚠️ Breaking Changes
+
+- **Alpha Removal Preserves Notation**: `coco.removeAlpha` now returns already-opaque
+  colors unchanged instead of re-serializing them. `removeAlpha("red")` returns `"red"`
+  (was `"rgb(255, 0, 0)"`) and `removeAlpha("#f00")` returns `"#f00"` (was `"#ff0000"`).
+  Colors that actually carry alpha are still re-serialized, so `#f00c` -> `#ff0000`.
+- **Zero Alpha Accepted**: `coco.setAlpha(color, 0)` now returns a fully transparent
+  color instead of `undefined`. A missing or `NaN` alpha is still rejected.
+
 ## [2.1.9] - 2026-06-16
 
 ### Added
