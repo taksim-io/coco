@@ -3,7 +3,7 @@
 Coco is a fast, lightweight, and modern JavaScript color manipulation library. It supports conversion between various formats including Hex, RGB, HSL, HSV, and modern color spaces like OKLCH. It is written in TypeScript and has zero dependencies.
 
 > [!IMPORTANT]
-> **v2.0.0 Released**: This version introduces breaking changes including stricter alpha precision (3 decimals), improved hue normalization, and minified outputs. Please check the [Changelog](CHANGELOG.md).
+> **v3.0.0 Released**: `coco.removeAlpha` no longer rewrites colors that are already opaque, so `removeAlpha("red")` returns `"red"` and `removeAlpha("#f00")` returns `"#f00"` instead of the previous `rgb(255, 0, 0)` and `#ff0000`. `coco.setAlpha(color, 0)` now returns a fully transparent color instead of `undefined`. Please check the [Changelog](CHANGELOG.md).
 
 ## Installation
 
